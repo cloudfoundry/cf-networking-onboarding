@@ -15,6 +15,7 @@ func main() {
 	modules := []string{
 		"asgs.prolific",
 		"routes.prolific",
+		"route-services.prolific",
 	}
 
 	workingDir, err := os.Getwd()
