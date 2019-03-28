@@ -1,0 +1,322 @@
+Application Security Groups User Workflows
+
+## Assumptions
+- You have a CF deployed
+- You have an app, `appA`, pushed
+
+## What?
+Application Security Groups are a collection of egress (outbound) rules that specify the protocols, ports, and IP ranges where application containers can send traffic. Security groups define rules that *allow* traffic instead of omitting it, which means that the order of evaluation for security groups that apply to the same space, org, or deployment is unimportant. Application containers use these rules to filter and log outbound network traffic.
+
+When applications begin staging, they need traffic rules permissive enough to allow them to pull resources from the network. After an application is running, the traffic rules can be more restrictive and secure. To distinguish between these two security requirements, administrators can define different security groups for *staging* containers versus *runtime* containers.
+
+To provide granular control when securing a deployment, an administrator can also assign security groups to apply across a CF deployment, or to specific spaces or orgs within a deployment.
+
+### How?
+**Overview**
+1. Look at all the security group CLI commands run `cf help -a | grep security-group`
+1. As admin view the list of security groups `cf security-groups`
+
+In most default deployments there will be two ASGs: `public_networks` and `dns` and they will be bound to all orgs and all spaces for both running and staging containers. If this is not the case, use the commands `bind-running-security-group` and `bind-staging-security-group`, so that this is true.
+
+1. View the rules for the `public_networks` security group  by using `cf security-group $group_name`
+These represent the entire public internet.
+
+**Using Running ASGs**
+Because the wide open `public_networks` security group is bound to all running and staging contains for the entire foundation, your app should be able to connect to any website on the internet. Let's test this.
+1. `cf ssh` onto appA
+1. Run `curl www.neopets.com`. Success!
+1. Unbind the `public_networks` **running** security-group.
+1. When you bind/unbind ASGs you will see this helpful tip `TIP: Changes will not apply to existing running applications until they are restarted.` So restart your app!
+1. `cf ssh` onto appA
+1. Run `curl www.neopets.com`.
+
+What happened? Why did it fail?
+
+**Using Staging ASGs**
+1. Unbind the `public_networks` **staging** security-group.
+1. Push a new app, `appB`
+
+What happened? Why did it fail?
+
+**Reset your ASGs**
+1. Rebind `public_networks` to both running and staging containers.
+
+### Expected Result
+When you have `public_networks` bound to all staging and running containers your apps can access the entire internet! When `public_networks` is not bound to running containers then your running apps cannot access the internet. When `public_networks` is not bound to staging containers, then the staging container is not able to access the internet to install `godep` (for go apps) and other staging requirements, so `cf push` will fail. 
+
+(If you're working with PCF Dev, you should see three security groups, one of which is named `all_pcfdev` and opens all egress traffic. Because of the `all_pcfdev` security group any other group would be redundant.)
+
+## Resources
+[Application Security Groups Documentation](https://docs.cloudfoundry.org/adminguide/app-sec-groups.html)
+[Typical Application Security Groups](https://docs.cloudfoundry.org/adminguide/app-sec-groups.html#typical-groups)
+["Taking Security to the Next Level—Application Security Groups" by Abby Kearns](https://blog.pivotal.io/pivotal-cloud-foundry/products/taking-security-to-the-next-level-application-security-groups)
+["Making sense of Cloud Foundry security group declarations" by Sadique Ali](https://sdqali.in/blog/2015/05/21/making-sense-of-cloud-foundry-security-group-declarations/)
+
+
+---
+
+Iptables reading - a primer
+
+## What?
+ASGs and c2c network policies are implemented using iptables rules. The next few stories will introduce you to iptables rules, but reading a little bit about them first will help a lot.
+
+## How?
+Read these helpful texts:
+[iptables man page](http://ipset.netfilter.org/iptables.man.html)
+[Aidan's iptables in CF ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
+[Julia Evans iptables basics](https://jvns.ca/blog/2017/06/07/iptables-basics/)
+
+---
+
+Write your own iptables rule in a docker container
+
+## Assumptions
+- You have the docker CLI installed
+
+### What?
+Experiment with writing your own iptables rules within the safety of your own docker container.
+
+### How?
+
+**Get your docker container setup**
+0. Run an ubuntu docker container and attach to it: `docker run --privileged -it ubuntu bin/bash`
+0. Set up the docker container
+    ```
+    apt-get update
+    apt-get install iptables
+    apt-get install curl
+    ```
+
+**What's the current state of the world?**
+0. Look at the default iptables rules `iptables -S`
+    It should look like this:
+    ```
+    -P INPUT ACCEPT
+    -P FORWARD ACCEPT
+    -P OUTPUT ACCEPT
+    ```
+   Input, forward, and output are all names of chains. Currently there are no rules attached to these chains. What beautiful empty chains! This means that traffic is not being restricted by iptables.
+
+0. See that traffic is not being restricted. `curl google.com`.  It works!
+
+**Make your own DROP rule**
+Let's make a rule to DROP all traffic from our container so that our curl will fail.
+
+0. Make your own custom chain.  `iptables -N drop-everything`
+0. Append a rule to your chain. `iptables -A drop-everything -j DROP`
+0. View your handiwork. `iptables -S`. Oooooh. Ahhhhhhh.
+0. See if you can still `curl google.com`. What! The curl still works!
+   That's because currently nothing is hitting your rule. You need to attach your custom chain to the input, forward, and/or output chain in order for traffic to hit it.
+0. The input, forward, and output chains are hit in different situations. Look at the diagram below and do some google research to figure out which chain we should attach ours to. Then attach it with `iptables -A EITHER-INPUT-FORWARD-OR-OUTPUT -j drop-everything`
+0. See if you can still `curl google.com`. You should see the error `Could not resolve host: google.com`. If not, then you did not choose the right chain in the previous step, try again.
+0. Delete all of the rules that you wrote and reset it back to the way it was.
+
+![chains](https://www.pivotaltracker.com/file_attachments/95929480/download?inline=true&size=big)
+
+**Make your own rule**
+0. Make your own chain.
+0. Attach rule to that chain that accepts traffic if it is sent to ip 23.96.35.235 (neopets!) port 80 using tcp.
+0. Attach a rule to that chain that drops all other traffic.
+0. Curl google.com. Does it fail?
+0. Curl 23.96.35.235:80. Does it succeed?
+0. Curl https://neopets.com. Does it fail or succeed? Why?
+
+### Resources
+[iptables man page](http://ipset.netfilter.org/iptables.man.html)
+[Julia Evans iptables basics](https://jvns.ca/blog/2017/06/07/iptables-basics/)
+[Aidan's iptables ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
+[iptables primer](https://danielmiessler.com/study/iptables/)
+
+
+---
+
+ASGs and iptables
+
+In the previous story, we learned what ASGs *are*, but how are they implemented under the hood?
+
+## Assumptions
+- You have a CF deployed
+- You have an app, `appA`, pushed (the fewer apps you have deployed the better)
+- You have the `public_networks` security group bound to all running and staging containers
+
+## What?
+Information about ASGs are stored in CAPI's database. Container networking components take this information from CAPI and on container create turn it in iptables rules on the diego-cells.
+
+Iptables rules are a series of rules that network packets match against to decide whether that traffic is allowed or not. This is one way firewalls can be implemented. Iptables rules can be written for ingress traffic (traffic coming into the cell) or egress traffic (traffic leaving the cell). ASGs are only concerned with egress traffic from CF apps to something external to the CF foundation (usually the internet), so that's all this story is going to look at.
+
+From `man iptables`...
+```
+DESCRIPTION
+       Iptables and ip6tables are used to set up, maintain, and inspect the tables of IPv4 and IPv6 packet fil‐
+       ter rules in the Linux kernel.  Several different tables may be defined.  Each table contains  a  number
+       of built-in chains and may also contain user-defined chains.
+
+       Each  chain  is a list of rules which can match a set of packets.  Each rule specifies what to do with a
+       packet that matches.  This is called a `target', which may be a jump to a user-defined chain in the same
+       table.
+
+TARGETS
+       A  firewall  rule  specifies criteria for a packet and a target.  If the packet does not match, the next
+       rule in the chain is examined; if it does match, then the next rule is specified by  the  value  of  the
+       target,  which  can be the name of a user-defined chain, one of the targets described in iptables-exten‐
+       sions(8), or one of the special values ACCEPT, DROP or RETURN.
+
+       ACCEPT means to let the packet through.  DROP means to drop the packet on the floor.  RETURN means  stop
+       traversing  this  chain  and  resume  at the next rule in the previous (calling) chain.  If the end of a
+       built-in chain is reached or a rule in a built-in chain with target RETURN is matched, the target speci‐
+       fied by the chain policy determines the fate of the packet.
+```
+The man page is extremely helpful! Consult it if you have any questions throughout this story. For this story we are only going to talk about the filter table.
+
+Let's investigate what iptables rules are created for the `public_networks` ASG.
+
+## How?
+
+**Find the iptables rule for the public_networks ASG**
+1. Look at the ASG `public_networks` by running `cf security-group public_networks`. Note the IP ranges that are defined. You might want to save these rules for future reference.
+1. ssh onto a diego-cell where appA is running and become root.
+1. Run `iptables -S`
+
+Yep. It's a lot. But take a deep breath and take it line by line and it will start to become comprehensible. What you are looking at are iptables rules.
+
+Remember those IP ranges that are in the `public_networks` security group? If you search for one of them (ie. `0.0.0.0-9.255.255.255`) you should be able to find a line that looks something like this:
+
+`-A netout--772fbbd5-862a-4b3d-7 -m iprange --dst-range 0.0.0.0-9.255.255.255 -g netout--772fbbd5-862a-4--log`
+Replace this line with the one that you found.
+
+**Decipher the iptables rule for the public_networks ASG**
+When you run `iptables -S` the iptables rules are displayed in the format that they were created in. For example, if you prepended `iptables` to the line above and ran (DON'T! this is hypothetical) `iptables -A netout--772fbbd5-862a-4b3d-7 -m iprange ...` it would add that iptables rule. 
+
+With that in mind, use `iptables --help` to define what the following flags mean and record it below...
+
+```
+-A                                 ...
+-m                                 ...
+--dst-range                        ...
+-g                                 ...
+```
+
+1. What is the name of the chain that the above iptables rule is appended to? Let's call this CHAIN-NAME.
+1. What conditions need to be met for a packet to match this rule?
+1. If packets meet the above conditions, what chain of rules will they jump to and evaluate against next? Let's call this JUMP-TO-CHAIN-NAME.
+
+1. Look at the rules only in the chains from the questions above. Run `iptables --list CHAIN-NAME` and `iptables --list JUMP-TO-CHAIN-NAME`.
+
+Packets stop matching against iptables rules when they reach either ACCEPT (let the packet flow through!) or DROP (stop that packet in its tracks!).
+1. Pretend there is a packet trying to hit the IP 23.96.32.148 via tcp. Where will it hit ACCEPT or DROP?
+1. Pretend there is a packet trying to hit the IP 172.20.0.3 via tcp. Where will it hit ACCEPT or DROP?
+1. ssh onto your app and try to curl 23.96.32.148. Did it succeed or fail? Did it match your expectations?
+1. ssh onto your app and try to curl 172.20.0.3. Did it succeed or fail? Did it match your expectations?
+
+
+### Expected Result
+You should be able to find the iptables rules for the `public_networks` and be able to follow the flow to either ACCEPT or DROP.
+
+iptables are hard! Hopefully this have been demystified a little bit. Spend some extra time reading the man page and trying to understand what all the iptables are on a cell and what they are doing.
+
+## Help!
+**To view iptables rules on the diego-cell**
+```
+iptables -S
+```
+
+**To list iptables rules for a particular chain**
+```
+iptables --list CHAIN-NAME
+```
+
+**To see all cf commands for ASGs**
+```
+cf help -a | grep security-groups
+```
+
+## Resources
+**iptables**
+[iptables man page](http://ipset.netfilter.org/iptables.man.html)
+[Julia Evans iptables basics](https://jvns.ca/blog/2017/06/07/iptables-basics/)
+[Aidan's iptables ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
+[iptables primer](https://danielmiessler.com/study/iptables/)
+
+**ASGs**
+[Application Security Groups Documentation](https://docs.cloudfoundry.org/adminguide/app-sec-groups.html)
+[Typical Application Security Groups](https://docs.cloudfoundry.org/adminguide/app-sec-groups.html#typical-groups)
+["Taking Security to the Next Level—Application Security Groups" by Abby Kearns](https://blog.pivotal.io/pivotal-cloud-foundry/products/taking-security-to-the-next-level-application-security-groups)
+["Making sense of Cloud Foundry security group declarations" by Sadique Ali](https://sdqali.in/blog/2015/05/21/making-sense-of-cloud-foundry-security-group-declarations/)
+
+---
+
+Debug Networking - tcpdump
+
+## Assumptions
+- You have a CF deployed
+- You have the `public_networks` security group bound to all staging containers
+- You have the `public_networks` security group **UNBOUND** to all running containers
+
+### What?
+Experiment with investigating black-box apps with tcpdump and allowing network traffic.
+
+In this story you will push an app that is *trying* to access a website. However, without any ASGs this is not possible. Write the most specific ASG possible to get this app to work. However, you don't have access to the source code, so you're going to have to use some network debugging skills to figure out what it is trying to access. Halp!
+
+### How?
+
+**Setup**
+0. Unbind all your running ASGs
+    This locks down network security for all the apps on the cloud foundry foundation. If there are no running ASGs bound to any apps, then no apps can access anything on the big scary internet (like neopets! or the goodreads api!). 
+
+0. Enable docker `cf enable-feature-flag diego_docker`
+
+0. Push our special secret app`cf push pingaling -o c2cnetworking/pingaling --no-route -u process`
+   This app will continually make a request to a website. Your job is to make it work! When you push make sure you are not in the directory of a different app with a manifest.yml or else the cf CLI will get confused.
+
+0. Check the logs and see that something's wrong, oh no! `cf logs pingaling`
+   You should see `Oh no! The HTTP request failed :(`. If not, make sure your running ASGs are unbound and then push the app again.
+
+**Using tcpdump**
+0. Get the overlay ip address of pingaling. This will become important soon: `cf ssh proxy -c "env | grep CF_INSTANCE_INTERNAL_IP`
+0.  ssh onto the diego-cell the pingaling app is on and become root
+0.  run `tcpdump`.
+    Ahhhhh too much information! ctrl+c! ctrl+c!  On a diego-cell there are many packets being sent around, and tcpdump gives information about ALL OF THEM. We need to figure out a to filter through this overwhelming stream of information.
+0. We want to find traffic related to the pingaling app. We know the source overlay IP for this app, so let's filter by that! Look at the man page for tcpdump and look for a way to filter by the source IP. [hint](https://www.rationallyparanoid.com/articles/tcpdump.html). If you're still having problems seeing any traffic, make sure you are looking for traffic on *any* interface.
+
+0. That's still a lot of information. Let's filter it down more by looking at **only** the UDP packets sent from our app. [hint](https://www.rationallyparanoid.com/articles/tcpdump.html) Much better! What you are seeing here are DNS requests. The app is making a request to a URL and is doing a DNS lookup to get the IP address. The IP `169.254.0.2` is bosh dns (you can see this by running `cat /etc/resolv.conf`).
+
+0. Now let's filter it by looking at only the TCP packets being sent from our app. We know from our resolv.conf that 169.254.0.2 is the bosh DNS server. There is one other IP address where TCP traffic is being sent to. Score! Record what IP address and port the app is attempting to connect to.
+
+**Make an ASG and see it work**
+0. Make an ASG for only the appropriate protocol, ip, and port (make it as specific as possible!) and run `bind-running-security-group`.
+
+0. Restart pingaling and look at the logs.
+
+### Expected Result
+When you look at the app logs for pingaling, it says `Hey! Everything's good! :)` (Don't worry about the fact that it's an error. We just wanted it to always print out those happy lines).
+
+Don't forget to reset the security groups!
+
+### Halp!
+How to determine what cell your app is on:
+```
+cf ssh pingaling -c "env | grep CF_INSTANCE_IP"
+bosh instances #find the cell with the matching ip
+```
+
+How to determine the overlay IP address for an app instance
+```
+cf ssh proxy -c "env | grep CF_INSTANCE_INTERNAL_IP
+```
+
+How to see network traffic from a particular app with tcpdump
+```
+tcpdump  -i any -n  src host OVERLAY-IP
+```
+
+### Resources
+**tcpdump**
+[tcpdump man page](https://www.tcpdump.org/manpages/tcpdump.1.html)
+[helpful common tcpdump commands](https://www.rationallyparanoid.com/articles/tcpdump.html)
+[debugging non-c2c traffic in CF](https://github.com/cloudfoundry/cf-networking-release/blob/develop/docs/troubleshooting.md#debugging-non-c2c-packets)
+
+**ASGs**
+[Application Security Groups](https://docs.cloudfoundry.org/concepts/asg.html)
+[ASG API docs](https://docs.cloudfoundry.org/concepts/asg.html#asg-individual)
+
+

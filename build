@@ -1,0 +1,9 @@
+
+#!/bin/bash
+
+set -eu
+
+docker build -t pivotal-cf-onboarding .
+docker run -v "$PWD:/onboarding" -w /onboarding -it pivotal-cf-onboarding go run generate-tracker-csv.go
+
+echo -e "\n\nGenerated output CSV at '$PWD/networking-program-onboarding-tracker.csv'"
