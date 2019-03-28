@@ -52,7 +52,7 @@ When you have `public_networks` bound to all staging and running containers your
 ["Taking Security to the Next Level—Application Security Groups" by Abby Kearns](https://blog.pivotal.io/pivotal-cloud-foundry/products/taking-security-to-the-next-level-application-security-groups)
 ["Making sense of Cloud Foundry security group declarations" by Sadique Ali](https://sdqali.in/blog/2015/05/21/making-sense-of-cloud-foundry-security-group-declarations/)
 
-
+L: asgs
 ---
 
 Iptables reading - a primer
@@ -66,6 +66,7 @@ Read these helpful texts:
 [Aidan's iptables in CF ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
 [Julia Evans iptables basics](https://jvns.ca/blog/2017/06/07/iptables-basics/)
 
+L: asgs
 ---
 
 Write your own iptables rule in a docker container
@@ -127,7 +128,7 @@ Let's make a rule to DROP all traffic from our container so that our curl will f
 [Aidan's iptables ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
 [iptables primer](https://danielmiessler.com/study/iptables/)
 
-
+L: asgs
 ---
 
 ASGs and iptables
@@ -243,6 +244,7 @@ cf help -a | grep security-groups
 ["Taking Security to the Next Level—Application Security Groups" by Abby Kearns](https://blog.pivotal.io/pivotal-cloud-foundry/products/taking-security-to-the-next-level-application-security-groups)
 ["Making sense of Cloud Foundry security group declarations" by Sadique Ali](https://sdqali.in/blog/2015/05/21/making-sense-of-cloud-foundry-security-group-declarations/)
 
+L: asgs
 ---
 
 Debug Networking - tcpdump
@@ -319,4 +321,8 @@ tcpdump  -i any -n  src host OVERLAY-IP
 [Application Security Groups](https://docs.cloudfoundry.org/concepts/asg.html)
 [ASG API docs](https://docs.cloudfoundry.org/concepts/asg.html#asg-individual)
 
+L: asgs
 
+---
+
+[RELEASE] Application Security Groups (ASGs) ⇧
