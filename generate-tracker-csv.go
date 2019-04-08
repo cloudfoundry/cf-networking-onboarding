@@ -13,11 +13,12 @@ import (
 
 func main() {
 	modules := []string{
+		"introduction.prolific",
 		"asgs.prolific",
 		"routes.prolific",
+		"route-integrity.prolific",
 		"route-services.prolific",
 		"tcp-routes.prolific",
-		"route-integrity.prolific",
 	}
 
 	workingDir, err := os.Getwd()

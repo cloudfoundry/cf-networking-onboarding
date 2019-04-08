@@ -1,0 +1,48 @@
+ Networking Program Onboarding Week [a note for facilitators]
+
+ Hi there, facilitators!
+
+This is a reminder to read the **[facilitation documentation](FACILITATION.md)** on GitHub.
+
+It's also a short task list of things you might want to do before Onboarding Week starts. After you've completed the tasks you need to, remove this chore from the backlog. (I cannot make it self-destruct. Sad!)
+
+- [ ] Allocate participants for the week.
+- [ ] Designate workstation(s).
+- [ ] Get one "floater" laptop per pair to facilitate independent docs reading.
+- [ ] Create and populate private Tracker Project(s). Invite participants.
+- [ ] Add morning standup to participant calendars so they know where to be Monday morning.
+- [ ] Schedule boxes and lines whiteboarding sessions
+- [ ] Add Retro to participant calendars (ideally EOD Fri)
+
+L: introduction
+
+---
+
+Introduction to the Networking Program Onboarding
+
+WELCOME!
+
+### What?
+Networking Onboarding Week is a self-paced, guided exploration of the Cloud Foundry Networking Program components, embarked upon with other Networking Program Cloud Foundry members. What we hope you get out of it:
+
+1. A coherent, if cursory, overview of a complicated product.
+1. Empathy for the customer who uses that product.
+1. A little knowledge of the breadth of work that the networking program does
+1. A little knowledge of how to debug networking components when things don't go as planned
+1. Experience teaching. Unless you joined Pivotal at the same time as your pair and have been arm-in-arm ever since, you have different backgrounds. Moreover, you each have something valuable to offer to the other. Make sure you share it.
+
+### How?
+1. Take your time.
+1. Be conscious of your pair's progress. Check in frequently to make sure you're both getting the most out of the material.
+1. Read every story completely. You'll feel very silly if you struggle for hours with a problem that turns out to have been addressed in plain English...in a story you didn't read.
+1. If something in a story is missing / is wrong / could be improved, create an issue or a PR in the **[networking onboarding repo](https://github.com/pivotal/cf-networking-program-onboarding)**.
+1. Seriously, take your time. How often are you paid just to learn?
+
+**Pro Tip:** As you begin stories, click the "Start" button. If you feel confident about their content when you finish, click "Finish", "Deliver", and "Accept". If you still have questions on the material, leave it in the delivered state (i.e. with the "Accept"/"Reject" buttons showing) and decide at the end how you would like to follow up on your questions.
+
+L: introduction
+
+---
+
+[RELEASE] Introduction ⇧
+L: introduction
