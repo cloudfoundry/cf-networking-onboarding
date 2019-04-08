@@ -1,0 +1,168 @@
+User Flow: TCP Routes
+
+## Assumptions
+- You have a CF deployed
+- The CF was deployed with the help of `bbl`
+
+## What
+GoRouter only handles incoming HTTP traffic.  All of the routes that we have been talking about so far are *HTTP* routes (though we often drop the HTTP in conversation and just call them routes). If you want to send og TCP traffic, then you are going to need to set up a TCP route. 
+
+There is a parallel system for TCP routes similar to HTTP routes:
+- An HTTP client connects to an HTTP route on an HTTP domain, though an HTTP load balancer, which sends traffic to HTTP Routers (GoRouters). 
+- TCP client connects to a TCP route on a TCP domain, through a TCP load balancer, which sends traffic to TCP Routers.
+
+```
+                                                   +-----------+
+ +-----------+         +------------------+        |HTTP Router|        +------+
+ |HTTP Client| ----->  |HTTP Load Balancer| -----> |(GoRouter) | -----> |      |
+ +-----------+         +------------------+        +-----------+        |      |
+                                                                        | App  |
+ +-----------+         +------------------+        +-----------+        |      |
+ |TCP Client | ----->  |TCP Load Balancer | -----> |TCP Router | -----> |      |
+ +-----------+         +------------------+        +-----------+        +------+
+
+```
+
+Let's create a TCP Route and send traffic to it!
+
+## How
+
+**Prep in Google Cloud Console**
+1. Make sure that you have DNS set up properly for the TCP Router.
+    In Google Cloud Console, go to the Zone Details for your env (Network Services --> Cloud DNS --> <your-env>-zone)
+1. You should find a domain that starts with `tcp`, let's call this TCP_DOMAIN. This domain should have an IP next to it, let's call this TCP_LOAD_BALANCER_IP.
+    ![gcp domains](https://github.com/pivotal/cf-networking-program-onboarding/blob/master/images/tcp-routes/gcp-dns-domains.png?raw=true)
+
+1. In Google Cloud Console, find the Load Balancer with the ip TCP_LOAD_BALANCER_IP. (Network Services --> Load balancing)
+    Here you will be able to see all of the VMs that the load balancer ...balances load between. In the example below, and most likely in your case, there is only one TCP Router deployed, so there will only be one VM listed. 
+
+    ![gcp load balancer](https://github.com/pivotal/cf-networking-program-onboarding/blob/master/images/tcp-routes/gcp-load-balancer-details.png?raw=true)
+
+1. Click the VM instance that the TCP load balancer sends traffic to. Find the VM's internal IP. Let's call this TCP_ROUTER_IP.
+1. In the terminal, check that the TCP_ROUTER_IP matches the IP that bosh reports for the TCP Router. It comes full circle!
+
+**In CF**
+1. Write an app that is listening for TCP on port 8080 and that logs all messages sent to it. `cf push tcp-app --no-route`. [Here is some inspiration](https://coderwall.com/p/wohavg/creating-a-simple-tcp-server-in-go)
+1. See that you have a default-tcp router group `cf router-groups`. Router Groups are used to reserve a port range for tcp routes.
+1. Create a shared TCP domain `cf create-shared-domain TCP_DOMAIN --router-group default-tcp`
+1. See that `cf map-route --help` has different usage instructions for TCP routes and HTTP routes.
+1. Create a route with the TCP domain and map it to tcp-app, let's call this TCP_ROUTE:TCP_PORT.
+
+### Expected Result
+
+**test with curl**
+Curl sends traffic via HTTP(S), but because HTTP is built on top of TCP, we can still use curl to test out TCP route.
+1. In one terminal, run `cf logs tcp-app`
+1. In another terminal `curl TCP_ROUTE:TCP_PORT`
+1. See the HTTP headers show up in your logs
+
+**test with netcat**
+**STEP ONE - DO NOT DOWNLOAD NETCAT ON YOUR MAC. [It will break your bosh proxies.](https://github.com/cloudfoundry/bosh-cli/pull/403) **
+Netcat is a helpful utility for reading and writing traffic over TCP or UDP.
+1. In one terminal, run `cf logs tcp-app`
+1. In another terminal, run a docker container and get some helpful tools
+    ```
+docker run --privileged -it ubuntu bin/bash
+apt-get update -y
+apt-get install netcat -y
+    ```
+1. Use `nc -h` to look at the help text and figure out how to connect to TCP_ROUTE:TCP_PORT.
+1. If you successfully open a connection, it will hold it open so you can type anything. Mash some keys and press enter.
+1. See your key mashes in the app logs. You sent that via TCP!
+
+Don't delete your TCP app/route/domain yet! You'll need them in the next stories.
+
+## Extra Credit
+What happens if you try to send TCP traffic to an HTTP route? Why can you send HTTP traffic (kind of) over TCP, but not the other way around?
+
+## Resources
+
+[Basic Golang TCP Server](https://coderwall.com/p/wohavg/creating-a-simple-tcp-server-in-go)
+[CF Docs - configure TCP domain](https://docs.cloudfoundry.org/adminguide/enabling-tcp-routing.html#-configure-cf-with-your-tcp-domain)
+[CF Docs - HTTP vs TCP routes](https://docs.cloudfoundry.org/devguide/deploy-apps/routes-domains.html#-http-vs.-tcp-routes)
+[CF Docs - create TCP routes](https://docs.cloudfoundry.org/devguide/deploy-apps/routes-domains.html#-create-a-tcp-route-with-a-port)
+[Sending tcp traffic via netcat](https://askubuntu.com/questions/443227/sending-a-simple-tcp-message-using-netcat)
+[netcat fun! by julia evans](https://jvns.ca/blog/2013/10/01/day-2-netcat-fun/)
+
+L: tcp-routes
+
+---
+
+Dig-ing TCP and HTTP Routes
+
+## Assumptions
+- You have a CF deployed
+- The CF was deployed with the help of `bbl`
+- You have a TCP server deployed named tcp-app
+- You have a TCP route mapped to tcp-app called TCP_ROUTE
+- You have a [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and called appA
+- You have a HTTP route mapped to appA called APP_A_URL
+
+## What
+`dig` is one of many network utilities that can be very helpful for debugging. Dig does a DNS lookup for a URL.
+
+Let's play around with dig, TCP Routes, and HTTP Routes.
+
+## How
+1. Run `dig neopets.com`
+    If you see `ANSWER 1` (which you should) that it was able to resolve the route. `ANSWER 0` means it was unable to resolve the route.
+    In the `ANSWER SECTION` you should see an IP. Likely, 23.96.35.235. Put that IP in the browser. Is it neopets?
+1. Try to resolve a bogus URL so you get ANSWER 0.
+1. Use dig to resolve APP_A_URL. Curl that IP. What happens?
+1. Push another app and make an HTTP route. Resolve that route with dig. Wait a minute that's the same IP as before! And it still doesn't work. 
+1. Use dig to resolve the TCP Route. Curl that IP. What happens?
+
+1. Why can't we curl our apps with these IPs?
+1. Find what infrastructure in Google Cloud Console that these IPs map to
+1. How does traffic even get to the apps if the IPs don't work?
+
+## Extra Credit
+1. Why does `dig neopets.com` work, but `dig http://neopets.com` does not work?
+
+## Resources
+[understanding the dig command](https://mediatemple.net/community/products/dv/204644130/understanding-the-dig-command)
+
+L: tcp-routes
+
+---
+
+Why are my TCP routes broken?
+
+## Assumptions
+- You have a CF deployed
+- The CF was deployed with the help of `bbl`
+- You have a TCP server deployed named tcp-app
+- You have a TCP route mapped to tcp-app called TCP_ROUTE:TCP_PORT
+
+## What
+When writing these stories, I happened to have a particular deploy setup that caused a TCP routes to break and took me awhile to debug. One day soon, I hope this bug will be fixed, so for this story you're going to have to deploy older code to get the broken state.
+
+Ready. Set. Debug!
+
+## How
+
+**Setup**
+1. Save your current manifest so you can get back to it easily after this story. `bosh manifest > /tmp/bosh.yml`
+1. Deploy with istio-release 1.2.0 and use the [recommended opsfiles](https://github.com/cloudfoundry/istio-release/tree/v1.2.0/deploy/cf-deployment-operations). 
+   Make sure that the `experimental_enable_ingress_proxy_redirect` property on the `garden-cni` job is set to true
+1. See that `curl TCP_ROUTE:PORT` no longer works
+
+**Debugging Hints**
+1. Is the URL being resolved correctly?
+1. Is the traffic making it to the TCP router?
+1. Is the TCP Router sending the traffic to the correct place?
+1. Is there traffic making it to the Diego Cell?
+1. Are the DNAT rules on the Diego Cell correct?
+1. Is the traffic making it to the app container?
+
+### Expected Result
+Find the bug. Remove the offender and get this TCP route working!
+
+Don't forget to redeploy to your old state.
+
+L: tcp-routes
+
+---
+
+[RELEASE] TCP Routes ⇧
+L: tcp-routes

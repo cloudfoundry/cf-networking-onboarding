@@ -16,6 +16,7 @@ func main() {
 		"asgs.prolific",
 		"routes.prolific",
 		"route-services.prolific",
+		"tcp-routes.prolific",
 	}
 
 	workingDir, err := os.Getwd()
