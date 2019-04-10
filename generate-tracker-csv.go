@@ -19,6 +19,7 @@ func main() {
 		"route-integrity.prolific",
 		"route-services.prolific",
 		"tcp-routes.prolific",
+		"c2c.prolific",
 	}
 
 	workingDir, err := os.Getwd()
