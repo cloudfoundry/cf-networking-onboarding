@@ -112,7 +112,7 @@ Let's make a rule to DROP all traffic from our container so that our curl will f
 0. See if you can still `curl google.com`. You should see the error `Could not resolve host: google.com`. If not, then you did not choose the right chain in the previous step, try again.
 0. Delete all of the rules that you wrote and reset it back to the way it was.
 
-![chains](https://www.pivotaltracker.com/file_attachments/95929480/download?inline=true&size=big)
+![iptables chains and tables diagram](https://storage.googleapis.com/cf-networking-onboarding-images/iptables-tables-and-chains-diagram.png)
 
 **Make your own rule**
 0. Make your own chain.
