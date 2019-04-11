@@ -156,7 +156,7 @@ Let's look at the anatomy of an iptables rule.
 
 ![iptables rule anatomy](https://deliveryimages.acm.org/10.1145/2070000/2062737/10822f2.png)
 
-The example above, can be translated as:
+The example above can be translated as:
 - (**table/chain**) For any traffic that is evaluated against the filter table on the INPUT chain...
 - (**match**)...if that traffic is using the tcp protocol...
 - (**match**)...and if that traffic is sending traffic to port 80...
@@ -249,7 +249,7 @@ Let's make a rule to DROP all traffic from the container so that the curl will f
  iptables -A OUTPUT -j drop-everything
  ```
 
-0. See if you can still `curl google.com`. You should see the error `Could not resolve host: google.com`. If not, then you did not choose the right chain in the previous step, try again.
+0. See if you can still `curl google.com`. You should see the error `Could not resolve host: google.com`.
 0. Delete all of the rules and the chain that you created.
    Before you can delete the chain itself, you need to delete the rules attached to it using the `-D` flag.
    ```
@@ -314,70 +314,57 @@ L: iptables
 
 ASGs and Iptables
 
-In the previous story, we learned what ASGs *are*, but how are they implemented under the hood?
+In the previous story "User Workflow: Application Security Groups", we learned what ASGs *are*, but how are they implemented under the hood?
+(Hint: it's iptables)
 
 ## Assumptions
 - You have a CF deployed
 - You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and named appA (the fewer apps you have deployed the better)
-- You have the `public_networks` security group bound to all running and staging containers
+- You have the public_networks security group bound to all running and staging containers
 
 ## What?
-Information about ASGs are stored in CAPI's database. When a container create is triggered (for example by a cf push), CAPI passes ASG information along to Diego (container scheduler). Diego then passes the ASG information along to Garden (the conainter creater),
-which passes it along to the container networking components. After this long journey, the container networking components turn this ASG information into iptables rules on the Diego Cells.
+Information about ASGs are stored in CAPI's database. When a container create is triggered (for example by a cf push), CAPI passes ASG information along to Diego (container scheduler). Diego then passes the ASG information along to Garden (the containter creater), which passes it along to the container networking components. After this long journey, the container networking components turn this ASG information into iptables rules on the Diego Cells.
 
 
-Iptables rules are a series of rules that network packets match against to decide whether that traffic is allowed or not. This is one way firewalls can be implemented. Iptables rules can be written for ingress traffic (traffic coming into the cell) or egress traffic (traffic leaving the cell). ASGs are only concerned with egress traffic from CF apps to something external to the CF foundation (usually the internet), so that's all this story is going to look at.
+Iptables rules are a series of rules that network packets match against to decide whether that traffic is allowed or not. This is one way firewalls can be implemented.
+ASGs are only concerned with egress traffic from CF apps to something external to the CF foundation (usually the internet).
 
-From `man iptables`...
-```
-DESCRIPTION
-       Iptables and ip6tables are used to set up, maintain, and inspect the tables of IPv4 and IPv6 packet fil‐
-       ter rules in the Linux kernel.  Several different tables may be defined.  Each table contains  a  number
-       of built-in chains and may also contain user-defined chains.
-
-       Each  chain  is a list of rules which can match a set of packets.  Each rule specifies what to do with a
-       packet that matches.  This is called a `target', which may be a jump to a user-defined chain in the same
-       table.
-
-TARGETS
-       A  firewall  rule  specifies criteria for a packet and a target.  If the packet does not match, the next
-       rule in the chain is examined; if it does match, then the next rule is specified by  the  value  of  the
-       target,  which  can be the name of a user-defined chain, one of the targets described in iptables-exten‐
-       sions(8), or one of the special values ACCEPT, DROP or RETURN.
-
-       ACCEPT means to let the packet through.  DROP means to drop the packet on the floor.  RETURN means  stop
-       traversing  this  chain  and  resume  at the next rule in the previous (calling) chain.  If the end of a
-       built-in chain is reached or a rule in a built-in chain with target RETURN is matched, the target speci‐
-       fied by the chain policy determines the fate of the packet.
-```
-The man page is extremely helpful! Consult it if you have any questions throughout this story. For this story we are only going to talk about the filter table.
+The iptables man page is extremely helpful as a reference! Consult it if you have any questions throughout this story.
 
 Let's investigate what iptables rules are created for the public_networks ASG.
 
 ## How?
 
-**Find the iptables rule for the public_networks ASG**
-1. Look at the ASG public_networks by running `cf security-group public_networks`. Note the IP ranges that are defined. You might want to save these rules for future reference.
-1. ssh onto a diego-cell where appA is running and become root.
-1. Run `iptables -S`
+📝 **Find the iptables rule for the public_networks ASG**
+1. Look at the ASG public_networks
+ ```
+ cf security-group public_networks
+ ```
+ Note which IP ranges are specified. Save these rules somewhere accessible for future reference.
+1. Ssh onto the Diego Cell where appA is running and become root.
+1. List all of the iptables rules on the filter table on the Diego Cell
+ ```
+ iptables -t filter -S
+ ```
 
-Yep. It's a lot. But take a deep breath and take it line by line and it will start to become comprehensible. What you are looking at are iptables rules.
+Yep. It's a lot. Take a deep breath. Read it line by line. I promise it will start to become comprehensible.
 
-Remember those IP ranges that are in the public_networks security group? If you search for one of them (ie. `0.0.0.0-9.255.255.255`) you should be able to find a line that looks something like this:
+Remember those IP ranges that are in the public_networks security group?
+If you search for one of them (ie. `0.0.0.0-9.255.255.255`) you should be able to find an iptables rule that looks something like this:
 
 ```
 -A netout--772fbbd5-862a-4b3d-7 -m iprange --dst-range 0.0.0.0-9.255.255.255 -g netout--772fbbd5-862a-4--log
 ```
 
-Take the iptables rules that you found on the Diego Cell that looks like the line above, a paste it in the story below.
-You will need to use some of the data from this rule and it will be helpful to have it in a place you can reference.
+Copy the iptables rule that you found on the Diego Cell that looks like the line above. Paste it in the story below.
+You will necessary to reference soon.
 
 ```
 # Put your iptables rule...
 # HERE
 ```
 
-**Decipher the iptables rule for the public_networks ASG**
+🤔 **Decipher the iptables rule for the public_networks ASG**
 When you run `iptables -S` the iptables rules are displayed in the format that they were created in. For example, if you prepended `iptables` to the line above and ran (DON'T! this is hypothetical) `iptables -A netout--772fbbd5-862a-4b3d-7 -m iprange ...` it would add that iptables rule. 
 
 With that in mind, use `iptables --help` to define what the following flags mean and record it below...
@@ -393,9 +380,15 @@ With that in mind, use `iptables --help` to define what the following flags mean
 1. What conditions need to be met for a packet to match this rule?
 1. If packets meet the above conditions, what chain of rules will they jump to and evaluate against next? Let's call this JUMP-TO-CHAIN-NAME.
 
-1. Look at the rules only in the chains from the questions above. Run `iptables --list CHAIN-NAME` and `iptables --list JUMP-TO-CHAIN-NAME`.
+1. Look at the rules only in the chains from the questions above.
+ ```
+iptables --list CHAIN-NAME
+iptables --list JUMP-TO-CHAIN-NAME
+ ```
 
-Packets stop matching against iptables rules when they reach either ACCEPT (let the packet flow through!), DROP (stop that packet in its tracks!), or REJECT (nicely tell the sender that this destination is not available to them) targets.
+Packets stop matching against iptables rules when they reach either the ACCEPT target(let the packet flow through!), the DROP target (stop that packet in its tracks!), or the REJECT target(nicely tell the sender that this destination is not available to them) targets.
+
+🤔 **Read iptables rules to predict behavior**
 1. Pretend there is a packet trying to hit the IP 23.96.32.148 via tcp. Where will it hit ACCEPT or DROP?
 1. Pretend there is a packet trying to hit the IP 172.20.0.3 via tcp. Where will it hit ACCEPT or DROP?
 1. ssh onto your app and try to curl 23.96.32.148. Did it succeed or fail? Did it match your expectations?
@@ -406,24 +399,7 @@ Packets stop matching against iptables rules when they reach either ACCEPT (let 
 You should be able to find the iptables rules for the public_networks and be able to follow the flow to either ACCEPT or DROP.
 
 Iptables are hard! Hopefully they have been demystified a little bit.
-Spend some extra time looking at all the iptables rules on a Diego Cell. Research what you don't understand.
-
-
-## Help!
-**To view iptables rules on the diego-cell**
-```
-iptables -S
-```
-
-**To list iptables rules for a particular chain**
-```
-iptables --list CHAIN-NAME
-```
-
-**To see all cf commands for ASGs**
-```
-cf help -a | grep security-groups
-```
+Spend some extra time looking at all the iptables rules on a Diego Cell. Research what you don't understand. Ask lots of questions.
 
 ## Resources
 **iptables**
@@ -439,6 +415,7 @@ cf help -a | grep security-groups
 ["Making sense of Cloud Foundry security group declarations" by Sadique Ali](https://sdqali.in/blog/2015/05/21/making-sense-of-cloud-foundry-security-group-declarations/)
 
 L: asgs
+L: iptables
 ---
 
 Debug Networking - tcpdump
