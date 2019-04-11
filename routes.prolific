@@ -151,7 +151,7 @@ For this story, let's look at the data stored in the BBS and see what informatio
 
 ## How
 
-0. Grab the guid for appA. You'll need it in a moment. Let's call it APP_A_GUID.
+0. Grab the guid for appA. You'll need it in a moment. `cf app appA --guid`. Let's call it APP_A_GUID.
 0. Ssh onto the Diego Cell vm where appA is running and become root.
 0. Use the cfdot CLI to query BBS for actualLRPs  `cfdot actual-lrps | jq .`
 0. Search through the actual LRPs for APP_A_GUID. It should match the beginning of a process guid. You'll find an entry for each instance of appA that is running.
