@@ -151,7 +151,9 @@ In the previous story, we learned what ASGs *are*, but how are they implemented 
 - You have the `public_networks` security group bound to all running and staging containers
 
 ## What?
-Information about ASGs are stored in CAPI's database. Container networking components take this information from CAPI and on container create turn it in iptables rules on the diego-cells.
+Information about ASGs are stored in CAPI's database. When a container create is triggered (for example by a cf push), CAPI passes ASG information along to Diego (container scheduler). Diego then passes the ASG information along to Garden (the conainter creater),
+which passes it along to the container networking components. After this long journey, the container networking components turn this ASG information into iptables rules on the Diego Cells.
+
 
 Iptables rules are a series of rules that network packets match against to decide whether that traffic is allowed or not. This is one way firewalls can be implemented. Iptables rules can be written for ingress traffic (traffic coming into the cell) or egress traffic (traffic leaving the cell). ASGs are only concerned with egress traffic from CF apps to something external to the CF foundation (usually the internet), so that's all this story is going to look at.
 
@@ -192,8 +194,17 @@ Yep. It's a lot. But take a deep breath and take it line by line and it will sta
 
 Remember those IP ranges that are in the `public_networks` security group? If you search for one of them (ie. `0.0.0.0-9.255.255.255`) you should be able to find a line that looks something like this:
 
-`-A netout--772fbbd5-862a-4b3d-7 -m iprange --dst-range 0.0.0.0-9.255.255.255 -g netout--772fbbd5-862a-4--log`
-Replace this line with the one that you found.
+```
+-A netout--772fbbd5-862a-4b3d-7 -m iprange --dst-range 0.0.0.0-9.255.255.255 -g netout--772fbbd5-862a-4--log
+```
+
+Take the iptables rules that you found on the Diego Cell that looks like the line above, a paste it in the story below.
+You will need to use some of the data from this rule and it will be helpful to have it in a place you can reference.
+
+```
+# Put your iptables rule...
+# HERE
+```
 
 **Decipher the iptables rule for the public_networks ASG**
 When you run `iptables -S` the iptables rules are displayed in the format that they were created in. For example, if you prepended `iptables` to the line above and ran (DON'T! this is hypothetical) `iptables -A netout--772fbbd5-862a-4b3d-7 -m iprange ...` it would add that iptables rule. 
@@ -213,7 +224,7 @@ With that in mind, use `iptables --help` to define what the following flags mean
 
 1. Look at the rules only in the chains from the questions above. Run `iptables --list CHAIN-NAME` and `iptables --list JUMP-TO-CHAIN-NAME`.
 
-Packets stop matching against iptables rules when they reach either ACCEPT (let the packet flow through!) or DROP (stop that packet in its tracks!).
+Packets stop matching against iptables rules when they reach either ACCEPT (let the packet flow through!), DROP (stop that packet in its tracks!), or REJECT (nicely tell the sender that this destination is not available to them) targets.
 1. Pretend there is a packet trying to hit the IP 23.96.32.148 via tcp. Where will it hit ACCEPT or DROP?
 1. Pretend there is a packet trying to hit the IP 172.20.0.3 via tcp. Where will it hit ACCEPT or DROP?
 1. ssh onto your app and try to curl 23.96.32.148. Did it succeed or fail? Did it match your expectations?
@@ -223,7 +234,9 @@ Packets stop matching against iptables rules when they reach either ACCEPT (let 
 ### Expected Result
 You should be able to find the iptables rules for the `public_networks` and be able to follow the flow to either ACCEPT or DROP.
 
-iptables are hard! Hopefully this have been demystified a little bit. Spend some extra time reading the man page and trying to understand what all the iptables are on a cell and what they are doing.
+Iptables are hard! Hopefully they have been demystified a little bit.
+Spend some extra time looking at all the iptables rules on a Diego Cell. Research what you don't understand.
+
 
 ## Help!
 **To view iptables rules on the diego-cell**
@@ -290,7 +303,7 @@ In this story you will push an app that is *trying* to access a website. However
 0. Get the overlay ip address of pingaling. This will become important soon: `cf ssh pingaling -c "env | grep CF_INSTANCE_INTERNAL_IP"`
 0. ssh onto the Diego Cell the pingaling app is on and become root
 0. Run `tcpdump`.
-    Ahhhhh too much information! ctrl+c! ctrl+c!  On a Diego Cell there are many packets being sent around, and tcpdump gives information about ALL OF THEM. We need to figure out a to filter through this overwhelming stream of information.
+    Ahhhhh too much information! ctrl+c! ctrl+c!  On a Diego Cell there are many packets being sent around, and tcpdump gives information about ALL OF THEM. We need to figure out a way to filter this overwhelming stream of information.
 0. We want to find traffic related to the pingaling app. We know the source overlay IP for this app, so let's filter by that! Look at the man page for tcpdump and look for a way to filter by the source IP. [hint](https://www.rationallyparanoid.com/articles/tcpdump.html). If you're still having problems seeing any traffic, make sure you are looking for traffic on *any* interface.
 
 0. That's still a lot of information. Let's filter it down more by looking at **only** the UDP packets sent from our app. [hint](https://www.rationallyparanoid.com/articles/tcpdump.html) Much better! What you are seeing here are DNS requests. The app is making a request to a URL and is doing a DNS lookup to get the IP address. The IP `169.254.0.2` is bosh dns (you can see this by running `cat /etc/resolv.conf`).
