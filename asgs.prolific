@@ -4,7 +4,7 @@ East/West What? Directional Networking Terms
 
 Network traffic can go in many directions, and there are many jargony way to refer to them. Let's define them.
 
-**Ingress Traffic** is traffic that originates outside the local network that is transmitted to a station within the network. Remember ingress traffic is coming *in*.
+**Ingress Traffic** is traffic that originates outside the local network that is transmitted to somewhere inside the local network. Remember ingress traffic is coming *in*.
 
 **Egress Traffic** is traffic that originates inside the local network that is transmitted somewhere outside of the local network. Remember ingress traffic is *e*xiting the local network.
 
@@ -38,7 +38,7 @@ Network traffic can go in many directions, and there are many jargony way to ref
 
 ```
 
-**North/South** traffic is any communication between two different networks.  Both Ingress and Egress are an example of North/South traffic.
+**North/South** traffic is any communication between two different networks.  Both Ingress and Egress are examples of North/South traffic.
 
 **East/West** traffic is any communication within one network.
 
@@ -80,16 +80,15 @@ User Workflow: Application Security Groups
 - You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and named appA
 
 ## What?
-Application Security Groups are a collection of egress (outbound) rules that specify the protocols, ports, and IP ranges
-where application containers can send traffic. Security groups define rules that *allow* traffic instead of omitting it, which means
-that the order of evaluation for security groups that apply to the same space, org, or deployment is unimportant.
-Application containers use these rules to filter and log outbound network traffic.
+Application Security Groups (ASGs) are a collection of egress (outbound) rules that specify the protocols, ports, and IP ranges
+where applications can send traffic. ASGs define rules that *allow* traffic. They are a whitelist, not a blacklist.
+Diego Cells use these ASGs to filter and log outbound network traffic.
 
-When applications are staging, they need traffic rules permissive enough to allow them to pull resources from the network.
-After an application is running, the traffic rules can be more restrictive and secure. To distinguish between these two security
-requirements, administrators can define different security groups for *staging* containers versus *runtime* containers.
+When applications are staging, there need to be ASGs permissive enough to allow download particular resources (for example: ruby gems for ruby apps).
+After an application is running, devs often want the ASGs to be more restrictive and secure. To distinguish between these two different security
+requirements, administrators can define different security groups for *staging* containers versus *running* containers.
 
-To provide granular control when securing a deployment, an administrator can also assign security groups to apply across a CF deployment, or to specific spaces or orgs within a deployment.
+To provide granular control when securing egress app traffic, an administrator can also assign security groups to apply across a CF deployment, or to specific spaces or orgs within a foundation.
 
 ### How?
 
@@ -314,8 +313,8 @@ L: iptables
 
 ASGs and Iptables
 
-In the previous story "User Workflow: Application Security Groups", we learned what ASGs *are*, but how are they implemented under the hood?
-(Hint: it's iptables)
+In the previous story "User Workflow: Application Security Groups" you learned what ASGs *are*, but how are they implemented under the hood?
+(Hint: iptables)
 
 ## Assumptions
 - You have a CF deployed
@@ -428,7 +427,9 @@ Debug Networking - tcpdump
 ### What?
 Debug a broken app by using tcpdump on the Diego Cell.
 
-In this story you will push an app that is *trying* to access a website. However, without any [Application Security Groups](https://docs.cloudfoundry.org/concepts/asg.html) (ASGs) this is not possible. Write the most specific ASG possible to get this app to work. However, you don't have access to the source code, so you're going to have to use some network debugging skills to figure out what it is trying to access. Halp!
+In this story you will push an app that is *trying* to access a website. However, without any [Application Security Groups](https://docs.cloudfoundry.org/concepts/asg.html) (ASGs)
+this is not possible. Write the most specific ASG possible to get this app to work. However, you don't have access to the source code,
+so you're going to have to use some network debugging skills to figure out what it is trying to access. Halp!
 
 ### How?
 
