@@ -89,7 +89,7 @@ Experiment with writing your own iptables rules within the safety of your own do
     ```
 
 **What's the current state of the world?**
-0. Look at the default iptables rules `iptables -S`
+0. Look at the default iptables rules `iptables -S`.
     It should look like this:
     ```
     -P INPUT ACCEPT
@@ -109,10 +109,19 @@ Let's make a rule to DROP all traffic from our container so that our curl will f
 0. See if you can still `curl google.com`. What! The curl still works!
    That's because currently nothing is hitting your rule. You need to attach your custom chain to the input, forward, and/or output chain in order for traffic to hit it.
 0. The input, forward, and output chains are hit in different situations. Look at the diagram below and do some google research to figure out which chain we should attach ours to. Then attach it with `iptables -A EITHER-INPUT-FORWARD-OR-OUTPUT -j drop-everything`
-0. See if you can still `curl google.com`. You should see the error `Could not resolve host: google.com`. If not, then you did not choose the right chain in the previous step, try again.
-0. Delete all of the rules that you wrote and reset it back to the way it was.
+   ![iptables chains and tables diagram](https://storage.googleapis.com/cf-networking-onboarding-images/iptables-tables-and-chains-diagram.png)
 
-![iptables chains and tables diagram](https://storage.googleapis.com/cf-networking-onboarding-images/iptables-tables-and-chains-diagram.png)
+0. See if you can still `curl google.com`. You should see the error `Could not resolve host: google.com`. If not, then you did not choose the right chain in the previous step, try again.
+0. Delete all of the rules and the chain that you created.
+   Before you can delete the chain itself, you need to delete the rules attached to it using the `-D` flag.
+   ```
+iptables -D EITHER-INPUT-FORWARD-OR-OUTPUT -j drop-everything
+iptables -D drop-everything -j DROP
+   ```
+   Then you can delete the chain itself using the `-X` flag
+   ```
+iptables -X drop-everything
+   ```
 
 **Make your own rule**
 0. Make your own chain.
@@ -121,6 +130,7 @@ Let's make a rule to DROP all traffic from our container so that our curl will f
 0. Curl google.com. Does it fail?
 0. Curl 23.96.35.235:80. Does it succeed?
 0. Curl https://neopets.com. Does it fail or succeed? Why?
+0. Delete all of the rules and chains that you created.
 
 ### Resources
 [iptables man page](http://ipset.netfilter.org/iptables.man.html)
