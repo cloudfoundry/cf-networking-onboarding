@@ -2,7 +2,7 @@ Application Security Groups User Workflows
 
 ## Assumptions
 - You have a CF deployed
-- You have an app, `appA`, pushed
+- You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and called appA
 
 ## What?
 Application Security Groups are a collection of egress (outbound) rules that specify the protocols, ports, and IP ranges where application containers can send traffic. Security groups define rules that *allow* traffic instead of omitting it, which means that the order of evaluation for security groups that apply to the same space, org, or deployment is unimportant. Application containers use these rules to filter and log outbound network traffic.
@@ -147,7 +147,7 @@ In the previous story, we learned what ASGs *are*, but how are they implemented 
 
 ## Assumptions
 - You have a CF deployed
-- You have an app, `appA`, pushed (the fewer apps you have deployed the better)
+- You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and called appA (the fewer apps you have deployed the better)
 - You have the `public_networks` security group bound to all running and staging containers
 
 ## What?
