@@ -111,26 +111,28 @@ The public_network ASG allows egress traffic to access the entire public interne
 
 🤔 **Using Running ASGs**
 Because the wide open `public_networks` security group is bound to all running and staging contains for the entire foundation, your app should be able to connect to any website on the internet. Let's test this.
-1. `cf ssh` onto appA
-1. Run `curl www.neopets.com`. Success!
-1. Unbind the `public_networks` **running** security-group.
+1. Ssh onto appA
+1. Curl www.neopets.com. Success!
+1. Unbind the public_networks **running** security-group.
 1. When you bind/unbind ASGs you will see this helpful tip `TIP: Changes will not apply to existing running applications until they are restarted.` So restart your app!
-1. `cf ssh` onto appA
-1. Run `curl www.neopets.com`.
+1. Ssh onto appA again
+1. Curl www.neopets.com.
 
-What happened? Why did it fail?
+❓ What happened? Why did it fail?
 
 🤔 **Using Staging ASGs**
-1. Unbind the `public_networks` **staging** security-group.
-1. Push a new app, `appB`
+1. Unbind the public_networks **staging** security-group.
+1. Push a new app, and name it appB.
 
-What happened? Why did it fail?
+❓ What happened? Why did it fail?
 
 **Reset your ASGs**
-1. Rebind `public_networks` to both running and staging containers.
+1. Rebind public_networks to both running and staging containers.
 
 ### Expected Result
-When you have `public_networks` bound to all staging and running containers your apps can access the entire internet! When `public_networks` is not bound to running containers then your running apps cannot access the internet. When `public_networks` is not bound to staging containers, then the staging container is not able to access the internet to install `godep` (for go apps) and other staging requirements, so `cf push` will fail. 
+When you have public_networks bound to all staging and running containers your apps can access the entire internet!
+When public_networks is not bound to running containers then your running apps cannot access the internet.
+When public_networks is not bound to staging containers, then the staging container is not able to access the internet to install godep (for go apps) and other staging requirements, so `cf push` will fail.
 
 (If you're working with PCF Dev, you should see three security groups, one of which is named `all_pcfdev` and opens all egress traffic. Because of the `all_pcfdev` security group any other group would be redundant.)
 
