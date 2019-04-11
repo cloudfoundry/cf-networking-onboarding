@@ -352,18 +352,18 @@ TARGETS
 ```
 The man page is extremely helpful! Consult it if you have any questions throughout this story. For this story we are only going to talk about the filter table.
 
-Let's investigate what iptables rules are created for the `public_networks` ASG.
+Let's investigate what iptables rules are created for the public_networks ASG.
 
 ## How?
 
 **Find the iptables rule for the public_networks ASG**
-1. Look at the ASG `public_networks` by running `cf security-group public_networks`. Note the IP ranges that are defined. You might want to save these rules for future reference.
+1. Look at the ASG public_networks by running `cf security-group public_networks`. Note the IP ranges that are defined. You might want to save these rules for future reference.
 1. ssh onto a diego-cell where appA is running and become root.
 1. Run `iptables -S`
 
 Yep. It's a lot. But take a deep breath and take it line by line and it will start to become comprehensible. What you are looking at are iptables rules.
 
-Remember those IP ranges that are in the `public_networks` security group? If you search for one of them (ie. `0.0.0.0-9.255.255.255`) you should be able to find a line that looks something like this:
+Remember those IP ranges that are in the public_networks security group? If you search for one of them (ie. `0.0.0.0-9.255.255.255`) you should be able to find a line that looks something like this:
 
 ```
 -A netout--772fbbd5-862a-4b3d-7 -m iprange --dst-range 0.0.0.0-9.255.255.255 -g netout--772fbbd5-862a-4--log
@@ -403,7 +403,7 @@ Packets stop matching against iptables rules when they reach either ACCEPT (let 
 
 
 ### Expected Result
-You should be able to find the iptables rules for the `public_networks` and be able to follow the flow to either ACCEPT or DROP.
+You should be able to find the iptables rules for the public_networks and be able to follow the flow to either ACCEPT or DROP.
 
 Iptables are hard! Hopefully they have been demystified a little bit.
 Spend some extra time looking at all the iptables rules on a Diego Cell. Research what you don't understand.
@@ -445,8 +445,8 @@ Debug Networking - tcpdump
 
 ## Assumptions
 - You have a CF deployed
-- You have the `public_networks` security group bound to all staging containers
-- You have the `public_networks` security group **UNBOUND** to all running containers
+- You have the public_networks security group bound to all staging containers
+- You have the public_networks security group **UNBOUND** to all running containers
 
 ### What?
 Debug a broken app by using tcpdump on the Diego Cell.
