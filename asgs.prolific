@@ -80,23 +80,36 @@ User Workflow: Application Security Groups
 - You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and named appA
 
 ## What?
-Application Security Groups are a collection of egress (outbound) rules that specify the protocols, ports, and IP ranges where application containers can send traffic. Security groups define rules that *allow* traffic instead of omitting it, which means that the order of evaluation for security groups that apply to the same space, org, or deployment is unimportant. Application containers use these rules to filter and log outbound network traffic.
+Application Security Groups are a collection of egress (outbound) rules that specify the protocols, ports, and IP ranges
+where application containers can send traffic. Security groups define rules that *allow* traffic instead of omitting it, which means
+that the order of evaluation for security groups that apply to the same space, org, or deployment is unimportant.
+Application containers use these rules to filter and log outbound network traffic.
 
-When applications begin staging, they need traffic rules permissive enough to allow them to pull resources from the network. After an application is running, the traffic rules can be more restrictive and secure. To distinguish between these two security requirements, administrators can define different security groups for *staging* containers versus *runtime* containers.
+When applications are staging, they need traffic rules permissive enough to allow them to pull resources from the network.
+After an application is running, the traffic rules can be more restrictive and secure. To distinguish between these two security
+requirements, administrators can define different security groups for *staging* containers versus *runtime* containers.
 
 To provide granular control when securing a deployment, an administrator can also assign security groups to apply across a CF deployment, or to specific spaces or orgs within a deployment.
 
 ### How?
-**Overview**
-1. Look at all the security group CLI commands run `cf help -a | grep security-group`
+
+📝 **Look at the defaults**
+1. Look at all the security group CLI commands. The commands can be confusing; familiarize yourself with all of the commands available.
+ ```
+cf help -a | grep security-group
+ ```
 1. As admin view the list of security groups `cf security-groups`
 
-In most default deployments there will be two ASGs: `public_networks` and `dns` and they will be bound to all orgs and all spaces for both running and staging containers. If this is not the case, use the commands `bind-running-security-group` and `bind-staging-security-group`, so that this is true.
+ In most default OSS deployments there will be two ASGs: `public_networks` and `dns`. These default ASGs are bound (aka applied) to the entire foundation.
 
-1. View the rules for the `public_networks` security group  by using `cf security-group $group_name`
-These represent the entire public internet.
+1. View the rules for the `public_networks` security group.
+ ```
+ cf security-group public_networks
+ ```
 
-**Using Running ASGs**
+The public_network ASG allows egress traffic to access the entire public internet, via every protocol.
+
+🤔 **Using Running ASGs**
 Because the wide open `public_networks` security group is bound to all running and staging contains for the entire foundation, your app should be able to connect to any website on the internet. Let's test this.
 1. `cf ssh` onto appA
 1. Run `curl www.neopets.com`. Success!
@@ -107,7 +120,7 @@ Because the wide open `public_networks` security group is bound to all running a
 
 What happened? Why did it fail?
 
-**Using Staging ASGs**
+🤔 **Using Staging ASGs**
 1. Unbind the `public_networks` **staging** security-group.
 1. Push a new app, `appB`
 
