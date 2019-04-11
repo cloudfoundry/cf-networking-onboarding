@@ -4,9 +4,16 @@ Stale Routes Reenactment
 - You have a CF deployed
 
 ## What
-As was discussed in the http-route track, the GoRouter redirects traffic for a particular CF HTTP route to a Diego Cell IP and a high numbered (ephemeral) port. When one app is deleted or moved, another app may later use the same Diego Cell IP and port. Let's say that appA is at 10.0.1.2:12345, then appA is deleted. Immediately after appA is deleted, appB is pushed and is now at 10.0.1.2:12345, where appA used to be. Then before the NATs messages reach the GoRouter with the updated route information, a client hits the route for appA. Instead of hitting appA, the GoRouter sends the traffic to appB. Yikes! This is an example of misrouting due to "stale" routes. 
+As was discussed in the http-route track, the GoRouter redirects traffic for a particular CF HTTP route to a Diego Cell IP
+and a high numbered (ephemeral) port. When one app is deleted or moved, another app may later use the same Diego Cell IP and port.
+Let's say that appA is at 10.0.1.2:12345, then appA is deleted. Immediately after appA is deleted, appB is pushed and is now at 10.0.1.2:12345,
+where appA used to be. Then before the NATs messages reach the GoRouter with the updated route information, a client hits
+the route for appA. Instead of hitting appA, the GoRouter sends the traffic to appB. Yikes! This is an example of misrouting due to "stale" routes.
 
 Let's set up a situation with stale routes manually and see how dangerous it is. Then in the next story we will look at how Route Integrity fixes this issue.
+
+The Networking Program has had several bugs in the past with stale routes. To duplicate the bugs and test our fixes we came up with this simulation.
+It took a surprisingly long time to come up with this simulation. Enjoy our hard work. :)
 
 ## How
 
@@ -40,7 +47,7 @@ L: route-integrity
 
 Route Integrity Demonstration
 
-## Assumptioms
+## Assumptions
 - You have a CF deployed
 
 ## What
