@@ -1,8 +1,83 @@
-Application Security Groups User Workflows
+East/West What? Directional Networking Terms
+
+## What
+
+Network traffic can go in many directions, and there are many jargony way to refer to them. Let's define them.
+
+**Ingress Traffic** is traffic that originates outside the local network that is transmitted to a station within the network. Remember ingress traffic is coming *in*.
+
+**Egress Traffic** is traffic that originates inside the local network that is transmitted somewhere outside of the local network. Remember ingress traffic is *e*xiting the local network.
+
+```
+ INGRESS TRAFFIC EXAMPLE          EGRESS TRAFFIC EXAMPLE
+
+         +-----+                          +-----+
+         |     |                          |     |
+     +---+     +------+               +---+     +------+
+   +-+                |             +-+                |
+ +-+   The Internet   ++          +-+   The Internet   ++
+ |                   +-+          |                   +-+
+ +-------------------+            +-------------------+
+
+               +                                ^
+               |                                |
+               |                                |
++----------------------+         +----------------------+
+| Container    |       |         | Container    |       |
+|              |       |         |              |       |
+| +-------+    |       |         | +-------+    |       |
+| |       |    |       |         | |       |    |       |
+| | MyApp | <--+       |         | | MyApp | +--+       |
+| |       |            |         | |       |            |
+| +-------+            |         | +-------+            |
++----------------------+         +----------------------+
+
+
+
+
+
+```
+
+**North/South** traffic is any communication between two different networks.  Both Ingress and Egress are an example of North/South traffic.
+
+**East/West** traffic is any communication within one network.
+
+```
+                  EAST/WEST TRAFFIC EXAMPLE
+
++-------------------------------------------------------------+
+| My Local Network                                            |
+|                                                             |
+|                                                             |
+|                                                             |
+| +----------------------+         +----------------------+   |
+| | Container1           |         | Container2           |   |
+| |                      |         |                      |   |
+| | +-------+            |         | +-------+            |   |
+| | |       |            |         | |       |            |   |
+| | | MyApp | +----------------->  | | MyApp |            |   |
+| | |   1   |            |         | |   2   |            |   |
+| | +-------+            |         | +-------+            |   |
+| +----------------------+         +----------------------+   |
+|                                                             |
++-------------------------------------------------------------+
+
+```
+
+## Questions
+
+❓How would you use ingress, egress, north/south, and east/west to describe the following situations:
+- You visit neopets in your browser.
+- Your pair ssh-es onto your computer.
+- You set up a local netcat server and send traffic to it from your terminal.
+
+---
+
+User Workflow: Application Security Groups
 
 ## Assumptions
 - You have a CF deployed
-- You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and called appA
+- You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and named appA
 
 ## What?
 Application Security Groups are a collection of egress (outbound) rules that specify the protocols, ports, and IP ranges where application containers can send traffic. Security groups define rules that *allow* traffic instead of omitting it, which means that the order of evaluation for security groups that apply to the same space, org, or deployment is unimportant. Application containers use these rules to filter and log outbound network traffic.
@@ -147,7 +222,7 @@ In the previous story, we learned what ASGs *are*, but how are they implemented 
 
 ## Assumptions
 - You have a CF deployed
-- You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and called appA (the fewer apps you have deployed the better)
+- You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and named appA (the fewer apps you have deployed the better)
 - You have the `public_networks` security group bound to all running and staging containers
 
 ## What?
