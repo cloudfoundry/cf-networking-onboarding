@@ -1,36 +1,44 @@
-User Flow: HTTP Route
+User Workflow: HTTP Routes
 
 ## Assumptions
 - You have a CF deployed
-- You have two [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) apps pushed, `appA` and `appB`
+- You have two [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) apps pushed, named appA and appB
 
 ## What?
 
 **Routes** are the URLs that can be used to access CF apps.
-**Route Mappings** are the join table between routes (urls) and the apps they send traffic to. It is a many-to-many mapping, so apps can have many routes and routes can have many apps.
+**Route Mappings** are the join table between routes (URLs) and the apps they send traffic to. Apps can have many routes.
+And routes can send traffic to many apps. So Route Mappings is a many-to-many mapping.
 
 ## How?
 
-0. By default `cf push` creates a route. Run `cf apps` and see all of the routes for all of your apps.
-0. Use curl to hit appA. It should respond with something like `{"ListenAddresses":["127.0.0.1","10.255.116.44"],"Port":8080}`
-    We'll get into the listen addresses later, but for now the most important thing to know is that the 10.255.X.X address is the overlay IP address. This IP is unique per app instance.
-0. Create your own route (`cf map-route`) and map it to both appA **AND** appB.
+📝 **Create a route that maps to two apps**
+0. By default `cf push` creates a route. Look at all of the routes for all of your apps.
+ ```
+ cf apps
+ ```
+0. Use curl to hit appA.
+ ```
+ curl APP_A_URL
+ ```
+ It should respond with something like `{"ListenAddresses":["127.0.0.1","10.255.116.44"],"Port":8080}`
+ We'll get into the listen addresses later, but for now the most important thing to know is that the 10.255.X.X address is the overlay IP address. This IP is unique per app instance.
+0. Create your own route (`cf map-route --help`) and map it to both appA **AND** appB.
 0. Curl your new route over and over again `watch "curl MY-NEW-ROUTE`".
 
 ### Expected Result
 You have a route that maps to both appA and appB. See that the overlay IP changes, showing that you are routed evenly(ish) between all the apps mapped to the routes.
 
-
 L: http-routes
 ---
 
-Route Propagation - Part 0 - Overview
+Route Propagation - Part 0.1 - Creating a Route Overview
 
 ## What
-In the previous story you used the CF CLI to create and map routes. But what happens under the hood to make all of this work?
-There are two main user flows for routes, (1) when an app dev creates a new route and (2) when an internet user connects to an app using the route.
+In the previous story you used the CF CLI to create and map routes. But what happens under the hood to make all of this work? (hint: iptables is involved)
+There are two main data flows for routes, (1) when an app dev creates a new route and (2) when an internet user connects to an app using the route.
 
-Here is what happens under the hood for both of these user flows:
+Let's focus on the first case. Here is what happens under the hood:
 
 **When an app dev creates a new route**
 1. The app dev pushes an app with a route to CAPI.
@@ -40,7 +48,56 @@ Here is what happens under the hood for both of these user flows:
 1. The Route Emitter combines the information from CAPI about routes and the information from Diego about where apps are being run, and sends that via NATS to the GoRouter.
 1. The GoRouter keeps a mapping of routes -> ip:ports in a routes table, which is consulted when someone curls your app.
 
-**When an internet user  sends traffic to your app**
+## How
+The following stories will look at how many components (CAPI, Diego BBS, Route Emitter, Nats, GoRouter, DNAT Rules, Envoy) work together to make routes work.
+
+0. 🤔 Step through steps above and follow along on [this diagram](https://realtimeboard.com/app/board/o9J_kyWPVPM=/)
+
+### Expected Result
+You can talk about route propagation at a high level with fellow CF engineers.
+
+## Logistics
+In the next few stories, you are going to need to remember values from one story to another, there will be a space provided at the bottom of each story for your to record these values so you can store them.
+
+## Resources for the entire route propagation track
+**Capi**
+[CAPI API docs](https://apidocs.cloudfoundry.org/7.8.0/)
+
+**Diego**
+[cfdot docs](https://github.com/cloudfoundry/cfdot)
+[diego design notes](https://github.com/cloudfoundry/diego-design-notes#what-are-all-these-repos-and-what-do-they-do)
+
+**NATs**
+[NATS message bus repo](https://github.com/nats-io/gnatsd)
+[NATS ruby gem repo](https://github.com/nats-io/ruby-nats)
+
+**GoRouter**
+[GoRouter routing table docs](https://github.com/cloudfoundry/gorouter#the-routing-table)
+[Detailed Diagram of several Route Related User Flows](https://realtimeboard.com/app/board/o9J_kyWPVPM=/)
+
+**Iptables**
+[iptables man page](http://ipset.netfilter.org/iptables.man.html)
+[Aidan's iptables in CF ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
+
+**Route Integrity**
+[Route Integrity/Misrouting Docs](https://docs.cloudfoundry.org/concepts/http-routing.html#-preventing-misrouting)
+
+**Envoy**
+[What is Envoy?](https://www.envoyproxy.io/docs/envoy/latest/intro/what_is_envoy)
+
+
+L: http-routes
+---
+
+Route Propagation - Part 0.2 - HTTP Traffic Overview
+
+## What
+In the previous story you went over the first of two main data flows for routes:
+(1) when an app dev creates a new route and (2) when an internet user connects to an app using the route.
+
+Here is what happens under the hood for the second case:
+
+**When an internet user sends traffic to your app**
 1. The user visits your route in the browser or curls it via the command line.
 1. The traffic first hits a load balancer in front of the CF Foundation (we won't be going further into this step in this track).
 1. The load balancer sends it to one of the GoRouters (we won't be going further into this step in this track).
@@ -51,10 +108,10 @@ Here is what happens under the hood for both of these user flows:
 ## How
 The following stories will look at how many components (CAPI, Diego BBS, Route Emitter, Nats, GoRouter, DNAT Rules, Envoy) work together to make routes work.
 
-0. Step through both of the user flows above and follow along on [this diagram](https://realtimeboard.com/app/board/o9J_kyWPVPM=/)
+0. 🤔 Step through steps above and follow along on [this diagram](https://realtimeboard.com/app/board/o9J_kyWPVPM=/)
 
 ### Expected Result
-You can talk about routes at a high level with fellow CF engineers.
+You can talk about HTTP network traffic flow with fellow CF engineers.
 
 ## Logistics
 In the next few stories, you are going to need to remember values from one story to another, there will be a space provided at the bottom of each story for your to record these values so you can store them.
@@ -97,25 +154,31 @@ L: http-routes
 - I recommend deleting all other apps
 
 ## What
-The Cloud Controller API (CAPI) maintains the database of all apps, domains, routes, and route mappings. However CAPI does not keep track of *where* those apps are deployed and what IPs and ports each route should, well, *route* to. That's the job of the router, often called GoRouter. 
+The Cloud Controller API (CAPI) maintains the database of all apps, domains, routes, and route mappings.
+However CAPI does not keep track of *where* those apps are deployed. Nor does CAPI track the IPs and ports each
+route should, well, *route* to. That's the job of the router, often called GoRouter.
 
-Let's look at what information CAPI does keep track of.
+CAPI keeps track of the desired state. The user desires there to be a route called MY_ROUTE that sends traffic to appA.
+But the user doesn't (shouldn't) care about the logistics needed to make that route happen. That is the responsibility of other components.
+
+Let's look at what information CAPI *does* keep track of.
 
 ## How
-0. Map a route to appA. Let's call this route APP_A_URL. I recommend deleting all other routes.
 
-0. Look at the domains, routes, route mappings, and apps in CAPI's database.
+0. 🤔 Map a route to appA. Let's call this route APP_A_ROUTE. I recommend deleting all other routes.
+
+0. 🤔 Look at the domains, routes, route mappings, and apps in CAPI's database.
     To look at all the domains you can curl CAPI using `cf curl /v2/domains`. Use the [CAPI docs](https://apidocs.cloudfoundry.org/7.8.0/) to figure out the APIs for the other resources.
 
 This is all of the information that CAPI contains about routes. Note there are no IPs anywhere. Note that all of these routes are for CF apps, none of them are for CF components.
 
 ### Expected Result
-You can view data from CAPI about the route APP_A_URL that you created.
+You can view data from CAPI about the route APP_A_ROUTE that you created.
 
 ## Recorded Values
 Record the following values that you generated or discovered during this story.
 ```
-APP_A_URL=<value>
+APP_A_ROUTE=<value>
 ```
 
 ## Resources
@@ -130,14 +193,14 @@ Route Propagation - Part 2 - Diego BBS
 ## Assumptions
 - You have a OSS CF deployed
 - You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and called appA
-- You have one route mapped to appA called APP_A_URL
+- You have one route mapped to appA called APP_A_ROUTE
 - You have completed the previous stories in this track
 
 ## What
 
 **Diego** is an umbrella term for many components that work together to make CF container orchestration happen. These components are maintained by the Diego team.
 
-**BBS** is the database that the Diego components use to keep track of DesiredLRPs and ActualLRPs.
+**BBS** is the name of the database that the Diego components use to keep track of DesiredLRPs and ActualLRPs.
 
 **LRPs**, or Long Running Processes, represent work that a client (ie CAPI) wants Diego to keep running indefinitely. Apps are the primary example of LRPs. Diego will try to
 keep them running as best it can. When an app stops or fails, it will attempt to restart it and keep it running.
@@ -151,9 +214,16 @@ For this story, let's look at the data stored in the BBS and see what informatio
 
 ## How
 
-0. Grab the guid for appA. You'll need it in a moment. `cf app appA --guid`. Let's call it APP_A_GUID.
+📝 **Look at actualLRPS**
+0. Grab the guid for appA. You'll need it in a moment. Let's call it APP_A_GUID.
+ ```
+ cf app appA --guid
+ ```
 0. Ssh onto the Diego Cell vm where appA is running and become root.
-0. Use the cfdot CLI to query BBS for actualLRPs  `cfdot actual-lrps | jq .`
+0. Use the cfdot CLI to query BBS for actualLRPs
+ ```
+ cfdot actual-lrps | jq .
+ ```
 0. Search through the actual LRPs for APP_A_GUID. It should match the beginning of a process guid. You'll find an entry for each instance of appA that is running.
 0. Let's dissect and store the most important information (for us) about appA:
    ```
@@ -181,7 +251,11 @@ For this story, let's look at the data stored in the BBS and see what informatio
       ...
    }
    ```
-0. Use the cfdot CLI to query BBS for desriedLRPs. What information is provided for desiredLRPs, but not for actualLRPs? What information is provided for actualLRPs, but not for desiredLRPs? How does this match with the definition of desired and actual LRPs in the "what" section above?
+0. Use the cfdot CLI to query BBS for desriedLRPs.
+
+❓What information is provided for desiredLRPs, but not for actualLRPs?
+❓What information is provided for actualLRPs, but not for desiredLRPs?
+❓How does this match with the definition of desired and actual LRPs in the "what" section above?
 
 ### Expected Result
 Get information from BBS about the desiredLRP and actualLRP for appA. Use cfdot CLI to discover the following values and record them.
@@ -211,12 +285,12 @@ Route Propagation - Part 3 - Route Emitter and NATS
 ## Assumptions
 - You have a OSS CF deployed
 - You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and called appA
-- You have one route mapped to appA called APP_A_URL
+- You have one route mapped to appA called APP_A_ROUTE
 - You have completed the previous stories in this track
 
 ## Recorded values from previous stories
 ```
-APP_A_URL=<value>
+APP_A_ROUTE=<value>
 APP_A_GUID=<value>
 DIEGO_CELL_IP=<value>
 CONTAINER_APP_PORT=<value>
@@ -228,11 +302,18 @@ OVERLAY_IP=<value>
 
 ## What
 
-There is one Route Emitter per Diego Cell and its job is to... emit routes. According to the ever helpful [Diego Design Notes](https://github.com/cloudfoundry/diego-design-notes) the Route Emitter "monitors DesiredLRP state and ActualLRP state via the BBS. When a change is detected, the Route Emitter emits route registration and unregistration messages to the GoRouter via the NATS message bus." Even when no change is detected, the Route Emitter will periodically emit the entire routing table as a kind of heartbeat.
+There is one Route Emitter per Diego Cell and its job is to... emit routes. According to the ever helpful
+[Diego Design Notes](https://github.com/cloudfoundry/diego-design-notes) the Route Emitter "monitors DesiredLRP state
+and ActualLRP state via the BBS. When a change is detected, the Route Emitter emits route registration and unregistration
+messages to the GoRouter via the NATS message bus." Even when no change is detected, the Route Emitter will periodically
+emit the entire routing table as a kind of heartbeat.
 
-For this story, let's look at the messages that the Route Emitter is publishing via NATS.
+For this story, let's look at the messages that the Route Emitter is publishing via NATS. Subscribing to these NATs messages
+can be a helpful debugging technique when something
 
 ## How
+
+📝 **subscribe to NATs messages**
 0. Bosh ssh onto the Diego Cell where your app is running and become root
 0. Download ruby and the NATS gem
     ```
@@ -246,7 +327,7 @@ For this story, let's look at the messages that the Route Emitter is publishing 
     ```
 0. Use the nats gem to connect to nats: `nats-sub "*.*" -s nats://NATS_USERNAME:NATS_PASSWORD@NATS_ADDRESS`. The `"*.*"` means that you are subscribing to all nats messages.
     The Route Emitter registers routes every 20 seconds (by default) so that the GoRouter (which subscribes to these messages) has the most up-to-date information about which IPs map to which apps and routes.
-    If you wait, you should see a message that contains information about the route you created that looks something like this and contains APP_A_URL:
+    If you wait, you should see a message that contains information about the route you created. It will look something like this and contain APP_A_ROUTE:
     ```
    [#32] Received on [router.register] :
 {
@@ -254,7 +335,7 @@ For this story, let's look at the messages that the Route Emitter is publishing 
     "port": 61012,
     "tls_port": 61014,
     "uris": [
-        "proxy.meow.cloche.c2c.cf-app.com"     <--- This should match APP_A_URL
+        "proxy.meow.cloche.c2c.cf-app.com"     <--- This should match APP_A_ROUTE
       ],
     "app": "6856799f-aebf-4e2b-81a5-28c74dfb6162",
      "private_instance_id": "a0d2b217-fa7d-4ac1-65a2-7b19",
@@ -266,7 +347,8 @@ For this story, let's look at the messages that the Route Emitter is publishing 
 }
    ```
 
-0. Do the values in the NATS message match the values you recorded previously from BBS? Which ones are present? Which ones aren't there? How does it compare to the information in CAPI?
+❓Do the values in the NATS message match the values you recorded previously from BBS? Which ones are present? Which ones aren't there?
+❓How does it compare to the information in CAPI?
 
 
 ### Expected Result
@@ -279,18 +361,17 @@ Inspect NATs messages. Look at what route information is sent to the GoRouter.
 L: http-routes
 ---
 
-
 Route Propagation - Part 4 - GoRouter
 
 ## Assumptions
 - You have a OSS CF deployed
 - You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and called appA
-- You have one route mapped to appA called APP_A_URL
+- You have one route mapped to appA called APP_A_ROUTE
 - You have completed the previous stories in this track
 
 ## Recorded values from previous stories
 ```
-APP_A_URL=<value>
+APP_A_ROUTE=<value>
 APP_A_GUID=<value>
 DIEGO_CELL_IP=<value>
 CONTAINER_APP_PORT=<value>
@@ -305,21 +386,36 @@ So the Route Emitter emits routes via the NATS message Bus. GoRouter subscribes 
 
 Let's take a look at that route table.
 ## How
+
+📝 **look at route table**
 0. Bosh ssh onto the router vm and become root.
-0. Install jq `apt-get install jq`
-0. Get the username and password for the routing api `head /var/vcap/jobs/gorouter/config/gorouter.yml`
-0. Get the routes table ` curl "http://USERNAME:PASSWORD@localhost:8080/routes" | jq . `
-0. Scroll through and look at the routes. How does this differ from the route information you saw in CAPI? For example, you should see routes for CF components, like UAA and doppler, this because the GoRouter is in charge of routing both ingress traffic to CF apps *AND* traffic between CF components. 
-0. Find APP_A_URL in the list of routes. Let's dissect the most important about it.
+0. Install jq
+ ```
+ apt-get install jq
+ ```
+0. Get the username and password for the routing api
+ ```
+ head /var/vcap/jobs/gorouter/config/gorouter.yml
+ ```
+0. Get the routes table
+ ```
+ curl "http://USERNAME:PASSWORD@localhost:8080/routes" | jq .
+ ```
+0. Scroll through and look at the routes.
+   How does this differ from the route information you saw in CAPI? For example, you should see routes for CF components, like UAA and doppler.
+   This because the GoRouter is in charge of routing traffic to CF apps *AND* to CF components.
+0. Find APP_A_ROUTE in the list of routes. Let's dissect the most important bits.
     ```
-    "proxy.meow.cloche.c2c.cf-app.com": [   <------ The name of the route! This should match APP_A_URL
+    "proxy.meow.cloche.c2c.cf-app.com": [   <------ The name of the route! This should match APP_A_ROUTE
         {
           "address": "10.0.1.12:61014",     <------ This is where GoRouter will send traffic for this route. This should match DIEGO_CELL_IP:DIEGO_CELL_ENVOY_PORT
           "tls": true                       <------ This means Route Integrity is turned on, so the GoRouter will use send traffic to this app over TLS
         }
       ]
     ```
-    See how the traffic is being sent to `10.0.1.12:61014` or DIEGO_CELL_IP:DIEGO_CELL_ENVOY_PORT? This means all traffic is being sent to the sidecar envoy via TLS, this is because route integrity is enabled. What port do you think would be listed here if route integrity was not enabled? 
+    See how the traffic is being sent to `10.0.1.12:61014` or DIEGO_CELL_IP:DIEGO_CELL_ENVOY_PORT?
+    This means all traffic is being sent to the sidecar envoy via TLS, this is because route integrity is enabled.
+    What port do you think would be listed here if route integrity was not enabled?
 
 But if the GoRouter sends traffic for this route to DIEGO_CELL_IP:DIEGO_CELL_ENVOY_PORT how does it actually reach the app? Hmmm.....
 
@@ -338,12 +434,12 @@ Route Propagation - Part 5 - DNAT Rules
 ## Assumptions
 - You have a OSS CF deployed
 - You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and called appA
-- You have one route mapped to appA called APP_A_URL
+- You have one route mapped to appA called APP_A_ROUTE
 - You have completed the previous stories in this track
 
 ## Recorded values from previous stories
 ```
-APP_A_URL=<value>
+APP_A_ROUTE=<value>
 APP_A_GUID=<value>
 DIEGO_CELL_IP=<value>
 CONTAINER_APP_PORT=<value>
@@ -354,7 +450,7 @@ OVERLAY_IP=<value>
 ```
 
 ## What
-In the previous story we saw that the GoRouter sent traffic for APP_A_URL to DIEGO_CELL_IP:DIEGO_CELL_ENVOY_PORT. But that isn't actually where our app is running. So how does the network traffic hit the app? With the help of iptables rules of course! Everything always comes back to iptables rules. 
+In the previous story we saw that the GoRouter sent traffic for APP_A_ROUTE to DIEGO_CELL_IP:DIEGO_CELL_ENVOY_PORT. But that isn't actually where our app is running. So how does the network traffic hit the app? With the help of iptables rules of course! Everything always comes back to iptables rules. 
 
 Nothing is actually listening on the Diego Cell at port DIEGO_CELL_ENVOY_PORT. Instead, all packets that are sent there hit iptables rules that then redirect them to... somewhere. Let's find out!
 
@@ -409,12 +505,12 @@ Route Propagation - Part 6 - Route Integrity and Envoy
 ## Assumptions
 - You have a OSS CF deployed
 - You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and called appA
-- You have one route mapped to appA called APP_A_URL
+- You have one route mapped to appA called APP_A_ROUTE
 - You have completed the previous stories in this track
 
 ## Recorded values from previous stories
 ```
-APP_A_URL=<value>
+APP_A_ROUTE=<value>
 APP_A_GUID=<value>
 DIEGO_CELL_IP=<value>
 CONTAINER_APP_PORT=<value>
