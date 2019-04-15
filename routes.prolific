@@ -389,7 +389,7 @@ Let's take a look at that route table.
 
 📝 **look at route table**
 0. Bosh ssh onto the router vm and become root.
-0. Install jq
+0. Install jq (a json manipulation and display tool)
  ```
  apt-get install jq
  ```
@@ -402,7 +402,8 @@ Let's take a look at that route table.
  curl "http://USERNAME:PASSWORD@localhost:8080/routes" | jq .
  ```
 0. Scroll through and look at the routes.
-   How does this differ from the route information you saw in CAPI? For example, you should see routes for CF components, like UAA and doppler.
+  ❓How does this differ from the route information you saw in CAPI?
+   For example, you should see routes for CF components, like UAA and doppler.
    This because the GoRouter is in charge of routing traffic to CF apps *AND* to CF components.
 0. Find APP_A_ROUTE in the list of routes. Let's dissect the most important bits.
     ```
@@ -415,16 +416,67 @@ Let's take a look at that route table.
     ```
     See how the traffic is being sent to `10.0.1.12:61014` or DIEGO_CELL_IP:DIEGO_CELL_ENVOY_PORT?
     This means all traffic is being sent to the sidecar envoy via TLS, this is because route integrity is enabled.
-    What port do you think would be listed here if route integrity was not enabled?
-
-But if the GoRouter sends traffic for this route to DIEGO_CELL_IP:DIEGO_CELL_ENVOY_PORT how does it actually reach the app? Hmmm.....
+    ❓What port do you think would be listed here if route integrity was not enabled?
 
 ### Expected Result
 Access the route table on the router vm. Inspect app routes and CF component routes.
 
+See that the GoRouter sends traffic for this route to DIEGO_CELL_IP:DIEGO_CELL_ENVOY_PORT.
+In the next story we will see what what is listening on that port on the cell.
+
 ## Resources
 
 [GoRouter routing table docs](https://github.com/cloudfoundry/gorouter#the-routing-table)
+
+L: http-routes
+---
+
+Route Propagation - Part 5.5 - see what's listening with netstat
+
+## Assumptions
+- You have a OSS CF deployed
+- You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and called appA
+- You have one route mapped to appA called APP_A_ROUTE
+- You have completed the previous stories in this track
+
+## Recorded values from previous stories
+```
+APP_A_ROUTE=<value>
+APP_A_GUID=<value>
+DIEGO_CELL_IP=<value>
+CONTAINER_APP_PORT=<value>
+DIEGO_CELL_APP_PORT=<value>
+CONTAINER_ENVOY_PORT=<value>
+DIEGO_CELL_ENVOY_PORT=<value>
+OVERLAY_IP=<value>
+```
+
+## What
+Netstat is tool that can show information about network connections, routing tables, and network interface statistics.
+In the previous story we saw that the GoRouter sent traffic for APP_A_ROUTE to DIEGO_CELL_IP:DIEGO_CELL_ENVOY_PORT.
+Let's use netstat to see what is listening at on the Diego Cell and specifically at DIEGO_CELL_IP:DIEGO_CELL_ENVOY_PORT.
+
+## How
+📝 **look at open ports on a Diego Cell**
+1. Ssh onto the Diego Cell where appA is deployed and become root.
+1. Use netstat to look at open ports
+ ```
+ netstat -tulp
+ # -t  <---- show tcp sockets
+ # -u  <---- show udp sockets
+ # -l  <---- display listening sockets
+ # -p  <---- display PID/program name for sockets
+ ```
+  You should recognize the program names in the far right column. Most of them are the long running cf component processes.
+
+1. Find the local address for the Route Emitter. What port is it running on? Does that match what is in the [spec file](https://github.com/cloudfoundry/diego-release/blob/develop/jobs/route_emitter/spec)?
+
+1. Search for DIEGO_CELL_ENVOY_PORT in the output. Can you find it?
+
+### Expected Result
+You won't see the DIEGO_CELL_ENVOY_PORT anywhere in the netstat output because nothing is *actually* running there.
+But if there's nothing running there, how does the traffic reach the app? Would you believe that iptables are involved?
+Check out the next story to learn more :)
 
 L: http-routes
 ---
@@ -450,16 +502,22 @@ OVERLAY_IP=<value>
 ```
 
 ## What
-In the previous story we saw that the GoRouter sent traffic for APP_A_ROUTE to DIEGO_CELL_IP:DIEGO_CELL_ENVOY_PORT. But that isn't actually where our app is running. So how does the network traffic hit the app? With the help of iptables rules of course! Everything always comes back to iptables rules. 
+In a previous story you saw that the GoRouter sent traffic for APP_A_ROUTE to DIEGO_CELL_IP:DIEGO_CELL_ENVOY_PORT.
+But in the previous story, you saw nothing was actually listening at that port on the Diego Cell. So how does the network traffic hit the app?
+With the help of iptables rules of course! Everything always comes back to iptables rules.
 
 Nothing is actually listening on the Diego Cell at port DIEGO_CELL_ENVOY_PORT. Instead, all packets that are sent there hit iptables rules that then redirect them to... somewhere. Let's find out!
 
-Instead of brute force looking for iptables rules, let's reason about what chain and table most likely contain these iptables rules that translate the network traffic sent from GoRouter and take a peek at them.
+Let's not brute force looking through every iptables rule. Instead, let's reason about what chain and table most likely contain these iptables rules.
+Hint, these rules translate ingress network traffic sent from GoRouter.
 
 ## How
-Aidan Obley made a great diagram showing the different types of  traffic in CF and which iptables chains they hit in what order. We are currently concerned with ingress traffic, which is represented by the orange line.
 
-0. Look at the diagram and decide which chain the ingress traffic hits first.
+🤔 **Find those iptables rules**
+Aidan Obley made a great diagram showing the different types of traffic in CF and which iptables chains they hit in what order.
+We are currently concerned with ingress traffic, which is represented by the orange line.
+
+0. Look at the diagram. Which chain does the ingress traffic hit first?
     ![traffic-flow-through-iptables-on-cf-diagram](https://storage.googleapis.com/cf-networking-onboarding-images/traffic-flow-through-iptables-on-cf.png)
 
 0. Based on the previous diagram, the ingress traffic hits the prerouting chain first. Look at the diagram below and do some research to learn more about the raw, conn_tracking, mangle, and nat tables.
@@ -468,7 +526,7 @@ Aidan Obley made a great diagram showing the different types of  traffic in CF a
 
     NAT stands for Network Address Translation. That sounds like what we want.  So let's look at iptables rules for the nat table on the prerouting chain.
 
-0. Ssh onto the Diego Cell where your app is running and become root
+0. Ssh onto the Diego Cell where your app is running and become root.
 0. Run `iptables -S -t nat`
     You should see some custom chains attached to the PREROUTING chain. There will be one custom chain per app running on this Diego Cell.  They will look something like this.
     ```
@@ -485,10 +543,12 @@ Aidan Obley made a great diagram showing the different types of  traffic in CF a
     -A netin--a0d2b217-fa7d-4ac1-65 -d 10.0.1.12/32 -p tcp -m tcp --dport 61015 -j DNAT --to-destination 10.255.116.6:61002
     ```
 
-0. For appA, find the rule that will match with the traffic the  GoRouter sends to DIEGO_CELL_IP:DIEGO_CELL_ENVOY_PORT. It should look something like this...
+0. For appA, find the rule that will match with the traffic the GoRouter sends to DIEGO_CELL_IP:DIEGO_CELL_ENVOY_PORT. It should look something like this...
     ![example DNAT rule with explanation](https://storage.googleapis.com/cf-networking-onboarding-images/example-DNAT-rule-with-explanation.png)
 
-    In summary, when the GoRouter sends network traffic to 10.0.1.12:61014 (DIEGO_CELL_IP:DIEGO_CELL_ENVOY_PORT) it gets redirected to 10.255.116.6:61001 (OVERLAY_IP:CONTAINER_ENVOY_PORT). But, looking at the information we learned about the actual LRP, the app isn't even listening on 10.255.116.6:61001, envoy is. When will the traffic finally reach the app!?!?
+    In summary, when the GoRouter sends network traffic to 10.0.1.12:61014 (DIEGO_CELL_IP:DIEGO_CELL_ENVOY_PORT) it gets redirected to 10.255.116.6:61001 (OVERLAY_IP:CONTAINER_ENVOY_PORT).
+    But, looking at the information we learned about the actual LRP, the app isn't even listening on 10.255.116.6:61001, envoy is.
+    When will the traffic finally reach the app!?!?
 
 ### Expected Result
 Inspect the iptables rules that DNAT the traffic from the GoRouter and send it to the correct sidecar envoy.
@@ -530,8 +590,8 @@ The Envoy sidecar is what actually terminates the TLS traffic from the GoRouter 
 Let's look at how the Envoy sidecar is configured to see how it proxies the traffic to the app.
 ## How
 
-**Envoy**
-0. ssh onto AppA
+📝 **Look at envoy config**
+0. Ssh onto AppA
 0. Hit the Envoy admin endpoint `curl localhost:61003/admin`
     These are all of the endpoints you can hit. Try `/clusters` what do you see?
 0. Run `curl localhost:61003/config_dump`. This gives you all of the information about how the Envoy is configured.
