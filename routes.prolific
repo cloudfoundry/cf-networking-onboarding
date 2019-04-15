@@ -431,7 +431,7 @@ In the next story we will see what what is listening on that port on the cell.
 L: http-routes
 ---
 
-Route Propagation - Part 5.5 - see what's listening with netstat
+Route Propagation - Part 4.5 - see what's listening with netstat
 
 ## Assumptions
 - You have a OSS CF deployed
