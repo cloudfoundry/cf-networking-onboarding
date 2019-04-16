@@ -34,7 +34,7 @@ Networking Onboarding Week is a self-paced, guided exploration of the Cloud Foun
 ### How?
 1. Take your time.
 1. Be conscious of your pair's progress. Check in frequently to make sure you're both getting the most out of the material.
-1. Read every story completely. You'll feel very silly if you struggle for hours with a problem that turns out to have been addressed in plain English...in a story you didn't read.
+1. Read each story completely. You'll feel very silly if you struggle for hours with a problem that turns out to have been addressed in plain English....in a part of the story that you skipped.
 1. If something in a story is missing / is wrong / could be improved, create an issue or a PR in the **[networking onboarding repo](https://github.com/pivotal/cf-networking-program-onboarding)**.
 1. Seriously, take your time. How often are you paid just to learn?
 
@@ -64,7 +64,14 @@ How to Read Onboarding Stories
 L: introduction
 
 ---
+Set Up Your Environment
 
+## How
+1. Grab a OSS dev environment from your team that is relatively up-to-date. You will be using this environment for the whole week.
+1. Create and target an org and space where you will be doing all of your work. You have have the script `cf_seed` in your workstation to do this for you.
+
+L: introduction
+---
 Meet Proxy!
 
 ## Assumption
@@ -75,7 +82,7 @@ Meet Proxy!
 
 In these onboarding stories you will be using the proxy app a lot. Basically every story, so let's get familiar with it. Proxy is little golang app that is surprisingly powerful. In this story we are going to test out some of its functions.
 
-Often with c2c networking stories, you need an app to make a request to another app. Or you want to time how long DNS resolution is taking. You could do this with `cf ssh` and then running `curl` or `dig` (and we will in later stories!), but the proxy app was created so we didn't have to do that. It has different endpoints that will ...proxy... traffic to a given destination and that will do DNS resolution of a URL you give it, among other things.
+Often with container to container (c2c) networking stories, you need an app to make a request to another app. Or you want to time how long DNS resolution (turning a URL into an IP address) is taking. You could do this with `cf ssh` and then running `curl` or `dig` (and we will in later stories!), but the proxy app was created so we didn't have to do that. It has different endpoints that will ...proxy... traffic to a given destination and that will do DNS resolution of a URL you give it, among other things.
 Using proxy gives a better mirror how users use our product.
 
 Let's check out proxy's power.
@@ -92,9 +99,9 @@ git clone https://github.com/cloudfoundry/cf-networking-release
    ```
 cd ~/workspace/cf-networking-release/src/example-apps/proxy
    ```
-1. Push the app
+1. Push the app and name it appA
  ```
-cf push proxy
+cf push appA
  ```
 
 🤔 **Use the proxy app**
