@@ -244,12 +244,345 @@ https://github.com/cloudfoundry/cf-networking-release/blob/develop/docs/app-sd.m
 L: c2c
 
 ---
-
 Overlay vs Underlay
+
+## Assumptions
+- None :)
+
+## What
+
+Let's define some terms.
+
+## How
+
+An ** Underlay Network** is the physical networking infrastructure. It is the underlying network responsible for delivery of packets across networks.
+
+An **Overlay Network** is a virtual network that is built on top of an Underlay Network. Routing for Overlay Networks is done at the software layer (in CF we use iptables rules). Overlay Networks are used to create layers of network abstraction that can be used to run multiple separate, discrete virtualized network layers on top of the physical network. These are general definitions that are not specific to Cloud Foundry.
+
+Routing to an app using the Diego Cell IP and port is done on the **underlay network**. Container to Container networking (c2c) is done on the **overlay network**.
+
+## Resources
+- [Difference between overlay and underlay](https://ipwithease.com/difference-between-underlay-network-and-overlay-network/)
+
+L: c2c
+---
+Container to Container Networking - Part 0 - Dataflow Overview
+
+## Assumptions
+- None :)
+
+## What
+In the last story you learned the difference between underlay networks (physical) and overlay networks (software).
+
+Let's see how both the overlay and underlay networks are used when one app talks to another using container to container networking (c2c).
+
+Each step marked with a ✨ will be explained in more detail in its own story.
+
+## How
+Follow the steps below on the diagram.
+
+![c2c traffic flow](https://storage.googleapis.com/cf-networking-onboarding-images/overlay-underlay-silk-network.png)
+
+1. AppB makes a request to AppA's overlay IP address. This packet is called the overlay packet (aka the c2c packet).
+1. ✨ The packet exits the app container through the veth interface (we'll cover what this is in a story).
+1. ✨ The overlay packet is marked with a ...mark... that is unique to the source app.
+1. ✨ Because the packet is an overlay packet, it is sent to the silk-vtep interface on the Diego Cell. This interface is a VXLAN interface.
+1. ✨ The overlay packet is encapsulated inside of an underlay packet. This underlay packet is addressed to underlay IP of the Diego Cell where the destination app is located (appA in this case).
+1. The underlay packet exits the cell.
+1. The packet then travels over the physical underlay network to the correct Diego Cell.
+1. The packet arrives to the correct Diego Cell
+1. The underlay packet is decapsulated. Now it's just the overlay packet again.
+1. ✨ Iptables rules check that appA is allowed to talk to appB based on the mark on the overlay packet.
+1. If traffic is allowed, the overlay network directs the traffic to the correct place.
+Yay!
+
+### Expected Result
+
+You should have a basic overview of the data path for container to container networking...even if you don't understand it all yet.
+The next few stories will go through and explain each of the steps marked with a ✨.
+
+## Resources
+- [Difference between overlay and underlay](https://ipwithease.com/difference-between-underlay-network-and-overlay-network/)
+
 L: c2c
 ---
 
-A closer look at c2c policies - iptables and marks
+Container to Container Networking - Part 1.1 - Network Namespaces
+
+## Assumptions
+- You have an OS CF deployed
+- You have done the other stories in this track
+
+## Review
+This track of stories is going to go through the steps (listed below) that were covered in the dataflow overview.
+The steps and diagram will be at the top of each story in case you need to orient yourself.
+
+![c2c traffic flow](https://storage.googleapis.com/cf-networking-onboarding-images/overlay-underlay-silk-network.png)
+
+1. AppB makes a request to AppA's overlay IP address. This packet is called the overlay packet (aka the c2c packet).
+1. **The packet exits the app container through the veth interface. <------- CURRENT STORY**
+1. The overlay packet is marked with a ...mark... that is unique to the source app.
+1. Because the packet is an overlay packet, it is sent to the silk-vtep interface on the Diego Cell. This interface is a VXLAN interface.
+1. The overlay packet is encapsulated inside of an underlay packet. This underlay packet is addressed to underlay IP of the Diego Cell where the destination app is located (appA in this case).
+1. The underlay packet exits the cell.
+1. The packet then travels over the physical underlay network to the correct Diego Cell.
+1. The packet arrives to the correct Diego Cell
+1. The underlay packet is decapsulated. Now it's just the overlay packet again.
+1.  Iptables rules check that appA is allowed to talk to appB based on the mark on the overlay packet.
+1. If traffic is allowed, the overlay network directs the traffic to the correct place.
+Yay!
+
+
+## What
+
+Each CF app runs in a container, but what *is* a container? A container is a collection of **namespaces** and **cgroups**.
+
+**Namespaces** "partition kernel resources such that one set of processes sees one set of resources while another set of processes sees a different set of resources" (thanks [wiki](https://en.wikipedia.org/wiki/Linux_namespaces)). There are different types of namespaces. For example, the mount namespace lets different groups of processes see different file trees. Another example (most related to this onboarding) is the network namespace. The network namespace isolates network interfaces (we'll get into what those are in the next story).
+
+**Cgroups** (pronounced cee-groups) are resource limits. Cgroups let you say: "this container can only use 1G of memory".
+
+Most important in this onboarding context is the networking namespace. Container networking components are responsible for setting up the networking namespace for each app. In this story let's play around with network namespaces.
+
+## How
+
+1. Read Julia Evan's post: [What even is a container](https://jvns.ca/blog/2016/10/10/what-even-is-a-container/)
+
+📝 **Make your own network namespace**
+
+1. Ssh onto a Diego Cell and become root.
+1. Create your own network namespace called meow!
+ ```
+ip netns add meow
+```
+1. List all of the networking namespaces
+ ```
+ip netns
+ ```
+ You should only see meow. Hmmm. You might think you would see the other networking namespaces for all the apps on this cell. (I certainly thought so when I first tried this.) You'll see how to view an app's networking namespace one day, I promise.
+
+1. Curl google.com from the Diego Cell. See that it works! This is because Application Security Groups (ASGs, remember those?!) allow it.
+
+1. Curl google.com from inside of your networking namespace
+ ```
+ip netns exec meow curl google.com
+ ```
+
+What? It doesn't work!? You should see `curl: (6) Could not resolve host: google.com`. Try another URL. They will all fail.
+
+### Expected Outcome
+The meow networking namespace can't send any traffic out of the container. By default, network namespaces are completely isolated and have no network interfaces.
+In the next story we'll explore network interfaces and why we need them so our network namespace can curl google.com.
+
+## Resources
+[iptables netns man page](http://man7.org/linux/man-pages/man8/ip-netns.8.html)
+[linux network namespaces/veth/route table blog](https://devinpractice.com/2016/09/29/linux-network-namespace/)
+[network namespaces blog](https://blogs.igalia.com/dpino/2016/04/10/network-namespaces/)
+[interface explanations](https://www.computerhope.com/unix/uifconfi.htm)
+[linux namespaces overview](https://medium.com/@teddyking/linux-namespaces-850489d3ccf)
+
+L: c2c
+---
+Container to Container Networking - Part 1.2 - Network Interfaces
+
+ ## Assumptions
+- You have an OS CF deployed
+- You have done the other stories in this track
+- You have the meow network namespace created
+- You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and named appA (the fewer apps you have deployed the better)
+
+## Review
+
+This track of stories is going to go through the steps (listed below) that were covered in the dataflow overview.
+The steps and diagram will be at the top of each story in case you need to orient yourself.
+
+![c2c traffic flow](https://storage.googleapis.com/cf-networking-onboarding-images/overlay-underlay-silk-network.png)
+
+1. AppB makes a request to AppA's overlay IP address. This packet is called the overlay packet (aka the c2c packet).
+1. **The packet exits the app container through the veth interface. <------- CURRENT STORY**
+1. The overlay packet is marked with a ...mark... that is unique to the source app.
+1. Because the packet is an overlay packet, it is sent to the silk-vtep interface on the Diego Cell. This interface is a VXLAN interface.
+1. The overlay packet is encapsulated inside of an underlay packet. This underlay packet is addressed to underlay IP of the Diego Cell where the destination app is located (appA in this case).
+1. The underlay packet exits the cell.
+1. The packet then travels over the physical underlay network to the correct Diego Cell.
+1. The packet arrives to the correct Diego Cell
+1. The underlay packet is decapsulated. Now it's just the overlay packet again.
+1.  Iptables rules check that appA is allowed to talk to appB based on the mark on the overlay packet.
+1. If traffic is allowed, the overlay network directs the traffic to the correct place.
+Yay!
+
+## What
+In this story we are going to look at network interfaces.
+
+A network interface is ... the interface between two different networks, physical or virtual.  You can list network interfaces with `ifconfig` (old way) or `ip link list` (new way).
+In order to have packets from a CF app leave an app container, there needs to be a network interface that can send packets elsewhere. In the CF case, we want them to go to the Diego Cell.
+In order to have packets leave the Diego Cell, there needs to be a network interface to the underlay network.
+
+Let's look at the interfaces on the Diego cell and in our meow network namespace.
+
+
+## How
+📝 **Look at network interfaces**
+
+1. List all of the network interfaces in the Diego Cell (this output is edited for brevity and clarity)
+  ```
+$ ip link
+1: lo                 <------------- The loopback network interface that lets the system communicate with itself over localhost.
+2: eth0               <------------- A ethernet interface. Traffic goes here to leave the Diego Cell.
+1555: silk-vtep       <------------- A VXLAN overlay network interface. Overlay packets go here to be encapsulated in an  underlay packet before exiting the Diego Cell.
+1559: s-010255096003@if1558: link-netnsid 0   <-------------  The interface that links to the network namespace with id 0. The name is `s-CONTAINER-ID`. This is the veth interface.
+                                                                 There will be one of these network interfaces per app on the Diego Cell.
+  ```
+
+1. Now list all of the networking interfaces in the meow networking namespace
+  ```
+ip netns exec meow ip link
+  ```
+Nothing! No wonder you can't curl google.com! There is no network interface for packets to travel through.
+
+The solution is to create a veth (virtual ethernet) pair. A veth pair consists of two virtual ethernet interface. One is placed in the host network namespace, the other in the meow network namespace. The veth pair acts like a bridge between the network namespace and the host.
+You already saw one side of the veth pair for the proxy app when you ran `ip link` inside of the Diego Cell.  Let's look at the other half of the veth pair.
+
+🤔 **Look at network interfaces inside the proxy app container**
+1. Ssh proxy app.
+1. List all of the network interfaces.
+
+### Expected Result
+You should see an eth0 interface inside of the proxy app container. This is how traffic exits the app container.
+
+## Extra Credit
+
+Look at the [code](https://github.com/cloudfoundry/silk/blob/master/cni/lib/pair_creator.go) and [tests](https://github.com/cloudfoundry/silk/blob/master/cni/lib/pair_creator_test.go) in silk where veth pairs are set up.
+
+## Extra Extra Credit
+📝 **Make your own veth pair **
+1. Follow [these instructions](https://blogs.igalia.com/dpino/2016/04/10/network-namespaces/) to create a veth pair to conect the meow network namespace. If successful, you will be able to curl google.com
+
+## Resources
+[interface explanations](https://www.computerhope.com/unix/uifconfi.htm)
+[linux network namespaces/veth/route table blog](https://devinpractice.com/2016/09/29/linux-network-namespace/)
+
+L: c2c
+---
+
+Container to Container Networking - Part 2 - Marks
+
+ ## Assumptions
+- You have an OS CF deployed
+- You have done the other stories in this track
+- You have two [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) apps pushed and named appA and appB (the fewer apps you have deployed the better)
+
+## Review
+This track of stories is going to go through the steps (listed below) that were covered in the dataflow overview.
+The steps and diagram will be at the top of each story in case you need to orient yourself.
+
+![c2c traffic flow](https://storage.googleapis.com/cf-networking-onboarding-images/overlay-underlay-silk-network.png)
+
+1. AppB makes a request to AppA's overlay IP address. This packet is called the overlay packet (aka the c2c packet).
+1. The packet exits the app container through the veth interface.
+1. **The overlay packet is marked with a ...mark... that is unique to the source app.  <------- CURRENT STORY**
+1. Because the packet is an overlay packet, it is sent to the silk-vtep interface on the Diego Cell. This interface is a VXLAN interface.
+1. The overlay packet is encapsulated inside of an underlay packet. This underlay packet is addressed to underlay IP of the Diego Cell where the destination app is located (appA in this case).
+1. The underlay packet exits the cell.
+1. The packet then travels over the physical underlay network to the correct Diego Cell.
+1. The packet arrives to the correct Diego Cell
+1. The underlay packet is decapsulated. Now it's just the overlay packet again.
+1.  Iptables rules check that appA is allowed to talk to appB based on the mark on the overlay packet.
+1. If traffic is allowed, the overlay network directs the traffic to the correct place.
+Yay!
+
+## What
+In the last story we found out that packets leave the app container over the veth pair interface. In this story we are going to look at how overlay packets are marked.
+
+First off, *why* are packets are marked?
+Packets are marked with a mark that is unique to the source app. Each instance of the source app has its packets marked with the same ID. If there is a c2c policy, then on the destination Diego Cell there are iptables rules that allow traffic with a certain mark to certain destinations. The policies look like the following diagram. Using one mark per source app, decreases the number of iptables rules needed per c2c policy, especially when there are large number of app instances.
+
+![markful networking policy diagram](https://storage.googleapis.com/cf-networking-onboarding-images/diagram-of-silk-networking-policies.png)
+
+If packets weren't marked we *could* use the the overlay IP as a unique identifier. However, this would create the need for many more iptables rules, especially when there are a large number of app instances.
+
+![markless networking policy diagram](https://storage.googleapis.com/cf-networking-onboarding-images/diagram-of-flannel-networking-policies.png)
+
+You will learn more about how the c2c policies check the mark in later stories (hint: it uses iptables). For now, let's focus on how traffic is marked (hint: it uses iptables).
+
+Here is an example iptables rule that sets a mark.
+![setmark iptables rule example](https://storage.googleapis.com/cf-networking-onboarding-images/set-mark-iptables-rule-example.png)
+
+In this story we are going to find the applicable set-xmark rules for our app and we're going to find out where that mark value comes from.
+
+## How
+📝 **Find set-xmark rules**
+1. Delete all network policies (`cf delete-network-policy --help`)
+1. Ssh onto the Diego Cell where appA is located and become root
+1. Look for the iptables rules that set marks.
+ ```
+iptables -S | grep set-xmark
+ ```
+ Nothing! This is because there are no policies. A mark is only allocated to an app when that app is used in a container to container (c2c) networking policy.
+
+1. In a different terminal, add a c2c policy from appA to appB  (`cf add-network-policy --help`)
+1. Back on the Diego Cell, look again for iptables rules that set marks
+ ```
+iptables -S | grep set-xmark
+ ```
+
+You should see something that looks like the colorful example above. Copy and paste it here.
+```
+# PASTE THE SET-XMARK RULE HERE
+```
+
+The source IP is the overlay IP for your app. The comment is the app guid for appA. And the mark is...well... where *does* the mark come from?
+
+When a c2c policy is created, the policy server determines if the app has a mark already or not. If the app doesn't have a mark yet, it creates one. Let's look at all these marks.
+The marks are an internal implementation of how c2c policies work, so they are not exposed on the external API (the API the CLI uses). But there is also an internal policy server API. The internal policy server API is the API that other CF components, like the vxlan-policy-agent, use.
+
+📝 **Look at marks via internal policy server API**
+
+1. You will need certs to call this API, those certs are located on the Diego Cell at `/var/vcap/jobs/vxlan-policy-agent/config/certs`
+1. Follow the [docs](https://github.com/cloudfoundry/cf-networking-release/blob/develop/docs/policy-server-internal-api.md) for how to list all of the c2c policies.
+You should see something like the following. The tag for appA should match the mark you saw in the iptables rule.
+ ```
+{
+  "total_policies": 1,
+  "policies": [
+    {
+      "source": {
+        "id": "90ff1b89-a69d-4c77-b1bd-415ae09833ed",  <------- AppA guid
+        "tag": "0004"                                  <------- AppA mark, should match what you saw in the iptables rule above
+      },
+      "destination": {
+        "id": "0babce4f-6739-4fc8-8f74-01f11179bfe5",  <------- AppB guid
+        "tag": "0005",                                 <------- AppB mark
+        "protocol": "tcp",
+        "ports": { "start": 8080, "end": 8080 }
+      }
+    }
+  ]
+}
+ ```
+
+❓Hey! AppB has a mark too. Why?
+❓Marks on packets are limited to 16 bits. How many unique marks is this? Does this give you scaling concerns for c2c networking?
+
+### Expected Outcome
+The data about the tag for the source app from the internal policy server API should match the mark in the iptables rule.
+
+## Look at the Code
+In the vxlan policy agent (vpa), there is a component called the planner. The planner gets information from the internal policy server API about all of the c2c policies. The planner turns this policy information into proposed iptables rules.
+
+[Here](https://github.com/cloudfoundry/silk-release/blob/develop/src/vxlan-policy-agent/planner/planner_linux.go#L297-L304) the VPA goes through all of the source apps and creates mark rules for them
+
+[Here](https://github.com/cloudfoundry/silk-release/blob/develop/src/lib/rules/rules.go#L100-L105) is the implementation of *NewMarkSetRule*
+
+L: c2c
+---
+
+Container to Container Networking - Part 3
+L: c2c
+---
+Container to Container Networking - Part 4
+L: c2c
+---
+Container to Container Networking - Part 5
 L: c2c
 ---
 
