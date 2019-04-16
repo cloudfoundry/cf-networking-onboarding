@@ -6,7 +6,7 @@ Network traffic can go in many directions, and there are many jargony way to ref
 
 **Ingress Traffic** is traffic that originates outside the local network that is transmitted to somewhere inside the local network. Remember ingress traffic is coming *in*.
 
-**Egress Traffic** is traffic that originates inside the local network that is transmitted somewhere outside of the local network. Remember ingress traffic is *e*xiting the local network.
+**Egress Traffic** is traffic that originates inside the local network that is transmitted somewhere outside of the local network. Remember egress traffic is *e*xiting the local network.
 
 ```
  INGRESS TRAFFIC EXAMPLE          EGRESS TRAFFIC EXAMPLE
@@ -110,7 +110,7 @@ The public_network ASG allows egress traffic to access the entire public interne
 
 🤔 **Using Running ASGs**
 Because the wide open `public_networks` security group is bound to all running and staging contains for the entire foundation, your app should be able to connect to any website on the internet. Let's test this.
-1. Ssh onto appA
+1. Ssh onto appA (`cf ssh --help`)
 1. Curl www.neopets.com. Success!
 1. Unbind the public_networks **running** security-group.
 1. When you bind/unbind ASGs you will see this helpful tip `TIP: Changes will not apply to existing running applications until they are restarted.` So restart your app!
@@ -149,7 +149,7 @@ Anatomy of an Iptables Rule
 ## What
 ASGs and c2c network policies are implemented using iptables rules. Think of iptables as a firewall implementation. (Iptables can do more than firewall things, but we have to start somewhere.)
 
-All network traffic on linux machines is evaluated against the iptables rules written on the machine. Tables and chains group and organize rules. Traffic hits different tables and chains depending on if the traffic is ingress, egress, or East/West.
+All network traffic on linux machines is evaluated against the iptables rules written on the machine. To organize these rules, there are chains and tables. Chains have tables and tables have rules. Traffic hits different tables and chains depending on if the traffic is ingress, egress, or East/West.
 
 Let's look at the anatomy of an iptables rule.
 
@@ -291,15 +291,19 @@ Make a super basic firewall for your docker container. This (extremely practical
 0. Make your own chain.
 0. Attach rule to that chain that accepts traffic if it is sent to ip 23.96.35.235 (neopets!) port 80 using tcp.
 0. Attach a rule to that chain that drops all other traffic.
+0. Add a jump rule to either the OUTPUT, FORWARD, or INPUT chains so that the traffic exiting the docker container will hit your custom chain.
 0. Curl google.com. Does it fail?
 0. Curl 23.96.35.235:80. Does it succeed?
 0. Curl http://neopets.com. Does it fail or succeed? Why?
-0. Delete all of the rules and chains that you created.
+0. Delete all of the rules and chains that you created. (Do this after the extra credit, if you are so inclined.)
 
 ### Expected Result
 Hopefully you realize by now that iptables rules are very powerful and very fun :D
 
 ❓Why didn't curling http://neopets.com work?
+
+### Extra Credit
+1. Use iptables rules to make it so you can curl neopets.com, but not google.com
 
 ## Resources
 [iptables man page](http://ipset.netfilter.org/iptables.man.html)
@@ -322,7 +326,7 @@ In the previous story "User Workflow: Application Security Groups" you learned w
 - You have the public_networks security group bound to all running and staging containers
 
 ## What?
-Information about ASGs are stored in CAPI's database. When a container create is triggered (for example by a cf push), CAPI passes ASG information along to Diego (container scheduler). Diego then passes the ASG information along to Garden (the containter creater), which passes it along to the container networking components. After this long journey, the container networking components turn this ASG information into iptables rules on the Diego Cells.
+Information about ASGs are stored in CAPI's database. When a container create is triggered (for example by a cf push), CAPI passes ASG information along to Diego (container scheduler). Diego then passes the ASG information along to Garden (the container creator), which passes it along to the container networking components. After this long journey, the container networking components turn this ASG information into iptables rules on the Diego Cells.
 
 
 Iptables rules are a series of rules that network packets match against to decide whether that traffic is allowed or not. This is one way firewalls can be implemented.
@@ -458,8 +462,16 @@ cf logs pingaling
 
 
 🤔 **Using tcpdump**
-0. Get the overlay ip address of pingaling. This will become important soon: `cf ssh pingaling -c "env | grep CF_INSTANCE_INTERNAL_IP"`
-0. ssh onto the Diego Cell the pingaling app is on and become root
+0. Get the overlay ip address of pingaling. This will become important soon.
+ ```
+ cf ssh pingaling -c "env | grep CF_INSTANCE_INTERNAL_IP"
+ ```
+0. Get the ip address of the Diego Cell where pingaling is running
+ ```
+  cf ssh pingaling -c "env | grep CF_INSTANCE_IP"
+ ```
+0. Run `bosh instances` and find the Diego Cell with the CF_INSTANCE_IP.
+0. Ssh onto the Diego Cell that the pingaling app is running on and become root
 0. Run `tcpdump`.
     Ahhhhh too much information! ctrl+c! ctrl+c!  On a Diego Cell there are many packets being sent around, and tcpdump gives information about ALL OF THEM. We need to figure out a way to filter this overwhelming stream of information.
 0. We want to find traffic related to the pingaling app. We know the source overlay IP for this app, so let's filter by that!
