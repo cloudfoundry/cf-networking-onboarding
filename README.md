@@ -24,3 +24,7 @@ The stories in this repo are divided by epic (e.g. HTTP Routes, Route Integrity,
 
 ## Contributing
 Depending on personal preferance, either edit stories in the .prolific text files themselves or convert the prolific file to a CSV and upload it to a temporary Tracker project, reverting back to .prolific format once you're ready to make a PR. The second one takes more time, but removes the risk of accidental prolific syntax errors.
+
+## Feedback
+
+Here is the link for feedback after Pivots have gone through the onboarding: https://forms.gle/23751ieopY6hbHMM9
