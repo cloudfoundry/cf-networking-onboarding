@@ -51,7 +51,8 @@ How to Read Onboarding Stories
 1. No really, read all the words.
 1. When possible, I will tell you how to name things. For example, push an app and name is appA. That app will be referred to as appA for the rest of the story.
 1. When I cannot tell you how to name things, because they are out of my control, they will be in **CAPS_WITH_UNDERSCORES**. For example, when you create routes. Routes contain a domain name that depends on your environment. I cannot control this, so I will refer to that route as APPA_ROUTE, or something similar.
-1. Read the whole story. Please.
+1. Resources listed at the bottom of the stories are there if you get stuck or if you are interested in going deeper. You are not expected to read, or even open, every resource. However you are expected to...
+1. ...read the whole story. Please.
 
 ### Emoji Key
 
