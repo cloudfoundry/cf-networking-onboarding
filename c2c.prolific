@@ -2,10 +2,12 @@ User Flow: Container to Container Networking
 
 ## Assumptions 
 - You have a CF deployed with silk release
+- You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and called appA
+- You have one route mapped to appA called APP_A_ROUTE
 
 ## What
 
-In the HTTP route track of stories we talked about the dataflow for HTTP traffic. But what if appA, an app within CloudFoundry, wants to talk to appB, another app within CloudFoundry? Well, before Container to Container networking (c2c) and wanted a shortcut from appA to appB, you were out of luck (unless you wanted to do some ill-advised hacking, we'll talk about this later). Without c2c, if appA wanted to talk to appB, then the traffic had to travel outside of the CF foundation, hit the external load balancer, and go through the normal HTTP traffic flow. 
+In the HTTP route track of stories you learned about the dataflow for HTTP traffic. But what if appA, an app within CloudFoundry, wants to talk to appB, another app within CloudFoundry? Before Container to Container networking (c2c) there was no shortcut for intra-foundation traffic. Without c2c, if appA wanted to talk to appB, then the traffic had to travel outside of the CF foundation, hit the external load balancer, and go through the normal HTTP traffic flow.
 
 ```
 Life Before C2C                                  +------+
@@ -26,9 +28,11 @@ Life Before C2C                                  +------+
 
 ```
 
-So many extra hops for apps within the same CF! Especially if the apps are on the same Diego Cell! Those hops come with extra latency. Also, even if appB  *only* needs to be accessed by appA (for example if appA is the frontend microservice and appB is the backend microservice for appA), appB still needs to be accessible via an HTTP route! This is exposing appB to more attack vectors than it should be.
+So many extra hops for apps within the same CF! Especially if the apps are on the same Diego Cell!
 
-With container to container networking (c2c) apps within a foundation can talk directly to each other. Now appA can talk to appB without leaving the CF foundation. Also, appB doesn't need to be accessible via an HTTP route (just an internal one, we'll get to that later).
+Those hops come with extra latency. It can also come with an extra security risk. If appB  *only* needs to be accessed by appA (for example if appA is the frontend microservice and appB is the backend microservice for appA), appB would still need to be accessible via an HTTP route! This is exposing appB to more attack vectors than it should be.
+
+With container to container networking (c2c) apps within a foundation can talk directly to each other. Now appA can talk to appB without leaving the CF foundation. And appB doesn't need to be accessible via an HTTP route (just an internal one, we'll get to that later in the service discovery track).
 
 ```
 Life with C2C
@@ -42,18 +46,20 @@ Life with C2C
 +------+        +------+
 ```
 
-However, in order for appA to be *allowed* to talk to appB, we will need to create a network policy. 
+In order for appA to be *able* to talk to appB, it needs to have permission. You will need to create a network policy.
 
-Let's ignore how this is all setup for now and just go through the user workflow.
+Let's ignore the technical implementation for now and go through the user workflow.
 
 ## How
 
-1. Push appA.
+📝**Use Container to Container Networking**
 
-1. Push appB with `--no-route` so that there is no HTTP route for appB.
-
+1. Push another [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app named appB. Use the `--no-route` so that no HTTP route is created for appB.
+ ```
+ cf push appB --no-route
+ ```
 1. Get the overlay IP for appB `cf ssh appB -c "env | grep CF_INSTANCE_INTERNAL_IP"`
-   (Explantation what overlay is in future stories! For now just know that each app instance has a unique overlay IP that c2c uses.)
+   (Explanation what overlay is awaits in future stories! For now just know that each app instance has a unique overlay IP that c2c uses.)
 
 1. Get onto the container for appA and curl the appB internal IP and app port. 
    ```
@@ -62,13 +68,15 @@ watch  "curl CF_INSTANCE_INTERNAL_IP:8080"
    ```
    You should get a `Connection refused` error because there is no network policy yet.
 
-1.  In another terminal, add a network policy from appA to appB, with protocol tcp, on port 8080. Run `cf add-network-policy --help` to figure out how to do this with the CLI.
+1.  In another terminal, add a network policy from appA to appB, with protocol tcp, on port 8080.
+ ```
+ cf add-network-policy appA --destination-app appB --protocol tcp --port 8080
+ ```
 
 
 ### Expected Result
-As soon as you add the policy, the curl from inside of the appA container to appB should succeed. If it doesn't work, check that you created the policy in the correct direction, from appA --> appB, not the other way around. Also make sure that appB uses app port 8080, if not, change the policy appropriately.  
-
-## Resources
+After you add the policy, the curl from inside of the appA container to appB should succeed.
+If it doesn't work, check that you created the policy in the correct direction, from appA --> appB, not the other way around.
 
 L: c2c
 
@@ -76,13 +84,9 @@ L: c2c
 Overlay vs Underlay
 
 ## Assumptions
-- None :)
+- None
 
 ## What
-
-Let's define some terms.
-
-## How
 
 An ** Underlay Network** is the physical networking infrastructure. It is the underlying network responsible for delivery of packets across networks.
 
@@ -114,7 +118,7 @@ Follow the steps below on the diagram.
 ![c2c traffic flow](https://storage.googleapis.com/cf-networking-onboarding-images/overlay-underlay-silk-network.png)
 
 1. AppB makes a request to AppA's overlay IP address. This packet is called the overlay packet (aka the c2c packet).
-1. ✨ The packet exits the app container through the veth interface (we'll cover what this is in a story).
+1. ✨ The packet exits the app container through the veth interface.
 1. ✨ The overlay packet is marked with a ...mark... that is unique to the source app.
 1. ✨ Because the packet is an overlay packet, it is sent to the silk-vtep interface on the Diego Cell. This interface is a VXLAN interface.
 1. ✨ The overlay packet is encapsulated inside of an underlay packet. This underlay packet is addressed to underlay IP of the Diego Cell where the destination app is located (appA in this case).
@@ -158,20 +162,22 @@ The steps and diagram will be at the top of each story in case you need to orien
 1. The packet then travels over the physical underlay network to the correct Diego Cell.
 1. The packet arrives to the correct Diego Cell
 1. The underlay packet is decapsulated. Now it's just the overlay packet again.
-1.  Iptables rules check that appA is allowed to talk to appB based on the mark on the overlay packet.
+1. Iptables rules check that appA is allowed to talk to appB based on the mark on the overlay packet.
 1. If traffic is allowed, the overlay network directs the traffic to the correct place.
-Yay!
+
 
 
 ## What
 
 Each CF app runs in a container, but what *is* a container? A container is a collection of **namespaces** and **cgroups**.
 
-**Namespaces** "partition kernel resources such that one set of processes sees one set of resources while another set of processes sees a different set of resources" (thanks [wiki](https://en.wikipedia.org/wiki/Linux_namespaces)). There are different types of namespaces. For example, the mount namespace lets different groups of processes see different file trees. Another example (most related to this onboarding) is the network namespace. The network namespace isolates network interfaces (we'll get into what those are in the next story).
+**Namespaces** "partition kernel resources such that one set of processes sees one set of resources while another set of processes sees a different set of resources" (thanks [wiki](https://en.wikipedia.org/wiki/Linux_namespaces)). There are different types of namespaces. For example, the mount namespace lets processes see different file trees. Another example (most related to this onboarding) is the network namespace. The network namespace isolates network interfaces (we'll get into what those are in the next story).
 
-**Cgroups** (pronounced cee-groups) are resource limits. Cgroups let you say: "this container can only use 1G of memory".
+**Cgroups** (pronounced cee-groups) are resource limits. Cgroups let you say: "these processes can only use 1G of memory".
 
-Most important in this onboarding context is the networking namespace. Container networking components are responsible for setting up the networking namespace for each app. In this story let's play around with network namespaces.
+Most important in this onboarding context is the networking namespace. Container networking components are responsible for setting up the networking namespace for each app.
+
+In this story you'll play around with network namespaces and even make one yourself.
 
 ## How
 
@@ -180,7 +186,7 @@ Most important in this onboarding context is the networking namespace. Container
 📝 **Make your own network namespace**
 
 1. Ssh onto a Diego Cell and become root.
-1. Create your own network namespace called meow!
+1. Create your own network namespace called meow.
  ```
 ip netns add meow
 ```
@@ -188,9 +194,9 @@ ip netns add meow
  ```
 ip netns
  ```
- You should only see meow. Hmmm. You might think you would see the other networking namespaces for all the apps on this cell. (I certainly thought so when I first tried this.) You'll see how to view an app's networking namespace one day, I promise.
+ You should only see meow. Hmmm. You might think you would see the other networking namespaces for all the apps on this cell. (I certainly thought so when I first tried this.) You'll learn how to view an app's networking namespace one day, I promise.
 
-1. Curl google.com from the Diego Cell. See that it works! This is because Application Security Groups (ASGs, remember those?!) allow it.
+1. Curl google.com from the Diego Cell. See that it works! This is because Application Security Groups allow it. (Remember ASGs?! Those stories were so long ago!) .
 
 1. Curl google.com from inside of your networking namespace
  ```
@@ -201,7 +207,7 @@ What? It doesn't work!? You should see `curl: (6) Could not resolve host: google
 
 ### Expected Outcome
 The meow networking namespace can't send any traffic out of the container. By default, network namespaces are completely isolated and have no network interfaces.
-In the next story we'll explore network interfaces and why we need them so our network namespace can curl google.com.
+In the next story you'll explore network interfaces. You'll learn why the meow namespace needs one in order for you to curl google.com.
 
 ## Resources
 [iptables netns man page](http://man7.org/linux/man-pages/man8/ip-netns.8.html)
@@ -212,6 +218,7 @@ In the next story we'll explore network interfaces and why we need them so our n
 
 L: c2c
 ---
+
 Container to Container Networking - Part 1.2 - Network Interfaces
 
  ## Assumptions
@@ -236,12 +243,12 @@ The steps and diagram will be at the top of each story in case you need to orien
 1. The packet then travels over the physical underlay network to the correct Diego Cell.
 1. The packet arrives to the correct Diego Cell
 1. The underlay packet is decapsulated. Now it's just the overlay packet again.
-1.  Iptables rules check that appA is allowed to talk to appB based on the mark on the overlay packet.
+1. Iptables rules check that appA is allowed to talk to appB based on the mark on the overlay packet.
 1. If traffic is allowed, the overlay network directs the traffic to the correct place.
-Yay!
+
 
 ## What
-In this story we are going to look at network interfaces.
+In this story you are going to look at network interfaces.
 
 A network interface is ... the interface between two different networks, physical or virtual.  You can list network interfaces with `ifconfig` (old way) or `ip link list` (new way).
 In order to have packets from a CF app leave an app container, there needs to be a network interface that can send packets elsewhere. In the CF case, we want them to go to the Diego Cell.
@@ -316,9 +323,9 @@ The steps and diagram will be at the top of each story in case you need to orien
 1. The packet then travels over the physical underlay network to the correct Diego Cell.
 1. The packet arrives to the correct Diego Cell
 1. The underlay packet is decapsulated. Now it's just the overlay packet again.
-1.  Iptables rules check that appA is allowed to talk to appB based on the mark on the overlay packet.
+1. Iptables rules check that appA is allowed to talk to appB based on the mark on the overlay packet.
 1. If traffic is allowed, the overlay network directs the traffic to the correct place.
-Yay!
+
 
 ## What
 In the last story we found out that packets leave the app container over the veth pair interface. In this story we are going to look at how overlay packets are marked.
@@ -428,9 +435,9 @@ The steps and diagram will be at the top of each story in case you need to orien
 1. The packet then travels over the physical underlay network to the correct Diego Cell.
 1. The packet arrives to the correct Diego Cell
 1. The underlay packet is decapsulated. Now it's just the overlay packet again.
-1.  Iptables rules check that appA is allowed to talk to appB based on the mark on the overlay packet.
+1. Iptables rules check that appA is allowed to talk to appB based on the mark on the overlay packet.
 1. If traffic is allowed, the overlay network directs the traffic to the correct place.
-Yay!
+
 
 ## What
 
@@ -468,9 +475,9 @@ The steps and diagram will be at the top of each story in case you need to orien
 1. The packet then travels over the physical underlay network to the correct Diego Cell.
 1. The packet arrives to the correct Diego Cell
 1. The underlay packet is decapsulated. Now it's just the overlay packet again.
-1.  Iptables rules check that appA is allowed to talk to appB based on the mark on the overlay packet.
+1. Iptables rules check that appA is allowed to talk to appB based on the mark on the overlay packet.
 1. If traffic is allowed, the overlay network directs the traffic to the correct place.
-Yay!
+
 
 ## What
 
@@ -555,9 +562,9 @@ The steps and diagram will be at the top of each story in case you need to orien
 1. The packet then travels over the physical underlay network to the correct Diego Cell.
 1. The packet arrives to the correct Diego Cell
 1. The underlay packet is decapsulated. Now it's just the overlay packet again.
-1.  Iptables rules check that appA is allowed to talk to appB based on the mark on the overlay packet.
+1. Iptables rules check that appA is allowed to talk to appB based on the mark on the overlay packet.
 1. If traffic is allowed, the overlay network directs the traffic to the correct place.
-Yay!
+
 
 ## What
 
@@ -667,7 +674,7 @@ The steps and diagram will be at the top of each story in case you need to orien
 1. The underlay packet is decapsulated. Now it's just the overlay packet again.
 1.  **Iptables rules check that appA is allowed to talk to appB based on the mark on the overlay packet.   <------- CURRENT STORY**
 1. If traffic is allowed, the overlay network directs the traffic to the correct place.
-Yay!
+
 
 ## What
 
