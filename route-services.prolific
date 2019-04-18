@@ -1,9 +1,9 @@
-Route Services User Flow
+User Workflow: Route Services
 
 ## Assumptions
 - You have a OSS CF deployed
 - You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and called appA
-- You have one route mapped to appA called APP_A_URL
+- You have one route mapped to appA called APP_A_ROUTE
 
 ## What
 
@@ -32,13 +32,38 @@ In this story we are going to create a user-provided route service to rate limit
 
 ## How
 
-0. Follow [these instructions](https://github.com/cloudfoundry-samples/ratelimit-service) to deploy a rate limiting Route Service and bind it to appA.
+📝 **Take control measurements**
+1. Download boom, a benchmarking tool.
+ ```
+ go get github.com/rakyll/boom
+ ```
 
+1. Use boom to see what percentage of requests to APP_A_ROUTE return status 200.
+ This command sends 100 requests, 10 concurrently with 10 QPS (queries per second)
+ ```
+ boom -n 100 -c 10 -q 10 http://APP_A_ROUTE
+ ```
+
+ You should see that all requests returned 200 OK.
+ ```
+ Status code distribution:
+   [200]	100 responses
+ ```
+
+📝 **Use a Route Service**
+0. Follow [these instructions](https://github.com/cloudfoundry-samples/ratelimit-service) to deploy a rate limiting Route Service and bind it to appA.
 This example Route Service is old and you may get errors that it is running on an old go version. Fix it! Even better, submit a PR with your fix.
+
+🤔 **Take measurements with Route Service**
+
+1. Bind the Route Service to appA.
+1. Make the Route Service seriously limit traffic.
+1. Run the benchmarking tests.
+
 
 ### Expected Result
 See that without the Route Service there is no rate limiting to appA. All responses should have status code 200.
-See that with the Route Service there is rate limiting to appA. Some responses should have status code 200 and the rest should have code
+See that with the Route Service there is rate limiting to appA. Some responses should have status code 200 and the rest should have code 429.
 ```
 Status code distribution:
   [200]	2 responses
@@ -57,7 +82,7 @@ Exploiting Route Services
 ## Assumptions
 - You have a OSS CF deployed
 - You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and called appA
-- You have one route mapped to appA called APP_A_URL
+- You have one route mapped to appA called APP_A_ROUTE
 
 ## What
 
@@ -65,17 +90,31 @@ In the previous story when you created your own Route Service you ran a command 
 
 `cf create-user-provided-service MY_SERVICE -r MY_SERVICE_URL`
 
-The route MY_SERVICE_URL could be inside or outside of your Cloud Foundry. However, one takes precedence. Let's see how we can exploit this.
+The route MY_SERVICE_URL could be inside or outside of your Cloud Foundry. However, one takes precedence.
+Let's say that MY_SERVICE_URL exists inside *and* outside of your Cloud Foundry. (Before a recent fix) GoRouter would
+"hairpin" and always default to the MY_SERVICE_URL that exists *inside* the Cloud Foundry.
+
+Let's exploit this.
 
 ## How
 
-1. We need to deploy to an older version of routing-release from before this attack vector was fixed. Deploy CF with routing-release 0.186.0 or below. 
+🤔 **Pretend that you are an innocent dev**
 
-1. Create a Route Service that sends all traffic to whitehouse.gov `cf create-user-provided-service realwhitehouse -r https://www.whitehouse.gov/`
+1. You need to deploy to an older version of routing-release from before this attack vector was fixed. Deploy CF with routing-release 0.186.0 or below.
 
-1. Bind this new Route Service to your APP_A_URL `cf bind-route-service DOMAIN  --hostname HOSTNAME realwhitehouse`
+1. Create a Route Service that sends all traffic to whitehouse.gov
+ ```
+ cf create-user-provided-service realwhitehouse -r https://www.whitehouse.gov/
+ ```
 
-1. See that when you curl APP_A_URL, you now just get whitehouse.gov
+1. Bind this new Route Service to your APP_A_ROUTE
+ ```
+cf bind-route-service DOMAIN  --hostname HOSTNAME realwhitehouse`
+ ```
+
+1. See that when you curl APP_A_ROUTE, you now just get whitehouse.gov (I don't know why you would want this. But it's an easy way to show this attack vector.)
+
+😈 **Pretend that you are a malicious dev**
 
 1. Push an app called fakewhitehouse
 
@@ -85,18 +124,18 @@ The route MY_SERVICE_URL could be inside or outside of your Cloud Foundry. Howev
 
 1. In one terminal, watch the logs for the fakewhitehouseapp
 
-1. In another terminal curl  APP_A_URL
+1. In another terminal curl APP_A_ROUTE
 
 ### Expected Result
 You should see in the fakewhitehouse app logs that traffic was redirected to fakewhitehouse
 You should see by the response, that traffic was never sent to the real whitehouse.gov
 
-What happened?
-Why is this really, really bad?
-How could you exploit this?
+❓What happened?
+❓Why is this really, really bad?
+❓How could you exploit this on a shared deployment like PWS?
 
 **Extra Credit**
-1. Find the code in GoRouter that let this happen. Maybe start your search [here](https://github.com/cloudfoundry/gorouter/blob/f6879c04bac67c1e467f14b79496b9832869df91/proxy/round_tripper/proxy_round_tripper.go)? 
+1. Find the code in GoRouter that let this happen. Maybe start your search [here](https://github.com/cloudfoundry/gorouter/blob/f6879c04bac67c1e467f14b79496b9832869df91/proxy/round_tripper/proxy_round_tripper.go)?
 
 ## Resources
 [CF docs - Route Services](https://docs.cloudfoundry.org/services/route-services.html)
