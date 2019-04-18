@@ -1,4 +1,4 @@
-User Flow: TCP Routes
+User Workflow: TCP Routes
 
 ## Assumptions
 - You have a CF deployed
@@ -27,14 +27,14 @@ Let's create a TCP Route and send traffic to it!
 
 ## How
 
-**Prep in Google Cloud Console**
+📝 **Prep in Google Cloud Console**
 1. Make sure that you have DNS set up properly for the TCP Router.
     In Google Cloud Console, go to the Zone Details for your env (Network Services --> Cloud DNS --> <your-env>-zone)
 1. You should find a domain that starts with `tcp`, let's call this TCP_DOMAIN. This domain should have an IP next to it, let's call this TCP_LOAD_BALANCER_IP.
     ![example TCP domain DNS on GCP](https://storage.googleapis.com/cf-networking-onboarding-images/example-tcp-domain-dns.png)
 
 1. In Google Cloud Console, find the Load Balancer with the ip TCP_LOAD_BALANCER_IP. (Network Services --> Load balancing)
-    Here you will be able to see all of the VMs that the load balancer ...balances load between. In the example below, and most likely in your case, there is only one TCP Router deployed, so there will only be one VM listed. 
+    Here you will be able to see all of the VMs that the load balancer ...balances load between. In the example below, and most likely in your case, there is only one TCP Router deployed, so there will only be one VM listed.
 
     ![example TCP load balancer on GCP](https://storage.googleapis.com/cf-networking-onboarding-images/example-tcp-load-balancer.png)
 
@@ -42,10 +42,22 @@ Let's create a TCP Route and send traffic to it!
    ![example TCP router vm on GCP](https://storage.googleapis.com/cf-networking-onboarding-images/example-tcp-router-details.png)
 1. In the terminal, check that the TCP_ROUTER_IP matches the IP that bosh reports for the TCP Router. It comes full circle!
 
-**In CF**
-1. Write an app that is listening for TCP on port 8080 and that logs all messages sent to it. `cf push tcp-app --no-route`. [Here is some inspiration](https://coderwall.com/p/wohavg/creating-a-simple-tcp-server-in-go)
-1. See that you have a default-tcp router group `cf router-groups`. Router Groups are used to reserve a port range for tcp routes.
-1. Create a shared TCP domain `cf create-shared-domain TCP_DOMAIN --router-group default-tcp`
+🤔**Write an app that starts a TCP server**
+1. Write an app that is listening for TCP on port 8080 and that logs all messages sent to it. [Here is some inspiration](https://coderwall.com/p/wohavg/creating-a-simple-tcp-server-in-go)
+
+📝 **Create a TCP Route**
+1. Push the app with no HTTP route
+ ```
+ cf push tcp-app --no-route
+ ```
+1. See that you have a default-tcp router group. Router Groups are used to reserve a port range for tcp routes.
+ ```
+ cf router-groups
+ ```
+1. Create a shared TCP domain
+ ```
+cf create-shared-domain TCP_DOMAIN --router-group default-tcp
+ ```
 1. See that `cf map-route --help` has different usage instructions for TCP routes and HTTP routes.
 1. Create a route with the TCP domain and map it to tcp-app, let's call this TCP_ROUTE:TCP_PORT.
 
@@ -73,7 +85,7 @@ apt-get install netcat -y
 Don't delete your TCP app/route/domain yet! You'll need them in the next stories.
 
 ## Extra Credit
-What happens if you try to send TCP traffic to an HTTP route? Why can you send HTTP traffic (kind of) over TCP, but not the other way around?
+❓What happens if you try to send TCP traffic to an HTTP route? Why can you send HTTP traffic (kind of) over TCP, but not the other way around?
 
 ## Resources
 
@@ -96,8 +108,8 @@ Dig-ing TCP and HTTP Routes
 - The CF was deployed with the help of `bbl`
 - You have a TCP server deployed named tcp-app
 - You have a TCP route mapped to tcp-app called TCP_ROUTE
-- You have a [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and called appA
-- You have a HTTP route mapped to appA called APP_A_URL
+- You have a 2 [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) apps pushed, that are named appA and appB
+- You have a HTTP route mapped to appA called APP_A_ROUTE and one mapped to appB called APP_B_ROUTE
 
 ## What
 `dig` is one of many network utilities that can be very helpful for debugging. Dig does a DNS lookup for a URL.
@@ -105,26 +117,45 @@ Dig-ing TCP and HTTP Routes
 Let's play around with dig, TCP Routes, and HTTP Routes.
 
 ## How
+
+📝 **Dig with a good URL**
 1. Run `dig neopets.com`
     If you see `ANSWER 1` (which you should) that it was able to resolve the route. `ANSWER 0` means it was unable to resolve the route.
-    In the `ANSWER SECTION` you should see an IP. Likely, 23.96.35.235. Put that IP in the browser. Is it neopets?
-1. Try to resolve a bogus URL so you get ANSWER 0.
-1. Use dig to resolve APP_A_URL. Curl that IP. What happens?
-1. Push another app and make an HTTP route. Resolve that route with dig. Wait a minute that's the same IP as before! And it still doesn't work. 
-1. Use dig to resolve the TCP Route. Curl that IP. What happens?
+    In the `ANSWER SECTION` you should see an IP. (Likely, 23.96.35.235)
+1. Put the IP that neopets.com resolved to in a browser. Is it neopets?
 
-1. Why can't we curl our apps with these IPs?
-1. Find what infrastructure in Google Cloud Console that these IPs map to
-1. How does traffic even get to the apps if the IPs don't work?
+📝 **Dig with a bogus URL**
+1. Resolve a bogus URL so you get ANSWER 0.
+
+📝 **Dig with CF HTTP routes**
+1. Use dig to resolve APP_A_ROUTE. Let's call this APP_A_IP
+1. Curl that IP. What happens?
+
+1. Use dig to resolve APP_B_ROUTE. Let's call this APP_B_IP
+1. Curl that IP. What happens?
+❓Why are APP_A_IP and APP_B_IP the same?
+❓Why doesn't the IP resolve to either of the apps?
+
+📝 **Dig with CF TCP routes**
+1. Use dig to resolve the TCP Route. Let's call this TCP_APP_IP
+1. Curl that IP. What happens?
+❓Is TCP_APP_IP the same as APP_A_IP?
+❓Why or why not?
+❓How does traffic get to the apps if the IPs don't work?
+
+🤔 **Sleuthing in your IAAS**
+1. In your IAAS GUI, find what infrastructure that these IPs map to.
+
+### Expected Results
+All CF HTTP Routes resolve to the same IP. All CF TCP Routes resolve to the same IP. You should find the load balancers that map to these IPs.
 
 ## Extra Credit
-1. Why does `dig neopets.com` work, but `dig http://neopets.com` does not work?
+❓Why does `dig neopets.com` work, but `dig http://neopets.com` does not work?
 
 ## Resources
 [understanding the dig command](https://mediatemple.net/community/products/dv/204644130/understanding-the-dig-command)
 
 L: tcp-routes
-
 ---
 
 Why are my TCP routes broken?
@@ -142,11 +173,20 @@ Ready. Set. Debug!
 
 ## How
 
-**Setup**
-1. Save your current manifest so you can get back to it easily after this story. `bosh manifest > /tmp/bosh.yml`
-1. Deploy with istio-release 1.2.0 and use the [recommended opsfiles](https://github.com/cloudfoundry/istio-release/tree/v1.2.0/deploy/cf-deployment-operations). 
+🤔**Setup**
+1. If your environment is running istio-release 1.2.0 you are good to go. Skip to the next section.
+1. Save your current manifest so you can get back to it easily after this story.
+ ```
+bosh manifest > /tmp/bosh.yml
+ ```
+1. Deploy with istio-release 1.2.0 and use the [recommended opsfiles](https://github.com/cloudfoundry/istio-release/tree/v1.2.0/deploy/cf-deployment-operations).
    Make sure that the `experimental_enable_ingress_proxy_redirect` property on the `garden-cni` job is set to true
+
+📝 **See it break**
 1. See that `curl TCP_ROUTE:PORT` no longer works
+
+🤔 **Now fix it!**
+1. Debug!
 
 **Debugging Hints**
 1. Is the URL being resolved correctly?
@@ -159,7 +199,8 @@ Ready. Set. Debug!
 ### Expected Result
 Find the bug. Remove the offender and get this TCP route working!
 
-Don't forget to redeploy to your old state.
+Don't forget to redeploy to your old state afterwards.
+
 
 L: tcp-routes
 
