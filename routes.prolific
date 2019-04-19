@@ -41,23 +41,26 @@ There are two main data flows for routes, (1) when an app dev creates a new rout
 Let's focus on the first case. Here is what happens under the hood:
 
 **When an app dev creates a new route**
-1. The app dev pushes an app with a route to CAPI.
+1. The app dev pushes an app with a route using CAPI.
 1. CAPI sends this information to Diego.
-1. When Diego sets up the container for your app, it also sets up a sidecar envoy (if route integrity is turned on, which it should be), which will proxy traffic to your app.
+1. Diego schedules the container create on a specific Diego Cell.
+1. Garden creates the container for your app.
+1. Diego deploys a sidecar envoy inside of the app container, which will proxy traffic to your app.
 1. When the container is being set up, iptables rules are created on the Diego Cell to send traffic that is intended for the app to the sidecar proxy.
-1. The Route Emitter combines the information from CAPI about routes and the information from Diego about where apps are being run, and sends that via NATS to the GoRouter.
-1. The GoRouter keeps a mapping of routes -> ip:ports in a routes table, which is consulted when someone curls your app.
+1. When the app is created, Diego sends the route information to the Route Emitter. The Route Emitter sends the route information to GoRouter via NATS.
+1. The GoRouter keeps a mapping of routes -> ip:ports in a routes table, which is consulted when someone curls the route.
 
 ## How
 The following stories will look at how many components (CAPI, Diego BBS, Route Emitter, Nats, GoRouter, DNAT Rules, Envoy) work together to make routes work.
 
-0. 🤔 Step through steps above and follow along on [this diagram](https://realtimeboard.com/app/board/o9J_kyWPVPM=/)
+0. 🤔 Step through steps above and follow along on [the HTTP Routing section of this diagram](https://realtimeboard.com/app/board/o9J_kyWPVPM=/)
 
 ### Expected Result
-You can talk about route propagation at a high level with fellow CF engineers.
+You can talk about route propagation at a high level.
 
 ## Logistics
 In the next few stories, you are going to need to remember values from one story to another, there will be a space provided at the bottom of each story for your to record these values so you can store them.
+It can be annoying to scroll up and down in the story as you use the values, so it could be helpful to store these values in a doc outside of tracker.
 
 ## Resources for the entire route propagation track
 **Capi**
