@@ -140,7 +140,7 @@ You should see by the response, that traffic was never sent to the real whitehou
 ❓How could you exploit this on a shared deployment like PWS?
 
 **Extra Credit**
-1. Find the code in GoRouter that let this happen. Maybe start your search [here](https://github.com/cloudfoundry/gorouter/blob/f6879c04bac67c1e467f14b79496b9832869df91/proxy/round_tripper/proxy_round_tripper.go)?
+1. Find the code in GoRouter that let this happen. Maybe start your search [here](https://github.com/cloudfoundry/gorouter/blob/f6879c04bac67c1e467f14b79496b9832869df91/proxy/round_tripper/proxy_round_tripper.go#L126-L196).
 
 ## Resources
 [CF docs - Route Services](https://docs.cloudfoundry.org/services/route-services.html)
