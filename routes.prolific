@@ -331,10 +331,15 @@ can be a helpful debugging technique when something
     ```
     cat /var/vcap/jobs/route_emitter/config/route_emitter.json | jq . | grep nats
     ```
-0. Use the nats gem to connect to nats: `nats-sub "*.*" -s nats://NATS_USERNAME:NATS_PASSWORD@NATS_ADDRESS`. The `"*.*"` means that you are subscribing to all nats messages.
-    The Route Emitter registers routes every 20 seconds (by default) so that the GoRouter (which subscribes to these messages) has the most up-to-date information about which IPs map to which apps and routes.
-    If you wait, you should see a message that contains information about the route you created. It will look something like this and contain APP_A_ROUTE:
-    ```
+0. Use the nats gem to connect to nats: `nats-sub "*.*" -s nats://NATS_USERNAME:NATS_PASSWORD@NATS_ADDRESS`. The `"*.*"` means that you are subscribing to all NATs messages.
+    The Route Emitter registers routes every 20 seconds (by default) so that the GoRouter (which subscribes to these messages) has the most up-to-date information about which IPs map to which apps and routes. Depending on how many routes there are, this might be a lot of information.
+
+0. Find the NATs message for APP_A_ROUTE.
+ ```
+ nats-sub "*.*" -s nats://NATS_USERNAME:NATS_PASSWORD@NATS_ADDRESS` | grep APP_A_ROUTE
+ ```
+ If you wait, you should see a message that contains information about the route you created. It will look something like this and contain APP_A_ROUTE:
+ ```
    [#32] Received on [router.register] :
 {
     "host": "10.0.1.12",
@@ -351,7 +356,7 @@ can be a helpful debugging technique when something
          "component": "route-emitter"
      }
 }
-   ```
+ ```
 
 ❓Do the values in the NATS message match the values you recorded previously from BBS? Which ones are present? Which ones aren't there?
 ❓How does it compare to the information in CAPI?
