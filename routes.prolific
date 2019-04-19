@@ -40,20 +40,21 @@ There are two main data flows for routes, (1) when an app dev creates a new rout
 
 Let's focus on the first case. Here is what happens under the hood:
 
+Each step marked with a ✨ will be explained in more detail in a story in this track.
 **When an app dev creates a new route**
-1. The app dev pushes an app with a route using CAPI.
+1. ✨ The app dev pushes an app with a route using CAPI.
 1. CAPI sends this information to Diego.
 1. Diego schedules the container create on a specific Diego Cell.
 1. Garden creates the container for your app.
-1. Diego deploys a sidecar envoy inside of the app container, which will proxy traffic to your app.
-1. When the container is being set up, iptables rules are created on the Diego Cell to send traffic that is intended for the app to the sidecar proxy.
-1. When the app is created, Diego sends the route information to the Route Emitter. The Route Emitter sends the route information to GoRouter via NATS.
-1. The GoRouter keeps a mapping of routes -> ip:ports in a routes table, which is consulted when someone curls the route.
+1. ✨ Diego deploys a sidecar envoy inside of the app container, which will proxy traffic to your app.
+1. ✨ When the container is being set up, iptables rules are created on the Diego Cell to send traffic that is intended for the app to the sidecar proxy.
+1. ✨ When the app is created, Diego sends the route information to the Route Emitter. The Route Emitter sends the route information to GoRouter via NATS.
+1. ✨ The GoRouter keeps a mapping of routes -> ip:ports in a routes table, which is consulted when someone curls the route.
 
 ## How
 The following stories will look at how many components (CAPI, Diego BBS, Route Emitter, Nats, GoRouter, DNAT Rules, Envoy) work together to make routes work.
 
-0. 🤔 Step through steps above and follow along on [the HTTP Routing section of this diagram](https://realtimeboard.com/app/board/o9J_kyWPVPM=/)
+0. 🤔 Step through steps above and follow along on [the HTTP Routing section of this diagram](https://realtimeboard.com/app/board/o9J_kyWPVPM=/).
 
 ### Expected Result
 You can talk about route propagation at a high level.
@@ -100,18 +101,19 @@ In the previous story you went over the first of two main data flows for routes:
 
 Here is what happens under the hood for the second case:
 
+Each step marked with a ✨ will be explained in more detail in a story in this track.
 **When an internet user sends traffic to your app**
 1. The user visits your route in the browser or curls it via the command line.
-1. The traffic first hits a load balancer in front of the CF Foundation (we won't be going further into this step in this track).
-1. The load balancer sends it to one of the GoRouters (we won't be going further into this step in this track).
-1. The GoRouter consults the route table and sends it to the listed IP and port. If Route Integrity is enabled, it sends this traffic via TLS.
-1. The traffic makes its way to the correct Diego Cell, where it hits iptables DNAT rules that reroutes the traffic to the sidecar envoy for the app.
-1. The Envoy terminates the TLS from the GoRouter and then sends the traffic on to the app.
+1. The traffic first hits a load balancer in front of the CF Foundation.
+1. The load balancer sends it to one of the GoRouters.
+1. ✨ The GoRouter consults the route table and sends it to the listed IP and port. If Route Integrity is enabled, it sends this traffic via TLS.
+1. ✨ The traffic makes its way to the correct Diego Cell, where it hits iptables DNAT rules that reroutes the traffic to the sidecar envoy for the app.
+1. ✨ The Envoy terminates the TLS from the GoRouter and then sends the traffic on to the app.
 
 ## How
 The following stories will look at how many components (CAPI, Diego BBS, Route Emitter, Nats, GoRouter, DNAT Rules, Envoy) work together to make routes work.
 
-0. 🤔 Step through steps above and follow along on [this diagram](https://realtimeboard.com/app/board/o9J_kyWPVPM=/)
+0. 🤔 Step through steps above and follow along on [the HTTP Routing section of this diagram](https://realtimeboard.com/app/board/o9J_kyWPVPM=/)
 
 ### Expected Result
 You can talk about HTTP network traffic flow with fellow CF engineers.
