@@ -571,7 +571,23 @@ Inspect the iptables rules that DNAT the traffic from the GoRouter and send it t
 L: http-routes
 ---
 
-Route Propagation - Part 6 - Route Integrity and Envoy
+Route Propagation - Part 6.1 - Envoy Primer
+
+## Assumptions
+- None
+
+## What
+
+Before you go further it will help if you read a quick primer on Envoy.
+
+## How
+
+1. 📚 Read Julia Evan's blog post ["Some Envoy Basics"](https://jvns.ca/blog/2018/10/27/envoy-basics/).
+
+L: http-routes
+---
+
+Route Propagation - Part 6.2 - Route Integrity and Envoy
 
 ## Assumptions
 - You have a OSS CF deployed
@@ -592,13 +608,15 @@ OVERLAY_IP=<value>
 ```
 
 ## What
-In this case, Envoy is a sidecar proxy (it can be other types of proxies too, but forget about that for now). The sidecar Envoy is only present when Route Integrity is turned on.
+A **proxy** is a process that sits in-between the client and the server and intercepts traffic before forwarding it on to the server. Proxies can add extra functionality, like caching or SSL termination.
 
-Route Integrity is when that the GoRouter sends all app traffic via TLS and that it checks the the certificate provided by the app to make sure it is the app that the GoRouter *thinks* it is connecting to. This makes communication more secure and prevents stale routes in the route table from causing misrouting, which is a large security concern. Read more about how Route Integrity prevents misrouting [here](https://docs.cloudfoundry.org/concepts/http-routing.html#-preventing-misrouting).
+In this case, Envoy is a sidecar proxy (Envoy can be other types of proxies too, but forget about that for now). The sidecar Envoy is only present when Route Integrity is turned on (which is done by default).
 
-The Envoy sidecar is what actually terminates the TLS traffic from the GoRouter making Route Integrity possible. Then the Envoy proxies it onto...can it be? finally?! YES! THE APP!!
+Route Integrity is when the GoRouter sends all app traffic via TLS. Also, the GoRouter checks the the certificate provided by the app to make sure it is the app that the GoRouter *thinks* it is connecting to. This makes communication more secure and prevents stale routes in the route table from causing misrouting, which is a large security concern. Read more about how Route Integrity prevents misrouting [here](https://docs.cloudfoundry.org/concepts/http-routing.html#-preventing-misrouting).
 
-Let's look at how the Envoy sidecar is configured to see how it proxies the traffic to the app.
+The Envoy sidecar is the process that actually terminates the TLS traffic from the GoRouter making Route Integrity possible. Then the Envoy proxies it onto...can it be? finally?! YES! THE APP!!
+
+Let's look at how the Envoy sidecar is configured to proxy traffic to the app.
 ## How
 
 📝 **Look at envoy config**
