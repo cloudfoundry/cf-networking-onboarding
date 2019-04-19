@@ -41,7 +41,12 @@ It took a surprisingly long time to come up with this idea. Enjoy our hard work.
 ## How
 
 🤔 **cause stale routes**
-1. Route Integrity is turned on by default with CF Deployment. Let's go back in time and see what happened before Route Integrity. Redeploy your CF with Route Integrity turned off, using [this opsfile](https://github.com/cloudfoundry/cf-deployment/pull/745).
+1. Route Integrity is turned on by default with CF Deployment. Let's turn it off and see what happened before Route Integrity. But first, let's save the current manifest for the next story.
+ ```
+bosh manifest > /tmp/env-with-route-integrity.yml
+ ```
+
+1. Redeploy your CF with Route Integrity turned off, using [this opsfile](https://github.com/cloudfoundry/cf-deployment/pull/745).
 
 1. Push one instance of [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) and call it appA.
 
@@ -81,6 +86,7 @@ Route Integrity Demonstration
 ## What
 
 You saw the dangers of stale routes in the last story. This story will explore how Route Integrity solves this issue. Route Integrity is enabled by enforcing TLS (or mTLS) between the GoRouter and the apps it routes to.
+By default only TLS (not mTLS) is enforced. This is because mTLS will break the cf ssh command.
 
 (Side Note: Confusingly, this feature is called "Route Integrity" by engineers, but is called "(m)TLS to apps" or "encrypting traffic from the GoRouter to backends" in documentation. I will continue calling it Route Integrity, because it is more succinct and sounds cooler.)
 
@@ -89,7 +95,7 @@ Let's set up the same experiment as the previous story and see that even when yo
 ## How
 🤔 **Send traffic to a stale route**
 
-1. Deploy your CF with Route Integrity enabled with TLS (not mTLS).
+1. Deploy your CF with Route Integrity enabled with TLS. Use the manifest you saved in the last story at `/tmp/env-with-route-integrity.yml`.
 
 1. Push an app, appA with an HTTP route.
 
