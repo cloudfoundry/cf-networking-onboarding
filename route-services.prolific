@@ -60,7 +60,6 @@ This example Route Service is old and you may get errors that it is running on a
 1. Make the Route Service seriously limit traffic.
 1. Run the benchmarking tests.
 
-
 ### Expected Result
 See that without the Route Service there is no rate limiting to appA. All responses should have status code 200.
 See that with the Route Service there is rate limiting to appA. Some responses should have status code 200 and the rest should have code 429.
@@ -69,6 +68,8 @@ Status code distribution:
   [200]	2 responses
   [429]	98 responses
 ```
+
+Delete the rate limiter app and unbind the route service before the next story.
 
 ## Resources
 [CF docs - Route Services](https://docs.cloudfoundry.org/services/route-services.html)
@@ -83,6 +84,7 @@ Exploiting Route Services
 - You have a OSS CF deployed
 - You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and called appA
 - You have one route mapped to appA called APP_A_ROUTE
+- You unbound the rate limiter route service from the previous story
 
 ## What
 
@@ -100,7 +102,7 @@ Let's exploit this.
 
 🤔 **Pretend that you are an innocent dev**
 
-1. You need to deploy to an older version of routing-release from before this attack vector was fixed. Deploy CF with routing-release 0.186.0 or below.
+1. You need to deploy to an older version of routing-release from before this attack vector was fixed. Deploy CF with [routing-release 0.186.0](https://bosh.io/releases/github.com/cloudfoundry-incubator/cf-routing-release?version=0.186.0).
 
 1. Create a Route Service that sends all traffic to whitehouse.gov
  ```
@@ -112,17 +114,20 @@ Let's exploit this.
 cf bind-route-service DOMAIN  --hostname HOSTNAME realwhitehouse`
  ```
 
-1. See that when you curl APP_A_ROUTE, you now just get whitehouse.gov (I don't know why you would want this. But it's an easy way to show this attack vector.)
+1. See that when you curl APP_A_ROUTE, you now just get www.whitehouse.gov (I don't know why you would want this. But it's an easy way to show this attack vector.)
 
 😈 **Pretend that you are a malicious dev**
 
-1. Push an app called fakewhitehouse
+1. Push an app called fakewhitehouse using `--no-route`
 
-1. Create the domain whitehouse.gov
+1. Create the domain whitehouse.gov (`cf create-shared-domain --help`)
 
 1. Map the route www.whitehouse.gov to the app fakewhitehouse
+ ```
+cf map-route fakewhitehouse whitehouse.gov --hostname www
+ ```
 
-1. In one terminal, watch the logs for the fakewhitehouseapp
+1. In one terminal, watch the logs for the fakewhitehouseapp (`cf logs --help`)
 
 1. In another terminal curl APP_A_ROUTE
 
