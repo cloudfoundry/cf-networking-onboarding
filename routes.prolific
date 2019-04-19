@@ -205,7 +205,7 @@ Route Propagation - Part 2 - Diego BBS
 
 **Diego** is an umbrella term for many components that work together to make CF container orchestration happen. These components are maintained by the Diego team.
 
-**BBS** is the name of the database that the Diego components use to keep track of DesiredLRPs and ActualLRPs.
+**BBS** stands for Bulletin Board System. This is the database that the Diego components use to keep track of DesiredLRPs and ActualLRPs.
 
 **LRPs**, or Long Running Processes, represent work that a client (ie CAPI) wants Diego to keep running indefinitely. Apps are the primary example of LRPs. Diego will try to
 keep them running as best it can. When an app stops or fails, it will attempt to restart it and keep it running.
@@ -213,7 +213,7 @@ keep them running as best it can. When an app stops or fails, it will attempt to
 **Desired LRPs** represent what a client (ie CAPI) wants "the world" to look like (for example, how many instances of which apps). They contain no information
 about where LRPs should be run, because the user shouldn't care.
 
-**Actual LRPs** represent what Diego is currently *actually* running. They contain information about what where LRPs are run, for example the host ip and port.
+**Actual LRPs** represent what Diego is currently *actually* running. Actual LRPs contain information about which Diego Cell the LRP is running on and which port maps to the LRP.
 
 For this story, let's look at the data stored in the BBS and see what information it has about appA. Diego will go on to send this information via the Route Emitter to GoRouter, so GoRouter knows where to send network traffic to.
 
@@ -225,7 +225,8 @@ For this story, let's look at the data stored in the BBS and see what informatio
  cf app appA --guid
  ```
 0. Ssh onto the Diego Cell vm where appA is running and become root.
-0. Use the cfdot CLI to query BBS for actualLRPs
+0. Use the [cfdot CLI](https://github.com/cloudfoundry/cfdot) to query BBS for actualLRPs. Cfdot is a helpful CLI for using the BBS API.
+ It's a great tool for debugging on the Diego Cell.
  ```
  cfdot actual-lrps | jq .
  ```
@@ -256,7 +257,7 @@ For this story, let's look at the data stored in the BBS and see what informatio
       ...
    }
    ```
-0. Use the cfdot CLI to query BBS for desriedLRPs.
+0. Use the cfdot CLI to query BBS for desiredLRPs.
 
 ❓What information is provided for desiredLRPs, but not for actualLRPs?
 ❓What information is provided for actualLRPs, but not for desiredLRPs?
