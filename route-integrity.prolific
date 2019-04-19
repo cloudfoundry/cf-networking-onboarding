@@ -13,12 +13,12 @@ In the happy path case, the following steps should happen in the following order
 - the GoRouter forwards traffic for appA to 10.0.1.2:12345
 - appA is deleted
 - the Route Emitter sends an unregister route message to the GoRouter
-- **the GoRouter does NOT forward traffic for appA to 10.0.1.2:12345**
+- 👍 **the GoRouter does NOT forward traffic for appA to 10.0.1.2:12345**
 - appB is pushed and is now at 10.0.1.2:12345
 - the Route Emitter sends a register route message to the GoRouter
 - the GoRouter forwards traffic for appB to 10.0.1.2:12345
 
-That's a lot of components working together to make sure routes are sent to the correct place. Now image this situation where the Route Emitter is not sending out messages fast enough.
+That's a lot of components working together to make sure routes are sent to the correct place. Now imagine this situation where the Route Emitter is not sending out messages fast enough.
 
 - appA is pushed and is at 10.0.1.2:12345
 - the Route Emitter sends a register route message to the GoRouter
@@ -43,9 +43,13 @@ It took a surprisingly long time to come up with this idea. Enjoy our hard work.
 🤔 **cause stale routes**
 1. Route Integrity is turned on by default with CF Deployment. Let's go back in time and see what happened before Route Integrity. Redeploy your CF with Route Integrity turned off, using [this opsfile](https://github.com/cloudfoundry/cf-deployment/pull/745).
 
-1. Push one instance of appA with an HTTP route.
+1. Push one instance of [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) and call it appA.
 
-1. Push another app named appB, that will respond differently than appA (proxy will work). Ensure that there is an HTTP Route mapped to appB.
+1. Ensure that appA has an HTTP route.
+
+1. Push one instance of [dora](https://github.com/cloudfoundry/cf-acceptance-tests/tree/master/assets/dora) and name it appB.
+
+1. Ensure that there is an HTTP Route mapped to appB.
 
 1. Make sure an instance of appA and appB are on the same Diego Cell. This can be achieved through scaling appB if it doesn't happen at first.
 
