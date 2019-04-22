@@ -201,9 +201,10 @@ Find the bug. Remove the offender and get this TCP route working!
 
 Don't forget to redeploy to your old state afterwards.
 
+### Resources
+[How to get into a container's networking namespace as root](https://cloudfoundry.slack.com/archives/GFXGACQUB/p1554758849206400)
 
 L: tcp-routes
-
 ---
 
 [RELEASE] TCP Routes ⇧
