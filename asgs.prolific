@@ -170,7 +170,7 @@ Deeper reading you might want later:
 [Julia Evans iptables basics](https://jvns.ca/blog/2017/06/07/iptables-basics/)
 
 L: asgs
-L: iptables
+
 ---
 
 Iptables reading - a primer
@@ -184,7 +184,7 @@ The next few stories will introduce you to iptables rules. Reading a little bit 
 1. Flip through [Aidan's "iptables in Cloud Foundry" powerpoint](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
 
 L: asgs
-L: iptables
+
 ---
 
 Write your own iptables DROP rule in a docker container
@@ -276,7 +276,7 @@ You should know how to...
 [iptables primer](https://danielmiessler.com/study/iptables/)
 
 L: asgs
-L: iptables
+
 ---
 
 Write your own iptables firewall in a docker container
@@ -312,7 +312,7 @@ Hopefully you realize by now that iptables rules are very powerful and very fun 
 [iptables primer](https://danielmiessler.com/study/iptables/)
 
 L: asgs
-L: iptables
+
 ---
 
 ASGs and Iptables
@@ -432,7 +432,7 @@ Spend some extra time looking at all the iptables rules on a Diego Cell. Researc
 ["Making sense of Cloud Foundry security group declarations" by Sadique Ali](https://sdqali.in/blog/2015/05/21/making-sense-of-cloud-foundry-security-group-declarations/)
 
 L: asgs
-L: iptables
+
 ---
 
 [RELEASE] Application Security Groups (ASGs) ⇧
