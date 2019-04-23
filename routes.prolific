@@ -151,9 +151,9 @@ In the next few stories, you are going to need to remember values from one story
 L: http-routes
 ---
 
- Route Propagation - Part 1 - CAPI
+Route Propagation - Part 1 - CAPI
 
- ## Assumptions
+## Assumptions
 - You have a OSS CF deployed
 - You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and called appA
 - I recommend deleting all other apps
