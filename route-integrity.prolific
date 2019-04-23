@@ -75,7 +75,7 @@ Even though you curled the route for appA, because the routes for appA were "sta
 ❓ Before Route Integrity, what could app devs do to prevent stale routes from accidentally releasing their data?
 
 L: route-integrity
-
+L: deploy
 ---
 
 Route Integrity Demonstration
@@ -141,6 +141,7 @@ Depending on the type of error, GoRouter may choose to retry or not. Look at the
 [CF Docs - TLS to Apps](https://docs.cloudfoundry.org/concepts/http-routing.html#tls-to-back-end)
 
 L: route-integrity
+L: deploy
 ---
 
 Checking the SAN for Route Integrity
