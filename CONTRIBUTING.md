@@ -11,7 +11,7 @@ If you want to create a new track of work, you will need to create a new prolifi
 
 All stories in the same track should have a matching label and the last story in the prolific file should be a release marker.
 
-When creating a new story it can be easiest to develop it first in tracker, make sure that it looks pretty, and then copy and paste the change into your text editor. Look at this example [prolific file](./example.prolific) for help on how to format prolific files.
+When creating a new story it can be easiest to develop it first in tracker, make sure that it looks pretty, and then copy and paste the change into your text editor. Look at this example [prolific file](./example.prolific) for help on how to format prolific files. And look at the [prolific docs](https://www.pivotaltracker.com/integrations/prolific).
 
 ### Check your work
 Regardless of how large your change is. Please run the `./build` script before making a PR to make sure you didn't break anything.
