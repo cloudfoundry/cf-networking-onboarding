@@ -71,6 +71,7 @@ Network traffic can go in many directions, and there are many jargony way to ref
 - Your pair ssh-es onto your computer.
 - You set up a local netcat server and send traffic to it from your terminal.
 
+L: asgs
 ---
 
 User Workflow: Application Security Groups
@@ -142,6 +143,7 @@ When public_networks is not bound to staging containers, then the staging contai
 ["Making sense of Cloud Foundry security group declarations" by Sadique Ali](https://sdqali.in/blog/2015/05/21/making-sense-of-cloud-foundry-security-group-declarations/)
 
 L: asgs
+L: user-workflow
 ---
 
 Anatomy of an Iptables Rule

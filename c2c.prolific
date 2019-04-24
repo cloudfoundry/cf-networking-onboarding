@@ -1,6 +1,6 @@
-User Flow: Container to Container Networking
+User Workflow: Container to Container Networking
 
-## Assumptions 
+## Assumptions
 - You have a CF deployed with silk release
 - You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and called appA
 - You have one route mapped to appA called APP_A_ROUTE
@@ -79,7 +79,7 @@ After you add the policy, the curl from inside of the appA container to appB sho
 If it doesn't work, check that you created the policy in the correct direction, from appA --> appB, not the other way around.
 
 L: c2c
-
+L: user-workflow
 ---
 Overlay vs Underlay
 

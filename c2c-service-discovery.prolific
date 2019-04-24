@@ -1,11 +1,10 @@
 User Flow: Container to Container Networking with Service Discovery
 
-
-## Assumptions 
+## Assumptions
 - You have a CF deployed with silk release
 - You have appA  talking to appB via c2c networking and policy (see previous story "User Flow Container to Container Networking")
 
-## What 
+## What
 
 In the previous story you were able to use c2c networking to get appA to talk directly to appB using the overlay IP for appB (explanation of what overlay is will come soon, I swear).
 
@@ -15,7 +14,7 @@ In order to fix these problems, we implemented Service Discovery, which is apart
 
 Service Discovery is implemented using "internal routes" these routes will *only* work from one CF app to another. They will not be accessible from clients outside of CF.
 
-## How 
+## How
 
 1. Start off where you left off from the previous story "User Flow Container to Container Networking"). You should have appA talking to appB via an overlay IP using `watch  "curl CF_INSTANCE_INTERNAL_IP:8080"` inside of the appA container in one terminal. 
 
@@ -29,7 +28,7 @@ Service Discovery is implemented using "internal routes" these routes will *only
 
 1. Using `cf map-route`, create and map a route for appB that uses the domain "apps.internal". May I suggest the route, appB.apps.internal?
 
-1. In the terminal that is in the container for appA, run `watch  "curl appB.apps.internal:8080"`. 
+1. In the terminal that is in the container for appA, run `watch  "curl appB.apps.internal:8080"`.
 
 1. Restart appB.
 
@@ -40,24 +39,24 @@ Now that you are using internal routes to communicate via c2c, it shouldn't matt
 
 ## Resources
 
-https://github.com/cloudfoundry/cf-networking-release/blob/develop/docs/app-sd.md#internal-domains
-https://github.com/cloudfoundry/cf-networking-release/blob/develop/docs/app-sd.md
+[internal domain docs](https://github.com/cloudfoundry/cf-networking-release/blob/develop/docs/app-sd.md#internal-domains)
+[servide discovery docs](https://github.com/cloudfoundry/cf-networking-release/blob/develop/docs/app-sd.md)
 
 L: c2c-service-discovery
+L: user-workflow
 
 ---
-
 User Flow: Create your own Internal Domain
 
-## Assumptions 
+## Assumptions
 - You have a CF deployed with silk release
 - You have appA  talking to appB via c2c networking and policy (see previous story "User Flow: Container to Container Networking with Service Discovery")
 
-## What 
+## What
 
 In the previous story you created an internal route for appA to talk to appB using the domain "apps.internal", but what if we wanted to create our own internal domain (may I suggest meow.meow.meow)?
 
-## How 
+## How
 
 1. Start off where you left off from the previous story "User Flow Container to Container Networking"). You should have appA talking to appB via an overlay IP using `watch  "curl appB.apps.internal:8080"` inside of the appA container in one terminal. 
 
@@ -75,8 +74,8 @@ meow.meow.meow               shared          internal
 1. In the terminal that is in the container for appA, use this new internal route to curl appB `watch "curl appB.meow.meow.meow:8080"`
     What? "Could not resolve host"???? Why doesn't it work like our other internal route? Unlike other domains, internal domains require one more step in order for them to work.
 
-1. Download the manifest for your CF. Look at the property `internal_domains` on the `bosh_dns_adapter` job. It probably looks like this: 
-   ``` 
+1. Download the manifest for your CF. Look at the property `internal_domains` on the `bosh_dns_adapter` job. It probably looks like this:
+   ```
 internal_domains:
       - apps.internal.
    ```
@@ -88,15 +87,15 @@ internal_domains:
 
    ![href](https://github.com/cloudfoundry/cf-networking-release/blob/develop/docs/architecture-diagram.png?raw=true)
 
-1. Add our internal domain meow.meow.meow to the bosh manifest. 
+1. Add our internal domain meow.meow.meow to the bosh manifest.
 
-1. Redeploy your environment. 
+1. Redeploy your environment.
 
 1. In the terminal that is in the container for appA, use this new internal route to curl appB `watch "curl appB.meow.meow.meow:8080"`
 
 ### Expected Result
 
-appA should be able to successfully reach appB using the internal route with our brand new internal domain. 
+appA should be able to successfully reach appB using the internal route with our brand new internal domain.
 
 ## Resources
 
@@ -105,40 +104,40 @@ https://github.com/cloudfoundry/cf-networking-release/blob/develop/docs/app-sd.m
 
 
 L: c2c-service-discovery
-
+L: user-workflow
 ---
 
 Break things with Internal Domains!
 
 ## Assumptions
 
-## What 
+## What
 In the previous story ("User Flow: Create your own Internal Domain") we talked about how Bosh DNS redirects all DNS lookups where the request matches an internal domain to the Bosh DNS Adapter. In this story we are going to exploit this.
 
    ![href](https://github.com/cloudfoundry/cf-networking-release/blob/develop/docs/architecture-diagram.png?raw=true)
 
-## How 
+## How
 
 **Pretend you are innocent user1**
-1. Push [proxy app](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) and call it appA. 
+1. Push [proxy app](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) and call it appA.
 
 1. Make sure appA has an http route, let's call it APPA_ROUTE.
 
-1. From your terminal, use appA's `/proxy` endpoint to send traffic from appA to neopets.com 
+1. From your terminal, use appA's `/proxy` endpoint to send traffic from appA to neopets.com
    `watch "curl APPA_ROUTE/proxy/neopets.com"`
    You should get back some html for neopets! Fun! :D
 
 **Now pretend you are malicious user2**
 As a malicious actor, you know that appA is sending traffic to neopets.com. You want to break their app and make it so appA can't reach neopets. You can do this by shadowing the neopets.com domain with an internal domain. 
 
-1. Create the internal domain `neopets.com` (look at `cf create-shared-domain --help` if you don't remember how) 
+1. Create the internal domain `neopets.com` (look at `cf create-shared-domain --help` if you don't remember how)
 
-   Instead of adding this new internal domain to the bosh manifest and redeploying, we are going to hack this in on the Diego Cell. This is a great, fast, ( and dangerous) debugging technique. 
+   Instead of adding this new internal domain to the bosh manifest and redeploying, we are going to hack this in on the Diego Cell. This is a great, fast, ( and dangerous) debugging technique.
 1. Ssh onto the Diego Cell where appA is running and become root.
 
 1. You need to find what config file holds the information you want to change. The config on the VMs does not directly match the bosh manifest. To find any config for any bosh job on CF you can find it at `/var/vcap/jobs/JOB_NAME`. There are many files there for Bosh DNS Adapter. In order to figure out exactly what you need to change, look at [Bosh DNS Job in the release code](https://github.com/cloudfoundry/cf-networking-release/tree/develop/jobs/bosh-dns-adapter) and look where the `internal_domains` property is used. [hint](https://github.com/cloudfoundry/cf-networking-release/blob/develop/jobs/bosh-dns-adapter/templates/handlers.json.erb#L11). [hint](https://github.com/cloudfoundry/cf-networking-release/blob/develop/jobs/bosh-dns-adapter/spec#L10).
 
-1. Edit the correct config file and add an entry for our new domain `neopets.com`. It should look exactly like `apps.internal` except for the name. 
+1. Edit the correct config file and add an entry for our new domain `neopets.com`. It should look exactly like `apps.internal` except for the name.
 
 1. Now you'll need to restart the Bosh DNS Adapter process so that it will run with our new config. Linux Bosh VMs use monit as a process manager. Run `monit summary` to see all of the processes running on this VM. Restart the Bosh DNS Adapter by running `monit restart bosh-dns-adapter`. Keep running `monit summary` until the Bosh DNS Adapter is successfully running again. If it fails to start, then you probably made a syntax error in the config file. Look at the logs and fix the error.
 

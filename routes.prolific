@@ -30,6 +30,7 @@ And routes can send traffic to many apps. So Route Mappings is a many-to-many ma
 You have a route that maps to both appA and appB. See that the overlay IP changes, showing that you are routed evenly(ish) between all the apps mapped to the routes.
 
 L: http-routes
+L: user-workflow
 ---
 
 Route Propagation - Part 0.1 - Creating a Route Overview

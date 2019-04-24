@@ -76,6 +76,7 @@ Delete the rate limiter app and unbind the route service before the next story.
 [Rate Limiting Route Service](https://github.com/cloudfoundry-samples/ratelimit-service)
 
 L: route-services
+L: user-workflow
 ---
 
 Exploiting Route Services
