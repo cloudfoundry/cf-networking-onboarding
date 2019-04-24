@@ -21,6 +21,7 @@ func main() {
 		"tcp-routes.prolific",
 		"c2c.prolific",
 		"c2c-service-discovery.prolific",
+		"interrupts.prolific",
 		"write-your-own-story.prolific",
 	}
 
