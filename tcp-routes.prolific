@@ -73,15 +73,15 @@ Let's create a TCP Route and send traffic to it!
    ![example TCP router vm on GCP](https://storage.googleapis.com/cf-networking-onboarding-images/example-tcp-router-details.png)
 1. In the terminal, check that the TCP_ROUTER_IP matches the IP that bosh reports for the TCP Router. It comes full circle!
 
-🤔**Write an app that starts a TCP server**
-1. Write an app that is listening for TCP on port 8080 and that logs all messages sent to it. [Here is some inspiration](https://coderwall.com/p/wohavg/creating-a-simple-tcp-server-in-go)
-
-📝 **Create a TCP Route**
-1. Push the app with no HTTP route
+📝 **Push a TCP server app**
+1. Push [this tcp listener app](https://github.com/cloudfoundry/cf-acceptance-tests/tree/master/assets/tcp-listener) with no HTTP route.
+ This app is listening for TCP traffic on port 8080 and it logs all of the messages sent to it.
  ```
  cf push tcp-app --no-route
  ```
-1. See that you have a default-tcp router group. Router Groups are used to reserve a port range for tcp routes.
+
+📝 **Create a TCP Route**
+1. See that you have a default-tcp router group. Router Groups are used to reserve ports for tcp routes.
  ```
  cf router-groups
  ```
@@ -91,16 +91,19 @@ cf create-shared-domain TCP_DOMAIN --router-group default-tcp
  ```
 1. See that `cf map-route --help` has different usage instructions for TCP routes and HTTP routes.
 1. Create a route with the TCP domain and map it to tcp-app, let's call this TCP_ROUTE:TCP_PORT.
+ ```
+ cf map-route tcp-app TCP_DOMAIN --random-port
+ ```
 
 ### Expected Result
 
-**test with curl**
+📝 **test with curl**
 Curl sends traffic via HTTP(S), but because HTTP is built on top of TCP, we can still use curl to test out TCP route.
 1. In one terminal, run `cf logs tcp-app`
 1. In another terminal `curl TCP_ROUTE:TCP_PORT`
 1. See the HTTP headers show up in your logs
 
-**test with netcat**
+🤔 **test with netcat**
 Netcat is a helpful utility for reading and writing traffic over TCP or UDP. You will use netcat to send tcp traffic.
 1. In one terminal, run `cf logs tcp-app`
 1. In another terminal, run a docker container and get some helpful tools
