@@ -13,7 +13,7 @@ Here are some topics:
 - Istio
 - CNI
 - Linux sockets
-- Transport Protocols (TCP) and HTTP
+- Search Domains
 - Security (mTLS, certs, encryption, cert rotation)
 - NSX-T
 - PKS
