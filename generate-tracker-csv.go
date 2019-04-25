@@ -17,10 +17,10 @@ func main() {
 		"asgs.prolific",
 		"routes.prolific",
 		"route-integrity.prolific",
-		"route-services.prolific",
-		"tcp-routes.prolific",
 		"c2c.prolific",
 		"c2c-service-discovery.prolific",
+		"tcp-routes.prolific",
+		"route-services.prolific",
 		"interrupts.prolific",
 		"write-your-own-story.prolific",
 	}

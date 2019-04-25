@@ -376,7 +376,8 @@ You should see one TCP route that looks like the one below (this one is edited f
 
 L: tcp-routes
 ---
-Why are my TCP routes broken?
+
+Why are my TCP routes broken? - Part 0 - Setup
 
 ## Assumptions
 - You have a CF deployed
@@ -385,12 +386,9 @@ Why are my TCP routes broken?
 - You have a TCP route mapped to tcp-app called TCP_ROUTE:TCP_PORT
 
 ## What
-When writing these stories, I happened to have a particular deploy setup that caused a TCP routes to break and took me awhile to debug. One day soon, I hope this bug will be fixed, so for this story you're going to have to deploy older code to get the broken state.
-
-Ready. Set. Debug!
+When writing these stories, I happened to have a particular deploy setup that caused TCP routes to break and took me awhile to debug. Hopefully this bug is fixed by the time you are reading this, so for this story you're going to have to deploy older code to get the broken state.
 
 ## How
-
 🤔**Setup**
 1. If your environment is running istio-release 1.2.0 you are good to go. Skip to the next section.
 1. Save your current manifest so you can get back to it easily after this story.
@@ -404,26 +402,195 @@ bosh manifest > /tmp/bosh.yml
 1. See that `curl TCP_ROUTE:PORT` no longer works
 
 🤔 **Now fix it!**
-1. Debug!
+At this point it is a choose your own adventure.
+There are 3 stories that you could follow, each with different levels of help text.
 
-**Debugging Hints**
-1. Is the URL being resolved correctly?
-1. Is the traffic making it to the TCP router?
-1. Is the TCP Router sending the traffic to the correct place?
-1. Is there traffic making it to the Diego Cell?
-1. Are the DNAT rules on the Diego Cell correct?
-1. Is the traffic making it to the app container?
+Option 1: Solo adventure. No map. No compass. - This option has no hand holding. You are left on your own to find and fix the bug.
+
+Option 2: Some hints. You have a compass, but no map. - This option provides thoughtful questions and hints to probe you in the correct direction.
+
+Option 3: Step by step directions. You have a compass and a map. - This option provides instructions on how to debug each component to figure out which component is broken.
+
+I suggest starting with option 1 or 2 and then looking ahead to options 2 and 3 as you need help.
+
+All of the previous stories that taught you about iptables, tcpdump, routing tables, etc should set you up how to debug CF. However, one thing that will become helpful, but that hasn't been covered previously is [how to get into a container's networking namespace as root](https://cloudfoundry.slack.com/archives/GFXGACQUB/p1554758849206400).
+
+This your chance to put your debugging skills to the test. You can do it.
+Ready. Set. Debug!
+
+## Resources
+[How to get into a container's networking namespace as root](https://cloudfoundry.slack.com/archives/GFXGACQUB/p1554758849206400)
+
+L: tcp-routes
+---
+Why are my TCP routes broken? - Option 1 - hard
+
+## Assumptions
+- You have a CF deployed
+- The CF was deployed with the help of `bbl`
+- You have a TCP server deployed named tcp-app
+- You have a TCP route mapped to tcp-app called TCP_ROUTE:TCP_PORT
+
+## What
+Find the bug that is breaking TCP routes and fix it.
+This is option 1. This option has no hand holding. You are left on your own to find and fix the bug.
+
+## How
+📝 **See it break**
+1. See that `curl TCP_ROUTE:PORT` no longer works
+
+🤔 **Now fix it!**
+1. Debug
 
 ### Expected Result
 Find the bug. Remove the offender and get this TCP route working!
-
 Don't forget to redeploy to your old state afterwards.
 
-### Resources
+## Resources
 [How to get into a container's networking namespace as root](https://cloudfoundry.slack.com/archives/GFXGACQUB/p1554758849206400)
 
 L: tcp-routes
 ---
 
+Why are my TCP routes broken? - Option 2 - medium
+
+## Assumptions
+- You have a CF deployed
+- The CF was deployed with the help of `bbl`
+- You have a TCP server deployed named tcp-app
+- You have a TCP route mapped to tcp-app called TCP_ROUTE:TCP_PORT
+
+## What
+Find the bug that is breaking TCP routes and fix it.
+This is option 2. This option provides thoughtful questions and hints to probe you in the correct direction.
+
+## How
+📝 **See it break**
+1. See that `curl TCP_ROUTE:PORT` no longer works
+
+🤔 **Now fix it! With hints!**
+1. Draw out the data flow for TCP routes include: the client, the load balancer, the TCP router, the Diego Cell, and the app container.
+ Any step in that process could be broken.
+
+1. Start at the beginning of the flow and test if the traffic is successfully making it to the next hop.
+
+1. Follow the helpful questions to systematically debug the system.
+
+## Hints
+🔎 **helpful questions**
+❓Is the URL being resolved to the correct load balancer IP?
+❓Is the traffic making it to the TCP router?
+❓Does the TCP Router have information about the route in its route table?
+❓Is the TCP Router information correct?
+❓Is the traffic making it to the Diego Cell?
+❓Are the DNAT rules on the Diego Cell correct?
+❓Is the traffic making it to the app container?
+❓Is the traffic making it to the app process?
+
+🔎 **helpful tools**
+- Use dig for DNS resolution. It turns a URL into an IP. See story _Dig-ing TCP and HTTP Routes_ for help.
+- Use iptables to see if traffic is being directed somewhere (un)expected. See story _Route Propagation - Part 5 - DNAT Rules_ for help.
+- Use tcpdump to see if traffic is making it to a container or vm. See story _Watch your c2c packets with tcpdump_ for help.
+- Always look at logs
+- See the resources section for how to get in the container's network namespace as root. So you can run all these helpful tool inside of the app container too.
+
+### Expected Result
+Find the bug. Remove the offender and get this TCP route working!
+Don't forget to redeploy to your old state afterwards.
+
+## Resources
+[How to get into a container's networking namespace as root](https://cloudfoundry.slack.com/archives/GFXGACQUB/p1554758849206400)
+
+L: tcp-routes
+---
+Why are my TCP routes broken? - Option 3 - easy...er
+
+## Assumptions
+- You have a CF deployed
+- The CF was deployed with the help of `bbl`
+- You have a TCP server deployed named tcp-app
+- You have a TCP route mapped to tcp-app called TCP_ROUTE:TCP_PORT
+
+## What
+Find the bug that is breaking TCP routes and fix it.
+This is option 3: Step by step directions. You have a compass and a map. - This option provides instructions on how to debug each component to figure out which component is broken.
+
+## How
+📝 **See it break**
+1. See that `curl TCP_ROUTE:TCP_PORT` no longer works
+
+🤔 **Now fix it! With extra hints!**
+1. Here is a diagram of the traffic flow for _working_ TCP routes.
+ ![tcp route traffic flow](https://storage.googleapis.com/cf-networking-onboarding-images/tcp-trafficflow-ports.png)
+
+ Any step in that process could be broken. Start at the beginning of the flow and test if the traffic is successfully making it to the next hop.
+
+❓Is the URL being resolved to the correct load balancer IP?
+1. Use dig with the tcp route to determine if DNS is resolving the route correctly. The IP should match the TCP Load Balancer. Look back at the story _Dig-ing TCP and HTTP Routes_ if you forget how.
+ If the IP matches the load balancer, then you know the request is being sent to the correct place. Check the next hop.
+
+❓Is the traffic making it to the TCP router?
+1. Ssh onto the TCP router and become root.
+1. Look at all network packets where the destination port is the TCP_PORT using tcpdump.
+ ```
+tcpdump 'port TCP_PORT'
+ ```
+1. Run  `curl TCP_ROUTE:TCP_PORT` while tcpdump is watching.
+If tcpdump is seeing packets, that indicates that the load balancer is correctly proxying traffic to the TCP Router. It also means that the traffic is making it to the TCP Router.
+
+❓Does the TCP Router have information about the route in the its route table?
+1. Follow the steps in the story _TCP Routes Tables_ and see if there is an entry for TCP_PORT. If there is, then you know know that the router is being configured. Note down the Diego Cell IP and backend port (BACKEND_PORT).
+
+❓Does the TCP Router's route table entry match app's backend information?
+The TCP Router is proxying traffic for TCP_PORT to the Diego Cell IP and BACKEND_PORT, but are the variables correct?
+1. CF ssh onto tcp_app and look at the environment variables. Do they match? If so, then you know that the TCP Router is proxying traffic to the correct location.
+
+❓Is the traffic making it to the Diego Cell?
+The TCP Router is trying to  proxy traffic to the Diego Cell, but is the traffic making it there?
+1. Ssh onto the Diego Cell where tcp_app is running and become root.
+1. Use tcpdump to look at traffic destined for BACKEND_PORT.
+ ```
+tcpdump 'port BACKEND_PORT'
+ ```
+1. Run  `curl TCP_ROUTE:TCP_PORT` while tcpdump is watching.
+If tcpdump is seeing packets, that indicates that the traffic is making it to the Diego Cell.
+
+❓Are the DNAT rules on the Diego Cell correct?
+From the story _Route Propagation - Part 5 - DNAT Rules_ you learned that iptables rules redirect traffic that is sent to a Diego cell and backend port and send it to the overlay ip and app port. The same thing happens with TCP routes. Make sure that these DNAT rules are set up correctly.
+
+1. Still on the Diego Cell, look at the DNAT rules.
+ ```
+iptables -S -t nat
+ ```
+
+1. Search through the rules for the one that includes the BACKEND_PORT for tcp_app. If it is set up correctly, then it should look something like this.
+
+ ```
+-A netin--b86c9487-2224-4264-47 -d DIEGO_CELL_IP/32 -p tcp -m tcp --dport BACKEND_PORT -j DNAT --to-destination OVERLAY_IP:8080
+ ```
+
+1. Compare the overlay IP in the DNAT rule with the overlay IP from the app's environment variables. They should match. If they match then this indicates that traffic should be correctly redirected to the correct app container.
+
+❓Is the traffic making it to the app container?
+1. Using the link in the resources, start a bash session inside of the networking namespace of the app.
+1. Run `tcpdump`.
+1. Run  `curl TCP_ROUTE:TCP_PORT` while tcpdump is watching.
+1. Ctl + C out of tcpdump in the app container. (Idk why, but tcpdump doesn't tail correctly when you are in a network namespace like this. So you need to kill it before you will see the output.)
+If you see traffic, that means that the packets are making to inside of the app container.
+
+❓Is the traffic making it to the app process?
+1. Still inside of the app's network namespace, look at the DNAT rules. Are there any rules here that are sending all tcp 8080 traffic to somewhere else?
+1. Delete the bad DNAT rule and try curling the route again.
+1. Success!
+
+### Expected Result
+Find the bug. Remove the offender and get this TCP route working!
+Don't forget to redeploy to your old state afterwards.
+
+## Resources
+[How to get into a container's networking namespace as root](https://cloudfoundry.slack.com/archives/GFXGACQUB/p1554758849206400)
+
+L: tcp-routes
+---
 [RELEASE] TCP Routes ⇧
 L: tcp-routes
