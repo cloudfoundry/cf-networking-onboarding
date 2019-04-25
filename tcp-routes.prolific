@@ -34,6 +34,7 @@ User Workflow: TCP Routes
 ## Assumptions
 - You have a CF deployed
 - The CF was deployed with the help of `bbl`
+- You have one TCP Router deployed. (Check by running `bosh vms` and looking for a VM called tcp-router). If you have more than one that's okay, but the steps written below assume that there is only one.
 
 ## What
 GoRouter only handles incoming HTTP traffic.  All of the routes that we have been talking about so far are *HTTP* routes (though we often drop the HTTP in conversation and just call them routes). If you want to send og TCP traffic, then you are going to need to set up a TCP route. 
