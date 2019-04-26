@@ -493,7 +493,7 @@ The steps and diagram will be at the top of each story in case you need to orien
 
 In the last story, you were introduced to what a routes table is. In this story we are going to look at the routes table on a Diego Cell and decipher what is there.
 
-There are two easy ways to look at the route table. The old way is `routes -n`, which displays the information nicely with headers. The new way is `ip routes` with displays the information in an easier to script way with no headers. This story is going to use `routes -n` because headers are good.
+There are two easy ways to look at the route table. The old way is `route -n`, which displays the information nicely with headers. The new way is `ip routes` which displays the information with no headers to make scripting easier. This story is going to use `route -n` because headers are good.
 
 ## How
 
@@ -501,7 +501,7 @@ There are two easy ways to look at the route table. The old way is `routes -n`, 
 1. Ssh onto the Diego Cell where appA is running and become root.
 1. Look at the routes table
  ```
-routes -n
+route -n
  ```
 
 Below is the output from a Diego Cell with two apps running on it. The output is split so we can look at it one section at a time.
@@ -607,7 +607,7 @@ In the last story we learned that the VTEP is responsible for encapsulating the 
 
 Each CF Deployment is given a [range of IPs](https://github.com/cloudfoundry/silk-release/blob/develop/jobs/silk-controller/spec#L30-L33) to act as the overlay IPs. By default the overlay range is `10.255.0.0/16`. This is CIDR (pronounced, cider) notation for the IPs that range from 10.255.0.0 to 10.255.255.255. Every Diego Cell is given a subset of this range to give to the apps.
 
-The Silk Controller is a database backed process that keeps track of which subnet of IPs is leased out to which Diego Cell. Every Diego Cell has a process running called the Silk Daemon, which constantly polls the Silk Controller and asks: "what overlay ranges map to what Diego Cells"? The Silk Dameon then writes that information to the Address Resolution Protocol (ARP) table.
+The Silk Controller is a database backed process that keeps track of which subnet of IPs is leased out to which Diego Cell. Every Diego Cell has a process running called the Silk Daemon, which constantly polls the Silk Controller and asks: "what overlay ranges map to what Diego Cells"? The Silk Daemon then writes that information to the Address Resolution Protocol (ARP) table.
 
 ARP is at layer 2 in the OSI (Open System Interconnection) model. If you haven't heard of OSI, read [this](https://www.webopedia.com/quick_ref/OSI_Layers.asp) as a primer. The main bit, is that at layer 2 [MAC addresses](https://whatismyipaddress.com/mac-address) are used to address data. Because of this, in the ARP table and in the silk database, the Diego Cells are referenced by their MAC addresses and not their underlay IPs. If you aren't familiar with OSI or MAC addresses, read those links before continuing on.
 
@@ -627,16 +627,16 @@ In this story, you are going to look at the Silk Controller database to see what
 1. Run the following query to look at all of the subnets.
  ```
 mysql> select * from subnets;
-+----+-------------+-----------------+-------------------+-----------------+
-| id | underlay_ip | overlay_subnet  | overlay_hwaddr    | last_renewed_at |
-+----+-------------+-----------------+-------------------+-----------------+
-|  1 | 10.0.1.12   | 10.255.77.0/24  | ee:ee:0a:ff:4d:00 |      1555520514 | <--- Let's call these values: DIEGO_CELL_0_IP, DIEGO_CELL_0_OVERLAY_SUBNET, DIEGO_CELL_0_VTEP_MAC_ADDRESS
-|  2 | 10.0.1.13   | 10.255.82.0/24  | ee:ee:0a:ff:52:00 |      1555520512 | <--- Let's call these values: DIEGO_CELL_1_IP, DIEGO_CELL_1_OVERLAY_SUBNET, DIEGO_CELL_1_VTEP_MAC_ADDRESS
-|  3 | 10.0.1.17   | 10.255.0.225/32 | ee:ee:0a:ff:00:e1 |      1555520513 | <--- This is an istio router, which is also on the overlay. Each istio router gets one overlay IP. You might or might not have these.
-|  4 | 10.0.1.18   | 10.255.0.160/32 | ee:ee:0a:ff:00:a0 |      1555520515 | <--- Another istio router.
-+----+-------------+-----------------+-------------------+-----------------+
-
- ```
++----+---------------+---------------------------+-----------------------------+------------------+
+| id | underlay_ip   | overlay_subnet            | overlay_hwaddr              | last_renewed_at  |
++----+---------------+---------------------------+-----------------------------+------------------+
+|  0 | DIEGO_CELL_IP | DIEGO_CELL_OVERLAY_SUBNET | DIEGO_CELL_VTEP_MAC_ADDRESS | TIMESTAMP        |
+|  1 | 10.0.1.12     | 10.255.77.0/24            | ee:ee:0a:ff:4d:00           | 1555520514       | <--- Let's call these values: DIEGO_CELL_0_IP, DIEGO_CELL_0_OVERLAY_SUBNET, DIEGO_CELL_0_VTEP_MAC_ADDRESS
+|  2 | 10.0.1.13     | 10.255.82.0/24            | ee:ee:0a:ff:52:00           | 1555520512       | <--- Let's call these values: DIEGO_CELL_1_IP, DIEGO_CELL_1_OVERLAY_SUBNET, DIEGO_CELL_1_VTEP_MAC_ADDRESS
+|  3 | 10.0.1.17     | 10.255.0.225/32           | ee:ee:0a:ff:00:e1           | 1555520513       | <--- This is an istio router, which is also on the overlay. Each istio router gets one overlay IP. You might or might not have these.
+|  4 | 10.0.1.18     | 10.255.0.160/32           | ee:ee:0a:ff:00:a0           | 1555520515       | <--- Another istio router.
++----+---------------+---------------------------+-----------------------------+------------------+
+```
 
 📝**Look at the arp table**
 
@@ -659,7 +659,7 @@ Address                  HWtype  HWaddress           Flags Mask            Iface
 10.255.82.0              ether   ee:ee:0a:ff:52:00   CM                    silk-vtep
  ```
 
-⬇️This is the entry for the Istio Routes. You might or might not have these. The mac adress and overlay ips should match the database.
+⬇️This is the entry for the Istio Routes. You might or might not have these. The MAC address and overlay ips should match the database.
  ```
 Address                  HWtype  HWaddress           Flags Mask            Iface
 10.255.0.225             ether   ee:ee:0a:ff:00:e1   CM                    silk-vtep
