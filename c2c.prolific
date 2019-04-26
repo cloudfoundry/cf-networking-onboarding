@@ -7,7 +7,7 @@ User Workflow: Container to Container Networking
 
 ## What
 
-In the HTTP route track of stories you learned about the dataflow for HTTP traffic. But what if appA, an app within CloudFoundry, wants to talk to appB, another app within CloudFoundry? Before Container to Container networking (c2c) there was no shortcut for intra-foundation traffic. Without c2c, if appA wanted to talk to appB, then the traffic had to travel outside of the CF foundation, hit the external load balancer, and go through the normal HTTP traffic flow.
+In the HTTP route track of stories you learned about the dataflow for HTTP traffic. But what if appA (an app within CloudFoundry) wants to talk to appB (another app within CloudFoundry)? Before Container to Container networking (c2c) there was no shortcut for intra-CF traffic. Without c2c, if appA wanted to talk to appB, then the traffic had to travel outside of the CF foundation, hit the external load balancer, and go through the normal HTTP traffic flow.
 
 ```
 Life Before C2C                                  +------+
