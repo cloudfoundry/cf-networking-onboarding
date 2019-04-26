@@ -1011,6 +1011,7 @@ You should see packets being sent in response from appB to appA. You should see 
 L: c2c
 L: questions
 ---
+Bypass container networking policies
 
 ## Assumptions
 - You have a OSS CF deployed
