@@ -113,7 +113,7 @@ Let's see how both the overlay and underlay networks are used when one app talks
 Each step marked with a ✨ will be explained in more detail in its own story.
 
 ## How
-Follow the steps below on the diagram.
+Follow the steps below on the diagram. (Higher quality diagram [here](https://storage.googleapis.com/cf-networking-onboarding-images/c2c-data-plane.png).)
 
 ![c2c traffic flow](https://storage.googleapis.com/cf-networking-onboarding-images/overlay-underlay-silk-network.png)
 
@@ -149,7 +149,7 @@ Container to Container Networking - Part 1.1 - Network Namespaces
 
 ## Review
 This track of stories is going to go through the steps (listed below) that were covered in the dataflow overview.
-The steps and diagram will be at the top of each story in case you need to orient yourself.
+The steps and diagram will be at the top of each story in case you need to orient yourself. Higher quality diagram [here](https://storage.googleapis.com/cf-networking-onboarding-images/c2c-data-plane.png).
 
 ![c2c traffic flow](https://storage.googleapis.com/cf-networking-onboarding-images/overlay-underlay-silk-network.png)
 
@@ -230,7 +230,7 @@ Container to Container Networking - Part 1.2 - Network Interfaces
 ## Review
 
 This track of stories is going to go through the steps (listed below) that were covered in the dataflow overview.
-The steps and diagram will be at the top of each story in case you need to orient yourself.
+The steps and diagram will be at the top of each story in case you need to orient yourself. Higher quality diagram [here](https://storage.googleapis.com/cf-networking-onboarding-images/c2c-data-plane.png).
 
 ![c2c traffic flow](https://storage.googleapis.com/cf-networking-onboarding-images/overlay-underlay-silk-network.png)
 
@@ -310,7 +310,7 @@ Container to Container Networking - Part 2 - Marks
 
 ## Review
 This track of stories is going to go through the steps (listed below) that were covered in the dataflow overview.
-The steps and diagram will be at the top of each story in case you need to orient yourself.
+The steps and diagram will be at the top of each story in case you need to orient yourself. Higher quality diagram [here](https://storage.googleapis.com/cf-networking-onboarding-images/c2c-data-plane.png).
 
 ![c2c traffic flow](https://storage.googleapis.com/cf-networking-onboarding-images/overlay-underlay-silk-network.png)
 
@@ -423,7 +423,7 @@ Container to Container Networking - Part 3.1 - Linux Routes Table Primer
 
 ## Review
 This track of stories is going to go through the steps (listed below) that were covered in the dataflow overview.
-The steps and diagram will be at the top of each story in case you need to orient yourself.
+The steps and diagram will be at the top of each story in case you need to orient yourself. Higher quality diagram [here](https://storage.googleapis.com/cf-networking-onboarding-images/c2c-data-plane.png).
 
 ![c2c traffic flow](https://storage.googleapis.com/cf-networking-onboarding-images/overlay-underlay-silk-network.png)
 
@@ -463,7 +463,7 @@ Container to Container Networking - Part 3.2 - Diego Cell Routes Table
 
 ## Review
 This track of stories is going to go through the steps (listed below) that were covered in the dataflow overview.
-The steps and diagram will be at the top of each story in case you need to orient yourself.
+The steps and diagram will be at the top of each story in case you need to orient yourself. Higher quality diagram [here](https://storage.googleapis.com/cf-networking-onboarding-images/c2c-data-plane.png).
 
 ![c2c traffic flow](https://storage.googleapis.com/cf-networking-onboarding-images/overlay-underlay-silk-network.png)
 
@@ -575,7 +575,7 @@ Container to Container Networking - Part 4.2 - Overlay Leases and ARP
 
 ## Review
 This track of stories is going to go through the steps (listed below) that were covered in the dataflow overview.
-The steps and diagram will be at the top of each story in case you need to orient yourself.
+The steps and diagram will be at the top of each story in case you need to orient yourself. Higher quality diagram [here](https://storage.googleapis.com/cf-networking-onboarding-images/c2c-data-plane.png).
 
 ![c2c traffic flow](https://storage.googleapis.com/cf-networking-onboarding-images/overlay-underlay-silk-network.png)
 
@@ -685,7 +685,7 @@ Container to Container Networking - Part 5.1 - Enforce Policy
 
 ## Review
 This track of stories is going to go through the steps (listed below) that were covered in the dataflow overview.
-The steps and diagram will be at the top of each story in case you need to orient yourself.
+The steps and diagram will be at the top of each story in case you need to orient yourself. Higher quality diagram [here](https://storage.googleapis.com/cf-networking-onboarding-images/c2c-data-plane.png).
 
 ![c2c traffic flow](https://storage.googleapis.com/cf-networking-onboarding-images/overlay-underlay-silk-network.png)
 
@@ -795,7 +795,7 @@ Container to Container Networking - Part 5.2 - Enforce Policy - Same Cell vs Dif
 
 ## Review
 This track of stories is going to go through the steps (listed below) that were covered in the dataflow overview.
-The steps and diagram will be at the top of each story in case you need to orient yourself.
+The steps and diagram will be at the top of each story in case you need to orient yourself. Higher quality diagram [here](https://storage.googleapis.com/cf-networking-onboarding-images/c2c-data-plane.png).
 
 ![c2c traffic flow](https://storage.googleapis.com/cf-networking-onboarding-images/overlay-underlay-silk-network.png)
 
