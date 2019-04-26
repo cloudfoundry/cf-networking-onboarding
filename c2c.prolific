@@ -349,7 +349,15 @@ In this story we are going to find the applicable set-xmark rules for our app an
 
 ## How
 📝 **Find set-xmark rules**
-1. Delete all network policies (`cf delete-network-policy --help`)
+1. Delete all network policies. This time you are going to use the networking API because former policies from deleted apps can linger in the database, but not show up in the CLI.
+ ```
+ cf curl /networking/v1/external/policies > /tmp/policies.json
+ cf curl -X POST /networking/v1/external/policies/delete -d @/tmp/policies.json
+
+ # check that they are all deleted
+ cf curl /networking/v1/external/policies
+ ```
+
 1. Ssh onto the Diego Cell where appA is located and become root
 1. Look for the iptables rules that set marks.
  ```
