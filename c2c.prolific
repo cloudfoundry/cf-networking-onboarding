@@ -276,8 +276,10 @@ ip netns exec meow ip link
   ```
 Nothing! No wonder you can't curl google.com! There is no network interface for packets to travel through.
 
-The solution is to create a veth (virtual ethernet) pair. A veth pair consists of two virtual ethernet interface. One is placed in the host network namespace, the other in the meow network namespace. The veth pair acts like a bridge between the network namespace and the host.
+The solution is to create a veth (virtual ethernet) pair. A veth pair consists of two virtual ethernet interfaces. One is placed in the host network namespace, the other in the meow network namespace. The veth pair acts like a bridge between the network namespace and the host.
 You already saw one side of the veth pair for the proxy app when you ran `ip link` inside of the Diego Cell.  Let's look at the other half of the veth pair.
+
+Side note: Why can't each networking namespace connect directly to `eth0`? "One of the consequences of network namespaces is that only one interface could be assigned to a namespace at a time. If the root namespace owns eth0, which provides access to the external world, only programs within the root namespace could reach the Internet."This explanation comes the extra extra credit link about [making your own veth pair](https://blogs.igalia.com/dpino/2016/04/10/network-namespaces/).
 
 🤔 **Look at network interfaces inside the proxy app container**
 1. Ssh proxy app.
@@ -287,12 +289,11 @@ You already saw one side of the veth pair for the proxy app when you ran `ip lin
 You should see an eth0 interface inside of the proxy app container. This is how traffic exits the app container.
 
 ## Extra Credit
-
 Look at the [code](https://github.com/cloudfoundry/silk/blob/master/cni/lib/pair_creator.go) and [tests](https://github.com/cloudfoundry/silk/blob/master/cni/lib/pair_creator_test.go) in silk where veth pairs are set up.
 
 ## Extra Extra Credit
 📝 **Make your own veth pair **
-1. Follow [these instructions](https://blogs.igalia.com/dpino/2016/04/10/network-namespaces/) to create a veth pair to conect the meow network namespace. If successful, you will be able to curl google.com
+1. Follow [these instructions](https://blogs.igalia.com/dpino/2016/04/10/network-namespaces/) to create a veth pair to connect the meow network namespace. If successful, you will be able to curl google.com
 
 ## Resources
 [interface explanations](https://www.computerhope.com/unix/uifconfi.htm)
