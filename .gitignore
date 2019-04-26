@@ -1,0 +1,14 @@
+.DS_Store
+.idea
+.blobs/
+.idea/
+blobs/
+*.swp
+*.test
+*~
+*#
+#*
+/*.tgz
+.vagrant/
+/pkg
+/bin
