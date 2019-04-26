@@ -581,7 +581,7 @@ The steps and diagram will be at the top of each story in case you need to orien
 
 1. AppB makes a request to AppA's overlay IP address. This packet is called the overlay packet (aka the c2c packet).
 1. The packet exits the app container through the veth interface.
-1.The overlay packet is marked with a ...mark... that is unique to the source app.
+1. The overlay packet is marked with a ...mark... that is unique to the source app.
 1. Because the packet is an overlay packet, it is sent to the silk-vtep interface on the Diego Cell. This interface is a VXLAN interface.
 1. **The overlay packet is encapsulated inside of an underlay packet. This underlay packet is addressed to the underlay IP of the Diego Cell where the destination app is located (appA in this case).    <------- CURRENT STORY**
 1. The underlay packet exits the cell.
@@ -676,7 +676,7 @@ Address                  HWtype  HWaddress           Flags Mask            Iface
 L: c2c
 ---
 
-Container to Container Networking - Part 5 - Enforce Policy
+Container to Container Networking - Part 5.1 - Enforce Policy
 
 ## Assumptions
 - You have an OS CF deployed
@@ -691,7 +691,7 @@ The steps and diagram will be at the top of each story in case you need to orien
 
 1. AppB makes a request to AppA's overlay IP address. This packet is called the overlay packet (aka the c2c packet).
 1. The packet exits the app container through the veth interface.
-1.The overlay packet is marked with a ...mark... that is unique to the source app.
+1. The overlay packet is marked with a ...mark... that is unique to the source app.
 1. Because the packet is an overlay packet, it is sent to the silk-vtep interface on the Diego Cell. This interface is a VXLAN interface.
 1. The overlay packet is encapsulated inside of an underlay packet. This underlay packet is addressed to the underlay IP of the Diego Cell where the destination app is located (appA in this case).
 1. The underlay packet exits the cell.
@@ -735,7 +735,7 @@ iptables -S VPA_CHAIN_NAME
  There's nothing there. No rules attached. That is because there are no c2c policies.
 
 🤔 **Create c2c policy and look at iptables rules**
-1. Create a c2c network policy from appA to appB (`cf add-network-policy --help`)
+1. Create a c2c network policy from appA to appB (`cf add-network-policy --help`). The diagram in the review section shows apps on two different Diego Cell. The same iptables rules will be created and enforced regardless of whether appA and appB are on the same Diego Cell or not. A future story will go into more detail about this. But for this story, just know that it doesn't matter what Diego Cell your apps are running on.
 1. On the Diego Cell, look at the rules on the vpa chain again.
  ```
 iptables -S VPA_CHAIN_NAME
@@ -782,6 +782,59 @@ Let's look at them line by line.
 ## Resources
 [iptables man page](http://ipset.netfilter.org/iptables.man.html)
 [Aidan's iptables in CF ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
+L: c2c
+L: questions
+---
+
+Container to Container Networking - Part 5.2 - Enforce Policy - Same Cell vs Different Cell
+
+## Assumptions
+- You have an OS CF deployed
+- You have done the other stories in this track
+- You have two [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) apps pushed and named appA and appB (the fewer apps you have deployed the better)
+
+## Review
+This track of stories is going to go through the steps (listed below) that were covered in the dataflow overview.
+The steps and diagram will be at the top of each story in case you need to orient yourself.
+
+![c2c traffic flow](https://storage.googleapis.com/cf-networking-onboarding-images/overlay-underlay-silk-network.png)
+
+1. AppB makes a request to AppA's overlay IP address. This packet is called the overlay packet (aka the c2c packet).
+1. The packet exits the app container through the veth interface.
+1. The overlay packet is marked with a ...mark... that is unique to the source app.
+1. Because the packet is an overlay packet, it is sent to the silk-vtep interface on the Diego Cell. This interface is a VXLAN interface.
+1. The overlay packet is encapsulated inside of an underlay packet. This underlay packet is addressed to the underlay IP of the Diego Cell where the destination app is located (appA in this case).
+1. The underlay packet exits the cell.
+1. The packet then travels over the physical underlay network to the correct Diego Cell.
+1. The packet arrives to the correct Diego Cell
+1. The underlay packet is decapsulated. Now it's just the overlay packet again.
+1.  **Iptables rules check that appA is allowed to talk to appB based on the mark on the overlay packet.   <------- CURRENT STORY**
+1. If traffic is allowed, the overlay network directs the traffic to the correct place.
+
+## What
+
+The diagram above shows the container to container networking traffic flow between two apps on different Diego Cells. But what about when the apps are on the same Diego Cell?
+
+In this story, you are going to do some investigation to figure out what the container to container traffic flow is for apps on the same Diego Cell.
+
+## Questions
+
+To answer these questions, it might be helpful to review [Aidan's iptables in CF ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p).
+
+❓What chain (INPUT, OUTPUT, or FORWARD) are the container networking policy iptables rules appended to?
+❓Does traffic overlay traffic between apps on different Diego Cells hit this chain?
+❓Does traffic overlay traffic between apps on the same Diego Cell hit this chain?
+❓Does traffic overlay traffic between apps on the same Diego Cell get encapsulated?
+❓What steps listed in the review section apply for apps on the same Diego Cell?
+
+
+## Expected Result
+
+At the end of this story, you should know the traffic flow between two apps on the same Diego Cell.
+
+## Resources
+[Aidan's iptables in CF ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
+
 L: c2c
 L: questions
 ---
