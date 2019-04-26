@@ -76,6 +76,7 @@ Even though you curled the route for appA, because the routes for appA were "sta
 
 L: route-integrity
 L: deploy
+L: questions
 ---
 
 Route Integrity Demonstration
@@ -142,6 +143,7 @@ Depending on the type of error, GoRouter may choose to retry or not. Look at the
 
 L: route-integrity
 L: deploy
+L: questions
 ---
 
 Checking the SAN for Route Integrity
@@ -218,6 +220,7 @@ You should see the same SAN value stored in GoRouter routes table and in the app
 [Using Instance Identity Credentials](https://docs.cloudfoundry.org/devguide/deploy-apps/instance-identity.html)
 
 L: route-integrity
+L: questions
 ---
 
 [RELEASE] Route Integrity ⇧

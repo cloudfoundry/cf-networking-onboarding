@@ -285,6 +285,7 @@ OVERLAY_IP=<value>
 
 
 L: http-routes
+L: questions
 ---
 
 Route Propagation - Part 3 - Route Emitter and NATS
@@ -371,6 +372,7 @@ Inspect NATs messages. Look at what route information is sent to the GoRouter.
 [NATS ruby gem repo](https://github.com/nats-io/ruby-nats)
 
 L: http-routes
+L: questions
 ---
 
 Route Propagation - Part 4 - GoRouter
@@ -441,6 +443,7 @@ In the next story we will see what what is listening on that port on the cell.
 [GoRouter routing table docs](https://github.com/cloudfoundry/gorouter#the-routing-table)
 
 L: http-routes
+L: questions
 ---
 
 Route Propagation - Part 4.5 - see what's listening with netstat

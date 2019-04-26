@@ -72,6 +72,7 @@ Network traffic can go in many directions, and there are many jargony way to ref
 - You set up a local netcat server and send traffic to it from your terminal.
 
 L: asgs
+L: questions
 ---
 
 User Workflow: Application Security Groups
@@ -144,6 +145,7 @@ When public_networks is not bound to staging containers, then the staging contai
 
 L: asgs
 L: user-workflow
+L: questions
 ---
 
 Anatomy of an Iptables Rule
@@ -314,7 +316,7 @@ Hopefully you realize by now that iptables rules are very powerful and very fun 
 [iptables primer](https://danielmiessler.com/study/iptables/)
 
 L: asgs
-
+L: questions
 ---
 
 ASGs and Iptables

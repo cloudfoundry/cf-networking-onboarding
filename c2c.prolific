@@ -411,6 +411,7 @@ In the vxlan policy agent (vpa), there is a component called the planner. The pl
 [Here](https://github.com/cloudfoundry/silk-release/blob/develop/src/lib/rules/rules.go#L100-L105) is the implementation of *NewMarkSetRule*
 
 L: c2c
+L: questions
 ---
 
 Container to Container Networking - Part 3.1 - Linux Routes Table Primer
@@ -782,6 +783,7 @@ Let's look at them line by line.
 [iptables man page](http://ipset.netfilter.org/iptables.man.html)
 [Aidan's iptables in CF ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
 L: c2c
+L: questions
 ---
 
 Logging with Container to Container Networking
@@ -945,6 +947,7 @@ You should see packets being sent in response from appB to appA. You should see 
 [debugging non-c2c traffic in CF](https://github.com/cloudfoundry/cf-networking-release/blob/develop/docs/troubleshooting.md#debugging-non-c2c-packets)
 
 L: c2c
+L: questions
 ---
 
 ## Assumptions
@@ -1019,6 +1022,8 @@ AppA should not be able to access appB. AppA should be able to access appB′.
 [Aidan's iptables in CF ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
 
 L: c2c
+L: questions
+L: questions
 ---
 
 [RELEASE] Container to Container Networking ⇧
