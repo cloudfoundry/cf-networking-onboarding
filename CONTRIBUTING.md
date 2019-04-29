@@ -48,7 +48,7 @@ Capitalize words at the beginning of the sentence even if it's awkward.
 - No: c2c stands for container to container networking. (Bad: not capitalized at beginning of sentence)
  
 #### Emoji Guide
-- 📝 indicates a set of instructions where the commands will be provided to the participant. Lot's of copying and pasting.
+- 📝 indicates a set of instructions where the commands will be provided to the participant. Lots of copying and pasting.
 - 🤔 indicates a set of instructions where the commands will NOT be provided to the participant. Previous stories should set up for success for these exercises. More thinking and digging through docs for these.
 - ❓This indicates a non-rhetorical question. The answers should be recorded in the comments and later reviewed with the onboarding facilitator.
 
