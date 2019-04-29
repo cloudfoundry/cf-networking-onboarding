@@ -134,7 +134,8 @@ When you have public_networks bound to all staging and running containers your a
 When public_networks is not bound to running containers then your running apps cannot access the internet.
 When public_networks is not bound to staging containers, then the staging container is not able to access the internet to install godep (for go apps) and other staging requirements, so `cf push` will fail.
 
-(If you're working with PCF Dev, you should see three security groups, one of which is named `all_pcfdev` and opens all egress traffic. Because of the `all_pcfdev` security group any other group would be redundant.)
+#### Note:
+If you're working with PCF Dev, you should see three security groups. One is named `all_pcfdev` which opens all egress traffic. Because of this security group, any other group is redundant.
 
 ## Resources
 [Application Security Groups Documentation](https://docs.cloudfoundry.org/adminguide/app-sec-groups.html)
