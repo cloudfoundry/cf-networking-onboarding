@@ -183,7 +183,7 @@ Iptables reading - a primer
 The next few stories will introduce you to iptables rules. Reading a little bit about them first will help a lot.
 
 ## How
-1. Give the [iptables man page](http://ipset.netfilter.org/iptables.man.html) a skim. At least the description, targets, and tables sections.
+1. Give the [iptables man page](http://ipset.netfilter.org/iptables.man.html) a skim. At least the description, targets, and tables sections. It leaves out a lot of commonly used features that are covered in [the iptables-extensions man page](http://ipset.netfilter.org/iptables-extensions.man.html).
 
 1. Flip through [Aidan's "iptables in Cloud Foundry" powerpoint](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
 
