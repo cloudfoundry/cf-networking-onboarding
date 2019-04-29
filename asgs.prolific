@@ -2,7 +2,7 @@ East/West What? Directional Networking Terms
 
 ## What
 
-Network traffic can go in many directions, and there are many jargony way to refer to them. Let's define them.
+Network traffic can go in many directions, and there are many jargony ways to refer to them. Let's define them.
 
 **Ingress Traffic** is traffic that originates outside the local network that is transmitted to somewhere inside the local network. Remember ingress traffic is coming *in*.
 
