@@ -68,8 +68,8 @@ L: introduction
 Set Up Your Environment
 
 ## How
-1. Grab a OSS dev environment from your team that is relatively up-to-date. You will be using this environment for the whole week.
-1. Create and target an org and space where you will be doing all of your work. You have have the script `cf_seed` in your workstation to do this for you.
+1. Grab a Networking OSS dev environment that is relatively up-to-date. You will be using this environment for the whole week.
+1. Create and target an org and space where you will be doing all of your work. You have the script `cf_seed` in your workstation to do this for you.
 
 L: introduction
 ---
