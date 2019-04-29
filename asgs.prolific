@@ -348,13 +348,13 @@ Let's investigate what iptables rules are created for the public_networks ASG.
  Note which IP ranges are specified. Save these rules somewhere accessible for future reference.
 1. Ssh onto the Diego Cell where appA is running and become root.
  ```
-# First determine the IP of the Diego Cell
+ # First determine the IP of the Diego Cell
 cf ssh appA  -c "env | grep CF_INSTANCE_IP"
 
-# Look at bosh output to see which Diego Cell has that IP
+ # Look at bosh output to see which Diego Cell has that IP
 bosh instances
 
-# Ssh on
+ # Ssh on
 bosh ssh diego-cell/DIEGO_CELL_INSTANCE_GUID
  ```
 1. List all of the iptables rules on the filter table on the Diego Cell
