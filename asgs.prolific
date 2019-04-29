@@ -82,8 +82,7 @@ User Workflow: Application Security Groups
 - You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and named appA
 
 ## What?
-Application Security Groups (ASGs) are a collection of egress (outbound) rules that specify the protocols, ports, and IP ranges
-where applications can send traffic. ASGs define rules that *allow* traffic. They are a whitelist, not a blacklist.
+Application Security Groups (ASGs) are a collection of egress (outbound) rules that specify the protocols, ports, and IP ranges where applications can send traffic. ASGs define rules that *allow* traffic. They are a whitelist, not a blacklist.
 Diego Cells use these ASGs to filter and log outbound network traffic.
 
 When applications are staging, there need to be ASGs permissive enough to allow download particular resources (for example: ruby gems for ruby apps).
