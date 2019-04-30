@@ -67,10 +67,12 @@ It can be annoying to scroll up and down in the story as you use the values, so 
 ## Resources for the entire route propagation track
 **Capi**
 [CAPI API docs](https://apidocs.cloudfoundry.org/7.8.0/)
+[CAPI V3 API docs](http://v3-apidocs.cloudfoundry.org/version/3.70.0/index.html)
 
 **Diego**
 [cfdot docs](https://github.com/cloudfoundry/cfdot)
 [diego design notes](https://github.com/cloudfoundry/diego-design-notes#what-are-all-these-repos-and-what-do-they-do)
+[diego bbs API docs](https://github.com/cloudfoundry/bbs/tree/master/doc)
 
 **NATs**
 [NATS message bus repo](https://github.com/nats-io/gnatsd)
@@ -125,10 +127,12 @@ In the next few stories, you are going to need to remember values from one story
 ## Resources for the entire route propagation track
 **Capi**
 [CAPI API docs](https://apidocs.cloudfoundry.org/7.8.0/)
+[CAPI V3 API docs](http://v3-apidocs.cloudfoundry.org/version/3.70.0/index.html)
 
 **Diego**
 [cfdot docs](https://github.com/cloudfoundry/cfdot)
 [diego design notes](https://github.com/cloudfoundry/diego-design-notes#what-are-all-these-repos-and-what-do-they-do)
+[diego bbs API docs](https://github.com/cloudfoundry/bbs/tree/master/doc)
 
 **NATs**
 [NATS message bus repo](https://github.com/nats-io/gnatsd)
