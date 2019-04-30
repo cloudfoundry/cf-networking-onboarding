@@ -37,12 +37,12 @@ Route Propagation - Part 0.1 - Creating a Route Overview
 
 ## What
 In the previous story you used the CF CLI to create and map routes. But what happens under the hood to make all of this work? (hint: iptables is involved)
-There are two main data flows for routes, (1) when an app dev creates a new route and (2) when an internet user connects to an app using the route.
+There are two main data flows for routes, (1) when an app dev pushes a new app with a route and (2) when an internet user connects to an app using the route.
 
 Let's focus on the first case. Here is what happens under the hood:
 
 Each step marked with a ✨ will be explained in more detail in a story in this track.
-**When an app dev creates a new route**
+**When an app dev pushes a new app with a route**
 1. ✨ The app dev pushes an app with a route using CAPI.
 1. CAPI sends this information to Diego.
 1. Diego schedules the container create on a specific Diego Cell.
@@ -100,7 +100,7 @@ Route Propagation - Part 0.2 - HTTP Traffic Overview
 
 ## What
 In the previous story you went over the first of two main data flows for routes:
-(1) when an app dev creates a new route and (2) when an internet user connects to an app using the route.
+(1) when an app dev pushes a new app with a route and (2) when an internet user connects to an app using the route.
 
 Here is what happens under the hood for the second case:
 
@@ -168,7 +168,7 @@ The Cloud Controller API (CAPI) maintains the database of all apps, domains, rou
 However CAPI does not keep track of *where* those apps are deployed. Nor does CAPI track the IPs and ports each
 route should, well, *route* to. That's the job of the router, often called GoRouter.
 
-CAPI keeps track of the desired state. The user desires there to be a route called MY_ROUTE that sends traffic to appA.
+CAPI keeps track of the desired state. The user wants a route called MY_ROUTE that sends traffic to appA.
 But the user doesn't (shouldn't) care about the logistics needed to make that route happen. That is the responsibility of other components.
 
 Let's look at what information CAPI *does* keep track of.
@@ -321,7 +321,7 @@ messages to the GoRouter via the NATS message bus." Even when no change is detec
 emit the entire routing table as a kind of heartbeat.
 
 For this story, let's look at the messages that the Route Emitter is publishing via NATS. Subscribing to these NATs messages
-can be a helpful debugging technique when something
+can be a helpful debugging technique.
 
 ## How
 
