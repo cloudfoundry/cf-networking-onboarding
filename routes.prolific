@@ -329,8 +329,7 @@ can be a helpful debugging technique.
 0. Bosh ssh onto the Diego Cell where your app is running and become root
 0. Download ruby and the NATS gem
     ```
-    apt-get install ruby
-    apt-get install ruby-dev
+    apt-get install -y ruby ruby-dev
     gem install nats
     ```
 0. Get NATS username, password, and server address
@@ -620,7 +619,7 @@ A **proxy** is a process that sits in-between the client and the server and inte
 
 In this case, Envoy is a sidecar proxy (Envoy can be other types of proxies too, but forget about that for now). The sidecar Envoy is only present when Route Integrity is turned on (which is done by default).
 
-Route Integrity is when the GoRouter sends all app traffic via TLS. Also, the GoRouter checks the the certificate provided by the app to make sure it is the app that the GoRouter *thinks* it is connecting to. This makes communication more secure and prevents stale routes in the route table from causing misrouting, which is a large security concern. Read more about how Route Integrity prevents misrouting [here](https://docs.cloudfoundry.org/concepts/http-routing.html#-preventing-misrouting).
+Route Integrity is when the GoRouter sends all app traffic via TLS. As part of the TLS handshake, the GoRouter validates the certificate's SAN against the ID found in its route table to make sure it is connecting to the intended app instance. This makes communication more secure and prevents stale routes in the route table from causing misrouting, which is a large security concern. Read more about how Route Integrity prevents misrouting [here](https://docs.cloudfoundry.org/concepts/http-routing.html#-preventing-misrouting).
 
 The Envoy sidecar is the process that actually terminates the TLS traffic from the GoRouter making Route Integrity possible. Then the Envoy proxies it onto...can it be? finally?! YES! THE APP!!
 
