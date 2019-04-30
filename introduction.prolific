@@ -56,7 +56,7 @@ How to Read Onboarding Stories
 
 ### Emoji Key
 
-- 📝 indicates a story or set of instructions where the commands will be provided to you. Lot's of copying and pasting.
+- 📝 indicates a story or set of instructions where the commands will be provided to you. Lots of copying and pasting.
 - 🤔 indicates a story or set of instructions where the commands will NOT be provided to you. Previous stories should set up for success for these exercises. More thinking and digging through docs for these.
 - ❓This indicates a non-rhetorical question. I really want you to think about the question. Discuss the answer with your pair and *record an answer in the comments of the story*. We will go over the questions and answers during the next standup.
 
@@ -69,6 +69,7 @@ Set Up Your Environment
 
 ## How
 1. Grab a Networking OSS dev environment that is relatively up-to-date. You will be using this environment for the whole week.
+
 1. Create and target an org and space where you will be doing all of your work. You have the script `cf_seed` in your workstation to do this for you.
 
 L: introduction

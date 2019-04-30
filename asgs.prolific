@@ -2,7 +2,7 @@ East/West What? Directional Networking Terms
 
 ## What
 
-Network traffic can go in many directions, and there are many jargony way to refer to them. Let's define them.
+Network traffic can go in many directions, and there are many jargony ways to refer to them. Let's define them.
 
 **Ingress Traffic** is traffic that originates outside the local network that is transmitted to somewhere inside the local network. Remember ingress traffic is coming *in*.
 
@@ -82,8 +82,7 @@ User Workflow: Application Security Groups
 - You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and named appA
 
 ## What?
-Application Security Groups (ASGs) are a collection of egress (outbound) rules that specify the protocols, ports, and IP ranges
-where applications can send traffic. ASGs define rules that *allow* traffic. They are a whitelist, not a blacklist.
+Application Security Groups (ASGs) are a collection of egress (outbound) rules that specify the protocols, ports, and IP ranges where applications can send traffic. ASGs define rules that *allow* traffic. They are a whitelist, not a blacklist.
 Diego Cells use these ASGs to filter and log outbound network traffic.
 
 When applications are staging, there need to be ASGs permissive enough to allow download particular resources (for example: ruby gems for ruby apps).
@@ -349,13 +348,13 @@ Let's investigate what iptables rules are created for the public_networks ASG.
  Note which IP ranges are specified. Save these rules somewhere accessible for future reference.
 1. Ssh onto the Diego Cell where appA is running and become root.
  ```
-# First determine the IP of the Diego Cell
+ # First determine the IP of the Diego Cell
 cf ssh appA  -c "env | grep CF_INSTANCE_IP"
 
-# Look at bosh output to see which Diego Cell has that IP
+ # Look at bosh output to see which Diego Cell has that IP
 bosh instances
 
-# Ssh on
+ # Ssh on
 bosh ssh diego-cell/DIEGO_CELL_INSTANCE_GUID
  ```
 1. List all of the iptables rules on the filter table on the Diego Cell
