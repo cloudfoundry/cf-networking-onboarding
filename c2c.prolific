@@ -88,11 +88,11 @@ Overlay vs Underlay
 
 ## What
 
-An ** Underlay Network** is the physical networking infrastructure. It is the underlying network responsible for delivery of packets across networks.
+The **underlay network** is the network that you're given to work with, on top of which you build a virtual **overlay network**. Routing for overlay networks is done at the software layer (in CF we use iptables rules). Overlay networks are used to create layers of abstraction that can be used to run multiple separate layers on top of the physical network — the bottom underlay network. These are general definitions that are not specific to Cloud Foundry.
 
-An **Overlay Network** is a virtual network that is built on top of an Underlay Network. Routing for Overlay Networks is done at the software layer (in CF we use iptables rules). Overlay Networks are used to create layers of network abstraction that can be used to run multiple separate, discrete virtualized network layers on top of the physical network. These are general definitions that are not specific to Cloud Foundry.
+** Your ** underlay network is often someone else\'s overlay network, that engineer just works on a lower abstraction layer and might work on an IaaS rather than a PaaS, for example. It\'s all relative! 🤯
 
-Routing to an app using the Diego Cell IP and port is done on the **underlay network**. Container to Container networking (c2c) is done on the **overlay network**.
+Routing to an app using the Diego Cell IP and port is done on the **underlay network**. Container to container networking (c2c) is done on the **overlay network**.
 
 ## Resources
 - [Difference between overlay and underlay](https://ipwithease.com/difference-between-underlay-network-and-overlay-network/)
