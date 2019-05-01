@@ -59,9 +59,9 @@ Let's ignore the technical implementation for now and go through the user workfl
  cf push appB --no-route
  ```
 1. Get the overlay IP for appB `cf ssh appB -c "env | grep CF_INSTANCE_INTERNAL_IP"`
-   (Explanation what overlay is awaits in future stories! For now just know that each app instance has a unique overlay IP that c2c uses.)
+   (An explanation of what "overlay" means awaits in future stories! For now just know that each app instance has a unique overlay IP that c2c uses.)
 
-1. Get onto the container for appA and curl the appB internal IP and app port. 
+1. Get onto the container for appA and curl the appB internal IP and app port.
    ```
 cf ssh appA
 watch  "curl CF_INSTANCE_INTERNAL_IP:8080"
@@ -92,7 +92,7 @@ The **underlay network** is the network that you're given to work with, on top o
 
 ** Your ** underlay network is often someone else\'s overlay network, that engineer just works on a lower abstraction layer and might work on an IaaS rather than a PaaS, for example. It\'s all relative! 🤯
 
-Routing to an app using the Diego Cell IP and port is done on the **underlay network**. Container to container networking (c2c) is done on the **overlay network**.
+Routing to an app using the Diego Cell IP and port is done on what we will refer to as the **underlay network**. Container to container networking (c2c) is done on what we will refer to as the **overlay network**.
 
 ## Resources
 - [Difference between overlay and underlay](https://ipwithease.com/difference-between-underlay-network-and-overlay-network/)
