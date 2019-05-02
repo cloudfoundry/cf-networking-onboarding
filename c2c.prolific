@@ -165,10 +165,7 @@ The steps and diagram will be at the top of each story in case you need to orien
 1. Iptables rules check that appA is allowed to talk to appB based on the mark on the overlay packet.
 1. If traffic is allowed, the overlay network directs the traffic to the correct place.
 
-
-
 ## What
-
 Each CF app runs in a container, but what *is* a container? A container is a collection of **namespaces** and **cgroups**.
 
 **Namespaces** "partition kernel resources such that one set of processes sees one set of resources while another set of processes sees a different set of resources" (thanks [wiki](https://en.wikipedia.org/wiki/Linux_namespaces)). There are different types of namespaces. For example, the mount namespace lets processes see different file trees. Another example (most related to this onboarding) is the network namespace. The network namespace isolates network interfaces (we'll get into what those are in the next story).
@@ -177,16 +174,39 @@ Each CF app runs in a container, but what *is* a container? A container is a col
 
 Most important in this onboarding context is the networking namespace. Container networking components are responsible for setting up the networking namespace for each app.
 
-In this story you'll play around with network namespaces and even make one yourself.
+Even the bosh processes are run in containers! In CF this is done with [Bosh Process Manager (BPM)](https://github.com/cloudfoundry/bpm-release).
+
+In this story you'll play around with BPM containers, network namespaces, and even make a network namespace for yourself.
 
 ## How
 
 1. Read Julia Evan's post: [What even is a container](https://jvns.ca/blog/2016/10/10/what-even-is-a-container/)
 
+📝 **Look at a container**
+1. Ssh onto a Diego Cell and become root.
+1. Look at the network interfaces (again, we'll go deeper in the next story).
+ ```
+ifconfig
+ ```
+1. Inspect the directories that the root user has access to. For example, look at all the log files.
+ ```
+ls /var/vcap/sys/log
+ ```
+1. Get into the BPM container for the vxlan-policy-agent.
+ ```
+bpm list
+bpm shell vxlan-policy-agent
+ ```
+1. Look at the network interfaces. How do they compare to the host vm network interfaces?
+1. Look at the log files you can access. How do they compare to the files accessible to root user?
+
+ ❓Based on this information, does BPM create a [mount namespace](https://medium.com/@teddyking/linux-namespaces-850489d3ccf) for the vxlan-policy-agent container?
+ ❓Based on this information, does BPM create a network namespace for the vxlan-policy-agent container?
+1. Exit the container.
+
 📝 **Make your own network namespace**
 
-1. Ssh onto a Diego Cell and become root.
-1. Create your own network namespace called meow.
+1. Still on a Diego Cell as root, create your own network namespace called meow.
  ```
 ip netns add meow
 ```
@@ -217,6 +237,7 @@ In the next story you'll explore network interfaces. You'll learn why the meow n
 [linux namespaces overview](https://medium.com/@teddyking/linux-namespaces-850489d3ccf)
 
 L: c2c
+L: questions
 ---
 
 Container to Container Networking - Part 1.2 - Network Interfaces
