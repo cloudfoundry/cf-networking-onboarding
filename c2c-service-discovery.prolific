@@ -71,7 +71,7 @@ meow.meow.meow               shared          internal
 
 1. Using `cf map-route`, create and map a route for appB that uses our new internal domain "meow.meow.meow". May I suggest the route, appB.meow.meow.meow?
 
-1. In the terminal that is in the container for appA, use this new internal route to curl appB `watch "curl appB.meow.meow.meow:8080"`
+1. In the terminal that is in the container for appA, use this new internal route to curl appB `watch "curl -s appB.meow.meow.meow:8080"`
     What? "Could not resolve host"???? Why doesn't it work like our other internal route? Unlike other domains, internal domains require one more step in order for them to work.
 
 1. Download the manifest for your CF. Look at the property `internal_domains` on the `bosh_dns_adapter` job. It probably looks like this:
@@ -91,7 +91,7 @@ internal_domains:
 
 1. Redeploy your environment.
 
-1. In the terminal that is in the container for appA, use this new internal route to curl appB `watch "curl appB.meow.meow.meow:8080"`
+1. In the terminal that is in the container for appA, use this new internal route to curl appB `watch "curl -s appB.meow.meow.meow:8080"`
 
 ### Expected Result
 
@@ -125,7 +125,7 @@ In the previous story ("User Flow: Create your own Internal Domain") we talked a
 
 1. From your terminal, use appA's `/proxy` endpoint to send traffic from appA to neopets.com
  ```
- watch "curl APPA_ROUTE/proxy/neopets.com"
+ watch "curl -s APPA_ROUTE/proxy/neopets.com"
  ```
  You should get back some html for neopets! Fun! :D
 
@@ -146,7 +146,7 @@ As a malicious actor, you know that appA is sending traffic to neopets.com. You 
 
 😇 **Back to pretending you are innocent user1**
 1. From your terminal, use appA's `/proxy` endpoint to send traffic from appA to neopets.com
-   `watch "curl APPA_ROUTE/proxy/neopets.com"`
+   `watch "curl -s APPA_ROUTE/proxy/neopets.com"`
    It should still show neopets. Why isn't it broken yet!?
 
 
@@ -160,7 +160,7 @@ You had to restart Bosh DNS Adapter process so it would run with the new config 
 
 😇 **Back to pretending you are innocent user1**
 1. From your terminal, use appA's `/proxy` endpoint to send traffic from appA to neopets.com
-   `watch "curl APPA_ROUTE/proxy/neopets.com"`
+   `watch "curl -s APPA_ROUTE/proxy/neopets.com"`
    Where did neopets go???
 
 
