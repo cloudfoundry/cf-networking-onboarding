@@ -352,12 +352,12 @@ The steps and diagram will be at the top of each story in case you need to orien
 ## What
 In the last story we found out that packets leave the app container over the veth pair interface. In this story we are going to look at how overlay packets are marked.
 
-First off, *why* are packets are marked?
+First off, *why* are packets marked?
 Packets are marked with a mark that is unique to the source app. Each instance of the source app has its packets marked with the same ID. If there is a c2c policy, then on the destination Diego Cell there are iptables rules that allow traffic with a certain mark to certain destinations. The policies look like the following diagram. Using one mark per source app, decreases the number of iptables rules needed per c2c policy, especially when there are large number of app instances.
 
 ![markful networking policy diagram](https://storage.googleapis.com/cf-networking-onboarding-images/diagram-of-silk-networking-policies.png)
 
-If packets weren't marked we *could* use the the overlay IP as a unique identifier. However, this would create the need for many more iptables rules, especially when there are a large number of app instances.
+If packets weren't marked we *could* use the overlay IP as a unique identifier. However, this would create the need for many more iptables rules, especially when there are a large number of app instances.
 
 ![markless networking policy diagram](https://storage.googleapis.com/cf-networking-onboarding-images/diagram-of-flannel-networking-policies.png)
 
@@ -514,7 +514,7 @@ The steps and diagram will be at the top of each story in case you need to orien
 
 In the last story, you were introduced to what a routes table is. In this story we are going to look at the routes table on a Diego Cell and decipher what is there.
 
-There are two easy ways to look at the route table. The old way is `route -n`, which displays the information nicely with headers. The new way is `ip routes` which displays the information with no headers to make scripting easier. This story is going to use `route -n` because headers are good.
+There are two easy ways to look at the route table. The old way is `route -n`, which displays the information nicely with headers. The new way is `ip route` which displays the information with no headers to make scripting easier. This story is going to use `route -n` because headers are good.
 
 ## How
 
