@@ -1070,14 +1070,14 @@ DIEGO_CELL_2_IP = ...
 🤔 **Setup**
 1. Scale appB to 2 instances.
 1. Make sure that you have the following configuration.
- - Diego Cell 1: 1 instance of appA, 1 instance of appB
- - Diego Cell 2: 1 instance of appB, this instance will be called appB′
+ - Diego Cell 1: 1 instance of appA, 1 instance of appB (appB_1)
+ - Diego Cell 2: 1 instance of appB, this instance will be called appB_2
 
 🤔 **Get environment variables**
 1. Get and record the following variables:
  ```
-APP_B_BACKEND_PORT = ...
-APP_B_PRIME_BACKEND_PORT = ...
+APP_B_1_BACKEND_PORT = ...
+APP_B_2_BACKEND_PORT = ...
  ```
 hint: you can ssh onto a specific instance of an app, by passing the `-i` flag (`cf ssh --help`).
 
@@ -1085,16 +1085,16 @@ hint: you can ssh onto a specific instance of an app, by passing the `-i` flag (
 1. Ssh onto appA
 1. See if you can access appB
  ```
-curl DIEGO_CELL_1_IP:APP_B_BACKEND_PORT
+curl DIEGO_CELL_1_IP:APP_B_1_BACKEND_PORT
  ```
 
 1. See if you can access appB
  ```
-curl DIEGO_CELL_2_IP:APP_B_PRIME_BACKEND_PORT
+curl DIEGO_CELL_2_IP:APP_B_2_BACKEND_PORT
  ```
 
 ### Expected Result
-AppA should not be able to access appB. AppA should be able to access appB′.
+AppA should not be able to access appB_1. AppA should be able to access appB_2.
 
 ## Questions
 
