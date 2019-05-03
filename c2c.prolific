@@ -1038,6 +1038,7 @@ Bypass container networking policies
 - You have a OSS CF deployed
 - You have two [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) apps pushed and named appA and appB
 - You have at least 2 Diego Cells
+- There are no c2c network policies
 
 ## What
 
