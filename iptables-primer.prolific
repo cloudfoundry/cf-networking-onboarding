@@ -148,7 +148,7 @@ Make a super basic firewall for your docker container. This (extremely practical
 0. Curl google.com. Does it fail?
 0. Curl 23.96.35.235:80. Does it succeed?
 0. Curl http://neopets.com. Does it fail or succeed? Why?
-0. Delete all of the rules and chains that you created. (Do this after the extra credit, if you are so inclined.)
+0. Practice deleting chains and rules: delete all of the rules and chains that you created.
 
 ### Expected Result
 Hopefully you realize by now that iptables rules are very powerful and very fun :D
