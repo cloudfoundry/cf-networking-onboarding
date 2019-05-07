@@ -45,7 +45,7 @@ Because the wide open `public_networks` security group is bound to all running a
 
 🤔 **Using Staging ASGs**
 1. Unbind the public_networks **staging** security-group.
-1. Push a new app, and name it appB.
+1. Push a new proxy app, and name it appB.
 
 ❓ What happened? Why did it fail?
 
