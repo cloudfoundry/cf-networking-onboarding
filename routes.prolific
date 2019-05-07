@@ -506,6 +506,7 @@ Route Propagation - Part 5 - DNAT Rules
 - You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and called appA
 - You have one route mapped to appA called APP_A_ROUTE
 - You have completed the previous stories in this track
+- It will help if you have completed the "iptables-primer" track, but it is not required.
 
 ## Recorded values from previous stories
 ```

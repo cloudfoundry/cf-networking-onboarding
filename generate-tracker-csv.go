@@ -14,12 +14,13 @@ import (
 func main() {
 	modules := []string{
 		"introduction.prolific",
-		"asgs.prolific",
 		"routes.prolific",
 		"route-integrity.prolific",
 		"c2c.prolific",
 		"c2c-service-discovery.prolific",
+		"iptables-primer.prolific",
 		"tcp-routes.prolific",
+		"asgs.prolific",
 		"route-services.prolific",
 		"interrupts.prolific",
 		"write-your-own-story.prolific",

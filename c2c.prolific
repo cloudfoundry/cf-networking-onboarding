@@ -100,6 +100,13 @@ Routing to an app using the Diego Cell IP and port is done on what we will refer
 L: c2c
 ---
 
+Iptables Primer
+
+Please go to the section labeled "iptables-primer" and complete those stories before moving on.
+
+L: c2c
+---
+
 Container to Container Networking - Part 0 - Dataflow Overview
 
 ## Assumptions

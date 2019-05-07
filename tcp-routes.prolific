@@ -389,6 +389,7 @@ Why are my TCP routes broken? - Part 0 - Setup
 ## Assumptions
 - You have a CF deployed
 - The CF was deployed with the help of `bbl`
+- You have completed the "iptables-primer" track
 - You have a TCP server deployed named tcp-app
 - You have a TCP route mapped to tcp-app called TCP_ROUTE:TCP_PORT
 
