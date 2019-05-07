@@ -70,7 +70,7 @@ Set Up Your Environment
 ## How
 1. Grab a Networking OSS dev environment that is relatively up-to-date. You will be using this environment for the whole week.
 
-1. Create and target an org and space where you will be doing all of your work. You have the script `cf_seed` in your workstation to do this for you.
+1. Create and target an org and space where you will be doing all of your work. if you are working on a Networking Team machine, you hould have the script `cf_seed` in your workstation to do this for you. You can find this script [here](https://github.com/cloudfoundry/networking-workspace/blob/0925ac5f6d1ca214e2dd871a6e36662fbd8a74b3/shared.bash#L184-L188).
 
 L: introduction
 ---
