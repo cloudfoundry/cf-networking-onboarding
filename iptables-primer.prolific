@@ -1,4 +1,4 @@
-Anatomy of an Iptables Rule
+Iptables - a primer
 
 ## What
 ASGs and c2c network policies are implemented using iptables rules. Think of iptables as a firewall implementation. (Iptables can do more than firewall things, but we have to start somewhere.)
@@ -17,27 +17,21 @@ The example above can be translated as:
 
 Once a packet hits ACCEPT, then it stops evaluating in that table and chain. It would also stop if it hit a DROP or REJECT target.
 
-## Resources
-Deeper reading you might want later:
-[iptables man page](http://ipset.netfilter.org/iptables.man.html)
-[Aidan's iptables in CF ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
-[Julia Evans iptables basics](https://jvns.ca/blog/2017/06/07/iptables-basics/)
-
-L: iptables-primer
----
-
-Iptables reading - a primer
-
-## What
-The next few stories will introduce you to iptables rules. Reading a little bit about them first will help a lot.
+In this story you are going to skim/read two great resources on iptables rules.
 
 ## How
 1. Give the [iptables man page](http://ipset.netfilter.org/iptables.man.html) a skim. At least the description, targets, and tables sections. It leaves out a lot of commonly used features that are covered in [the iptables-extensions man page](http://ipset.netfilter.org/iptables-extensions.man.html).
 
 1. Flip through [Aidan's "iptables in Cloud Foundry" powerpoint](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
 
-L: iptables-primer
+1. Check out [Julian Evan's Blog on iptables](https://jvns.ca/blog/2017/06/07/iptables-basics/).
 
+## Resources
+[iptables man page](http://ipset.netfilter.org/iptables.man.html)
+[Aidan's iptables in CF ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
+[Julia Evans iptables basics](https://jvns.ca/blog/2017/06/07/iptables-basics/)
+
+L: iptables-primer
 ---
 
 Write your own iptables DROP rule in a docker container
