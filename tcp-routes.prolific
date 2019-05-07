@@ -251,9 +251,9 @@ cf curl /networking/v1/external/policies -v
  You should get a response that looks like this:
  ```
 REQUEST: [2019-04-24T11:01:49-07:00]
-GET /networking/v1/external/policies <---- this is the header that contains the URL
+GET /networking/v1/external/policies <---- this is the header that contains the URL path
 HTTP/1.1
-Host: api.beanie.c2c.cf-app.com
+Host: api.beanie.c2c.cf-app.com      <---- this is the header that contains the URL base
 Accept: application/json
 Authorization: [PRIVATE DATA HIDDEN]
 Content-Type: application/json
