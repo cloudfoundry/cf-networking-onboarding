@@ -909,9 +909,9 @@ In this story, you are going to do some investigation to figure out what the con
 To answer these questions, it might be helpful to review [Aidan's iptables in CF ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p).
 
 ❓What chain (INPUT, OUTPUT, or FORWARD) are the container networking policy iptables rules appended to?
-❓Does traffic overlay traffic between apps on different Diego Cells hit this chain?
-❓Does traffic overlay traffic between apps on the same Diego Cell hit this chain?
-❓Does traffic overlay traffic between apps on the same Diego Cell get encapsulated?
+❓Does overlay traffic between apps on different Diego Cells hit this chain?
+❓Does overlay traffic between apps on the same Diego Cell hit this chain?
+❓Does overlay traffic between apps on the same Diego Cell get encapsulated?
 ❓What steps listed in the review section apply for apps on the same Diego Cell?
 
 
