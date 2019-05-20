@@ -175,7 +175,7 @@ Let's look at what information CAPI *does* keep track of.
 
 ## How
 
-0. 🤔 Map a route to appA. Let's call this route APP_A_ROUTE. I recommend deleting all other routes.
+0. 🤔 Map a route to appA. Let's call this route APP_A_ROUTE. I recommend _deleting_ all other routes.
 
 0. 🤔 Look at the domains, routes, route mappings, and apps in CAPI's database.
     To look at all the domains you can curl CAPI using `cf curl /v2/domains`. Use the [CAPI docs](https://apidocs.cloudfoundry.org/7.8.0/) to figure out the APIs for the other resources.
