@@ -3,7 +3,7 @@ Iptables - a primer
 ## What
 ASGs and c2c network policies are implemented using iptables rules. Think of iptables as a firewall implementation. (Iptables can do more than firewall things, but we have to start somewhere.)
 
-All network traffic on linux machines is evaluated against the iptables rules written on the machine. To organize these rules, there are chains and tables. Chains have tables and tables have rules. Traffic hits different tables and chains depending on if the traffic is ingress, egress, or East/West.
+All network traffic on linux machines is evaluated against the iptables rules written on the machine. To organize these rules, there are tables and chains. Tables have chains and chains have rules. Users (that's you!) can create custom chains and rules for their own needs. Traffic hits different tables and chains depending on if the traffic is ingress, egress, or East/West.
 
 Let's look at the anatomy of an iptables rule.
 
