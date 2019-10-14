@@ -15,7 +15,7 @@ To run an Onboarding Week in your office, **read the [facilitation](FACILITATING
 
 ## Usage
 ### Import stories to Tracker (from source)
-The stories in this repo are divided by epic (e.g. HTTP Routes, Route Integrity, etc) They are provided in .prolific format. To grab the most recent versions of stories from master or another branch:
+The stories in this repo are divided by epic (e.g. HTTP Routes, Route Integrity, etc) They are provided in prolific format as `.prolific.md` files. To grab the most recent versions of stories from master or another branch:
 
 1. Clone this repo
 1. Run `./build` (requires Docker)

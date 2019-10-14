@@ -13,19 +13,19 @@ import (
 
 func main() {
 	modules := []string{
-		"introduction.prolific",
-		"routes.prolific",
-		"route-integrity.prolific",
-		"c2c.prolific",
-		"c2c-service-discovery.prolific",
-		"iptables-primer.prolific",
-		"asgs.prolific",
-		"route-registrar.prolific",
-		"bosh-dns.prolific",
-		"tcp-routes.prolific",
-		"route-services.prolific",
-		"interrupts.prolific",
-		"write-your-own-story.prolific",
+		"introduction.prolific.md",
+		"routes.prolific.md",
+		"route-integrity.prolific.md",
+		"c2c.prolific.md",
+		"c2c-service-discovery.prolific.md",
+		"iptables-primer.prolific.md",
+		"asgs.prolific.md",
+		"route-registrar.prolific.md",
+		"bosh-dns.prolific.md",
+		"tcp-routes.prolific.md",
+		"route-services.prolific.md",
+		"interrupts.prolific.md",
+		"write-your-own-story.prolific.md",
 	}
 
 	workingDir, err := os.Getwd()
