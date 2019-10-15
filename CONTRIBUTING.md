@@ -5,13 +5,13 @@ Thank you for taking the time to contribute back to this project. Please read th
 If you want make small changes (better wording, fixing typos etc), it is probably easiest change it straight in the code.
 
 ### New Stories && New Epics
-Stories are grouped in `.prolific` files based on which track of work they are in. For example, all ASG stories are in the `asg.prolific` file.
+Stories are grouped in `.prolific.md` files based on which track of work they are in. For example, all ASG stories are in the `asg.prolific.md` file.
 
 If you want to create a new track of work, you will need to create a new prolific file and make sure to reference it in the [generate script](./generate-tracker-csv.go).
 
 All stories in the same track should have a matching label and the last story in the prolific file should be a release marker.
 
-When creating a new story it can be easiest to develop it first in tracker, make sure that it looks pretty, and then copy and paste the change into your text editor. Look at this example [prolific file](./example.prolific) for help on how to format prolific files. And look at the [prolific docs](https://www.pivotaltracker.com/integrations/prolific).
+When creating a new story it can be easiest to develop it first in tracker, make sure that it looks pretty, and then copy and paste the change into your text editor. Look at this example [prolific file](./example.prolific.md) for help on how to format prolific files. And look at the [prolific docs](https://www.pivotaltracker.com/integrations/prolific).
 
 ### Check your work
 Regardless of how large your change is. Please run the `./build` script before making a PR to make sure you didn't break anything.
