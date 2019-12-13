@@ -846,7 +846,7 @@ Let's look at them line by line.
 -N vpa--1555608460726256
 ```
 
-⬇️This is about marking outgoing traffic. (We went over this in the story *Container to Container Networking - Part 2 - Marks*)
+⬇️This is about marking outgoing traffic. (We went over this in the story *Container to Container Networking - Part 2 - Marks*). You might not have this rule. You will only have this rule if this app is also the source of a networking policy.
 ```
 -A vpa--1555608460726256 -s 10.255.77.3/32 -m comment --comment "src:2f978b7f-b3d2-4f50-b08f-776634a6e411" -j MARK --set-xmark 0x2/0xffffffff
 ```
