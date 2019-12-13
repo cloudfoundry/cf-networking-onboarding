@@ -743,7 +743,7 @@ Let's figure it out by inspecting the packets with tcpdump! Tcpdump is a CLI too
 ### How
 
 🤔 **Send traffic via the overlay from appA to appB**
-1. In terminal 1, use watch to continuously curl appA from appB using appB's overlay IP and app port.
+1. In terminal 1, use watch to continuously curl appB from appA using appB's overlay IP and app port.
 
 📝 **Look at the underlay traffic**
 1. In terminal 2, ssh onto Diego Cell 2, where appB is running.
