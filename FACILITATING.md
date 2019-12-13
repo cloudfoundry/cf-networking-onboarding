@@ -8,11 +8,10 @@ Either way, the idea is to give people who want more experience with networking 
 Networking Program Onboarding Week is intended to be a **facilitated** experience. We want participants to get "productively lost" together, not wander in aimless hair-tearing frustration. 
 
 ### Preparation Suggestions
-* Allocate participants for the week.
-* Designate workstation(s).
-* Setup remote pairing hardware for remote participants.
-* Provide one "floater" laptop per pair to facilitate independent docs reading.
-* Create and populate *private* Tracker Project(s). Invite participants.
+* Allocate participants for the week. Try to get an even number of participants so that everyone always has a pair.
+* Designate workstation(s). If they have been recently reimaged, run a workstation script on them. I like the [Networking Workspace](https://github.com/cloudfoundry/networking-workspace). Let Amelia know if you need access to this repo.
+* Setup remote pairing hardware for remote participants (if applicable). Get headsets. Make sure zoom is downloaded. 
+* Create and populate Tracker Project(s). Invite participants to all trackers.
 * A month before, send out an email to all participants, reminding them to clear their schedules for the week.  Schedule day-long meetings to help avoid people scheduling more meetings for that time.
 ```
 Howdy folks!
@@ -50,18 +49,42 @@ Otherwise, if you have any questions, feel free to reply to this email.
 Thanks!
 The Networking Program  Onboarding Staff
 ```
+* A week before, have a 15 minute meeting with all the participants to make sure everyone is on the same page with expectations and to answer any questions.
+* A week before, create a slack channel and invite everyone. Add yourself and @ameowlia (if you want me, anyway) as interrupts.
+* A day before, set up the dev environments that the pairs will be using 
+* A day before, post all relavent links and information in slack:
+```
+## First Day 
+Where: 
+When: 
 
-### Communication Suggestions
-* **Morning Standup:** to review how the week is going / answer questions.
-* **After-lunch pow-wow:** more review and questions (for some groups this is indispensable, for others it's less necessary).
-* **Second Afternoon Check-in:** Have a facilitator stop by the participants' workstations again later in the afternoon (around 4pm) to see if they have any additional questions.
-* **+/∆s ("plus deltas"):** An end-of-day email to everyone involved in the week (e.g. onboarders, managers, interested third parties) reviewing what went well and what they would have liked to change about the day. This is an opportunity to reflect and give prompt feedback on how the week is going (it's also something that CF NYC teams do for real).
-* **Group Slack:** Start a message thread to share resources and post reminders (a channel is probably overkill).
-* **Retro:** What Pivotal experience could be complete without a retro? Order goodies and treat it like a celebration.
+## Links
+:pair: Piar.ist
+Link: 
+Username: 
+Password: 
 
-### Structure Suggestions
-* If they find the last hour or so of the day hard to get though (this is a really draining week for Onboarders) encourage them to use it in whichever way will be most productive. This could mean separating from their pair to read docs, if that's what they need.
-* Thursday and Friday are good days for the more free-form exploratory modules that they might not have been confident enough to tackle at the beginning of the week.
+:retro: Retro
+Link: 
+Team:
+Password:
+
+:tracker: Trackers
+<Dev-Env-1> - 
+<Dev-Env-2>  - 
+<Dev-Env-3>  - 
+
+Targeting Environments
+<information on how to bosh target and cf target>
+
+```
+
+### Calendar Invites
+* Hold standup every day. Make sure it's on the calenar, this way participants know when to start! This is especially important for the first day.
+* Whiteboarding sessions on Tuesday and Thursday afternoons. These should be one hour long and make sure that you get a conference room with a good whiteboard (if you are not remote). If you are remote then set up a miro board.
+* Retro on Friday. Prepare the retro board ahead of time so participants can add items to it all week.
+* One team lunch. Make sure you get approval for budget.
+* Feedback time on Friday. Block off 30 minutes for people to fill out the [feedback form](https://docs.google.com/forms/d/e/1FAIpQLSc4_cMKZh283_gM4T6BRkny9YXpLYhxrY9mP1tMv4y0SvkrGQ/viewform?usp=sf_link).
 
 ### Daily Theme Suggestions
 * Be conscious of your pair's needs. Support one another. Teach one another.
