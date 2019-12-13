@@ -223,7 +223,7 @@ ip netns
  ```
  You should only see meow. Hmmm. You might think you would see the other networking namespaces for all the apps on this cell. (I certainly thought so when I first tried this.) You'll learn how to view an app's networking namespace one day, I promise.
 
-1. Curl google.com from the Diego Cell. See that it works! This is because Application Security Groups allow it. (Remember ASGs?! Those stories were so long ago!) .
+1. Curl google.com from the Diego Cell. See that it works! This is because Application Security Groups allow it. (Remember ASGs?! You might or might not have done the ASG stories yet. tl;dr ASGs are iptables firewall rules for egress traffic.)
 
 1. Curl google.com from inside of your networking namespace
  ```
