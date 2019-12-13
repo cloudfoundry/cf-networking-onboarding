@@ -155,6 +155,7 @@ Hopefully you realize by now that iptables rules are very powerful and very fun 
 ## Resources
 [iptables man page](http://ipset.netfilter.org/iptables.man.html)
 [Julia Evans iptables basics](https://jvns.ca/blog/2017/06/07/iptables-basics/)
+[iptables.info - great resource linked to in Julia's blog, but only available with the way back machine](https://web.archive.org/web/20180310124055/http://www.iptables.info/en/iptables-contents.html) 
 [Aidan's iptables ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
 [iptables primer](https://danielmiessler.com/study/iptables/)
 
