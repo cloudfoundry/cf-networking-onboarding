@@ -124,7 +124,7 @@ Follow the steps below on the diagram. (Higher quality diagram [here](https://st
 
 ![c2c traffic flow](https://storage.googleapis.com/cf-networking-onboarding-images/overlay-underlay-silk-network.png)
 
-1. AppB (on Diego Cell 1) makes a request to AppA's overlay IP address (on Diego Cell 2). This packet is called the overlay packet (aka the c2c packet).
+1. AppB (10.255.1.4) makes a request to AppA's overlay IP address (10.255.2.7). This packet is called the overlay packet (aka the c2c packet).
 1. ✨ The packet exits the app container through the veth interface.
 1. ✨ The overlay packet is marked with a ...mark... that is unique to the source app.
 1. ✨ Because the packet is an overlay packet, it is sent to the silk-vtep interface on the Diego Cell. This interface is a VXLAN interface.
