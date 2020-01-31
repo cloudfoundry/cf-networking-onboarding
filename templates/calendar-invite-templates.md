@@ -1,5 +1,16 @@
 ## Welcome to Onboarding
 
+This is a chance to make sure everyone is on the same page and ready for CF networking onboarding.
+
+Agenda: 
+- introductions
+- meeting place and time for Monday
+- what the week will look like
+- review trackers
+- possible topics we could cover
+
+Zoom: [LINK]
+
 ## Standup
 We will hold standup at our workstations, which are located [HERE].
 OR
