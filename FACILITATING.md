@@ -10,7 +10,7 @@ Networking Program Onboarding Week is intended to be a **facilitated** experienc
 ### Suggested Todo checklist
 
 #### 6 Weeks Before
-- [ ] Send out an open call for participants. Email your office and post in relavent slack channels. Participants must have team, anchor, manager, and EL approval.
+- [ ] Send out an open call for participants. See [open call template](/templates/open-call-template.md). Email your office and post in relavent slack channels. Participants must have team, anchor, manager, and EL approval.
 
 #### 4 Weeks Before
 - [ ] Choose participants and let them know they have been choosen. See [welcome email template](/templates/welcome-email-template.md).
