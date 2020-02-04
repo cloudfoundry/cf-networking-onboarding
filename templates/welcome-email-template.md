@@ -5,7 +5,7 @@ During the week you will be pairing full time with each other, working on storie
 
 There will be more communication closer to the start of Networking Program Onboarding, so don't worry too much about the details of preparation just yet.  You will be pairing full time, however, so your teams should expect you to be away for the majority of the week. If you generally have a lot of meetings we recommend cancelling or moving as many of them as possible, but if you need to step out for a meeting here or there, that shouldn't be a problem.
 
-If this week doesn't work for you, let us know!  
+**There is about 3 hours worth of pre-work that we ask you to complete before you start CF Networking Onboarding Week**. You can find the prework [here](https://github.com/pivotal/cf-networking-program-onboarding/blob/master/templates/prework.md).  
 
 Thanks!
 The Networking Program Onboarding Staff
