@@ -81,6 +81,25 @@ If it doesn't work, check that you created the policy in the correct direction, 
 L: c2c
 L: user-workflow
 ---
+A Container Networking Overview by Julia Evans
+
+## What 
+
+Before we get into the specifics about container networking in Cloud Foundry, let's learn about container networking _in general_.
+
+And there's no better way to spend your time than reading a blog post by Julia Evans 💕.
+
+## How
+
+1. 📚Read [Julia Evans' blog post "A container networking overview"](https://jvns.ca/blog/2016/12/22/container-networking/)
+1. 🍐Tell your pair two things you learned from this blog post.
+
+## Bonus
+
+1. Spin up a docker container and try the commands in the blog post for yourself!
+
+L: c2c
+---
 Overlay vs Underlay
 
 ## Assumptions
