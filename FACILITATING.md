@@ -13,7 +13,7 @@ Networking Program Onboarding Week is intended to be a **facilitated** experienc
 - [ ] Send out an open call for participants. See [open call template](/templates/open-call-template.md). Email your office and post in relavent slack channels. Participants must have team, anchor, manager, and EL approval.
 
 #### 4 Weeks Before
-- [ ] Choose participants and let them know they have been choosen. See [welcome email template](/templates/welcome-email-template.md).
+- [ ] Choose participants and let them know they have been choosen. Send them prework. See [welcome email template](/templates/welcome-email-template.md).
 - [ ] Make a calendar event for the whole week and invite participants
 - [ ] Make an 30 minute "welcome to onboarding" event for the week before the onboarding. This is time to make sure everyone is on the same page with expectations and to answer any questions. See [calendar invite template](/templates/calendar-invite-templates.md).
 - [ ] Ask for workstations
