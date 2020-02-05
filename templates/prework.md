@@ -9,7 +9,7 @@ There is some assumed knowledge in the onboarding. The following short reads hel
 
 * [What is a VM? How is it different from a container?](https://www.backblaze.com/blog/vm-vs-containers/)
 
-## Long "Reads" (required)
+## Long "Reads" (highly suggested)
 * [A Container Networking Overview - Julia Evans](https://jvns.ca/blog/2016/12/22/container-networking/)
 _Estimated Time: 15 minutes (reading), 1 hour (trying all the commands)_
 
