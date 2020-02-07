@@ -8,7 +8,7 @@ Howdy folks!
 
 📅**Clear your calendars.** You will be pairing full time, however, so your teams should expect you to be away for the majority of the week. If you generally have a lot of meetings we recommend cancelling or moving as many of them as possible, but if you need to step out for a meeting here or there, that shouldn't be a problem.
 
-👩‍💻**Pre-work.** There is about 2 hours worth of pre-work to complete before you start CF Networking Onboarding Week. You can find the pre-work here.
+👩‍💻**Pre-work.** There is about 2 hours worth of pre-work to complete before you start CF Networking Onboarding Week. You can find the pre-work [here](https://github.com/pivotal/cf-networking-program-onboarding/blob/master/templates/prework.md).
 
 🙋‍♀️ **Interested in being a facilitator?** If you want to learn how to run these onboarding in the future, let me know and we can co-facilitate this one! 
 
