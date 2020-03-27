@@ -470,7 +470,7 @@ OVERLAY_IP=<value>
 ```
 
 ## What
-Netstat is tool that can show information about network connections, routing tables, and network interface statistics.
+Netstat is a tool that can show information about network connections, routing tables, and network interface statistics.
 In the previous story we saw that the GoRouter sent traffic for APP_A_ROUTE to DIEGO_CELL_IP:DIEGO_CELL_ENVOY_PORT.
 Let's use netstat to see what is listening at on the Diego Cell and specifically at DIEGO_CELL_IP:DIEGO_CELL_ENVOY_PORT.
 
