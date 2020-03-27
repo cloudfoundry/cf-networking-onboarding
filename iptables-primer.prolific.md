@@ -17,7 +17,7 @@ The example above can be translated as:
 
 Once a packet hits ACCEPT, then it stops evaluating in that table and chain. It would also stop if it hit a DROP or REJECT target.
 
-In this story you are going to skim/read two great resources on iptables rules.
+In this story you are going to skim/read a couple great resources on iptables rules.
 
 ## How
 1. Give the [iptables man page](http://ipset.netfilter.org/iptables.man.html) a skim. At least the description, targets, and tables sections. It leaves out a lot of commonly used features that are covered in [the iptables-extensions man page](http://ipset.netfilter.org/iptables-extensions.man.html).
@@ -26,10 +26,19 @@ In this story you are going to skim/read two great resources on iptables rules.
 
 1. Check out [Julian Evan's Blog on iptables](https://jvns.ca/blog/2017/06/07/iptables-basics/).
 
+## Optional Videos
+Here are some thorough videos on iptables rules. If you are the type of person who likes getting lots of information up front, watch them now. 
+If you are the type of person who likes to experiment first, skip these videos and watch them after the next story. (Don't worry I'll remind you.)
+
+1. 🎬 Watch this video ["iptables: Packet Processing" by Dr. Murphy's Lectures](https://www.youtube.com/watch?v=yE82upHCxfU) _length 14:22_
+1. 🎬 Watch this video ["iptables: Tables and Chains" by Dr. Murphy's Lectures](https://www.youtube.com/watch?v=jgH976ymdoQ) _length 10:34_
+
 ## Resources
 [iptables man page](http://ipset.netfilter.org/iptables.man.html)
 [Aidan's iptables in CF ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
 [Julia Evans iptables basics](https://jvns.ca/blog/2017/06/07/iptables-basics/)
+["iptables: Packet Processing" by Dr. Murphy's Lectures](https://www.youtube.com/watch?v=yE82upHCxfU)
+["iptables: Tables and Chains" by Dr. Murphy's Lectures](https://www.youtube.com/watch?v=jgH976ymdoQ)
 
 L: iptables-primer
 ---
@@ -121,6 +130,23 @@ You should know how to...
 [Julia Evans iptables basics](https://jvns.ca/blog/2017/06/07/iptables-basics/)
 [Aidan's iptables ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
 [iptables primer](https://danielmiessler.com/study/iptables/)
+
+L: iptables-primer
+
+---
+Watch Iptables Videos
+
+## Assumptions
+- None!
+
+### What?
+If you haven't watched these videos yet, now is a great time. In the last story you had a chance to poke around with iptables. 
+Now hopefully when you watch these videos the content will really stick because you are more familiar with the concepts.
+
+### How?
+
+1. 🎬 Watch this video ["iptables: Packet Processing" by Dr. Murphy's Lectures](https://www.youtube.com/watch?v=yE82upHCxfU) _length 14:22_
+1. 🎬 Watch this video ["iptables: Tables and Chains" by Dr. Murphy's Lectures](https://www.youtube.com/watch?v=jgH976ymdoQ) _length 10:34_
 
 L: iptables-primer
 
