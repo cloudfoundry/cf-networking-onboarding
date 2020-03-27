@@ -7,11 +7,9 @@ ARP stands for Address Resolution Protocol. The ARP table keeps track of which I
 
 ```
 # sample command
-
 arp
 
 # sample output
-
 Address                  HWtype  HWaddress           Flags Mask            Iface
 10.255.73.0              ether   ee:ee:0a:ff:49:00   CM                    silk-vtep
 10.255.235.3             ether   ee:ee:0a:ff:eb:03   CM                    s-010255235003
@@ -23,12 +21,10 @@ The dig CLI does DNS lookups.
 
 ```
 # sample command
-
 dig URL [@SERVER_IP]
 dig neopets.com @169.254.4.4
 
 # sample output
-
  ; <<>> DiG 9.10.3-P4-Ubuntu <<>> neopets.com
  ;; global options: +cmd
  ;; Got answer:
@@ -64,7 +60,6 @@ The ifconfig CLI is used to look at networking interfaces.
 ifconfig
 
 # sample output
-
 eth0      Link encap:Ethernet  HWaddr 42:01:0a:00:01:0c
           inet addr:10.0.1.12  Bcast:10.0.1.12  Mask:255.255.255.255
           UP BROADCAST RUNNING MULTICAST  MTU:1460  Metric:1
@@ -115,13 +110,10 @@ ip netns exec NETWORK_NAMESPACE_NAME COMMAND
 ```
 
 ```
-# sample commands for ip link
-
 # list all networking interfaces
 ip link list 
 
 # sample output
-
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
 2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1460 qdisc mq state UP mode DEFAULT group default qlen 1000
@@ -133,13 +125,10 @@ ip link list
 ```
 
 ```
-# sample commands for ip route
-
 # list routes in route table
 ip route
 
 # sample output (yup, it's not pretty and there are no headers)
-
 default via 10.0.0.1 dev eth0  proto dhcp  src 10.0.1.12  metric 1024
 default via 10.0.0.1 dev eth0  proto dhcp  metric 1024
 10.0.0.1 dev eth0  proto dhcp  scope link  src 10.0.1.12  metric 1024
@@ -166,7 +155,6 @@ Netstat is a tool that can show information about network connections, routing t
 
 ```
 # sample command
-
 netstat -tulp
 # -t  <---- show tcp sockets
 # -u  <---- show udp sockets
@@ -180,12 +168,10 @@ netstat -tulp
 The route CLI lets users list and modify routing tables
 
 ```
-# sample command
-
+# list the routing table
 route -n
 
 # sample output
-
 Kernel IP routing table
 Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
 0.0.0.0         10.0.0.1        0.0.0.0         UG    1024   0        0 eth0
