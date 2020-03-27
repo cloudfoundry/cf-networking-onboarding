@@ -29,6 +29,8 @@ And routes can send traffic to many apps. So Route Mappings is a many-to-many ma
 ### Expected Result
 You have a route that maps to both appA and appB. See that the overlay IP changes, showing that you are routed evenly(ish) between all the apps mapped to the routes.
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L: http-routes
 L: user-workflow
 ---
@@ -92,6 +94,7 @@ It can be annoying to scroll up and down in the story as you use the values, so 
 **Envoy**
 [What is Envoy?](https://www.envoyproxy.io/docs/envoy/latest/intro/what_is_envoy)
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: http-routes
 ---
@@ -152,6 +155,7 @@ In the next few stories, you are going to need to remember values from one story
 **Envoy**
 [What is Envoy?](https://www.envoyproxy.io/docs/envoy/latest/intro/what_is_envoy)
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: http-routes
 ---
@@ -194,6 +198,7 @@ APP_A_ROUTE=<value>
 ## Resources
 [CAPI API docs](https://apidocs.cloudfoundry.org/7.8.0/)
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: http-routes
 ---
@@ -287,6 +292,7 @@ OVERLAY_IP=<value>
 [cfdot docs](https://github.com/cloudfoundry/cfdot)
 [diego design notes](https://github.com/cloudfoundry/diego-design-notes#what-are-all-these-repos-and-what-do-they-do)
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: http-routes
 L: questions
@@ -374,6 +380,8 @@ Inspect NATs messages. Look at what route information is sent to the GoRouter.
 [NATS message bus repo](https://github.com/nats-io/gnatsd)
 [NATS ruby gem repo](https://github.com/nats-io/ruby-nats)
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L: http-routes
 L: questions
 ---
@@ -445,6 +453,8 @@ In the next story we will see what what is listening on that port on the cell.
 
 [GoRouter routing table docs](https://github.com/cloudfoundry/gorouter#the-routing-table)
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L: http-routes
 L: questions
 ---
@@ -495,6 +505,8 @@ Let's use netstat to see what is listening at on the Diego Cell and specifically
 You won't see the DIEGO_CELL_ENVOY_PORT anywhere in the netstat output because nothing is *actually* running there.
 But if there's nothing running there, how does the traffic reach the app? Would you believe that iptables are involved?
 Check out the next story to learn more :)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: http-routes
 ---
@@ -576,6 +588,8 @@ Inspect the iptables rules that DNAT the traffic from the GoRouter and send it t
 [iptables man page](http://ipset.netfilter.org/iptables.man.html)
 [Aidan's iptables in CF ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L: http-routes
 ---
 
@@ -592,6 +606,8 @@ Before you go further it will help if you read a quick primer on Envoy.
 
 1. 📚 Read Julia Evan's blog post ["Some Envoy Basics"](https://jvns.ca/blog/2018/10/27/envoy-basics/).
  Unfortunately, the envoy in the docker container referenced in the blog post doesn't work anymore. However, just reading the post is enough to get a nice overview.
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: http-routes
 ---
@@ -680,6 +696,8 @@ Look at the Envoy's 8080 listener and related cluster and see how network traffi
 [Route Integrity/Misrouting Docs](https://docs.cloudfoundry.org/concepts/http-routing.html#-preventing-misrouting)
 [What is Envoy?](https://www.envoyproxy.io/docs/envoy/latest/intro/what_is_envoy)
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L: http-routes
 ---
 
@@ -698,6 +716,7 @@ Let's review!
 ### Expected Result
 You know everything about routes. (Just kidding.)
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: http-routes
 

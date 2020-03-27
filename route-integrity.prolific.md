@@ -74,6 +74,8 @@ Even though you curled the route for appA, because the routes for appA were "sta
 ❓ What could cause routes to become stale? What could exacerbate this problem?
 ❓ Before Route Integrity, what could app devs do to prevent stale routes from accidentally releasing their data?
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L: route-integrity
 L: deploy
 L: questions
@@ -140,6 +142,8 @@ Depending on the type of error, GoRouter may choose to retry or not. Look at the
 
 ## Links
 [CF Docs - TLS to Apps](https://docs.cloudfoundry.org/concepts/http-routing.html#tls-to-back-end)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: route-integrity
 L: deploy
@@ -218,6 +222,8 @@ You should see the same SAN value stored in GoRouter routes table and in the app
 ## Links
 [CF Docs - TLS to Apps](https://docs.cloudfoundry.org/concepts/http-routing.html#tls-to-back-end)
 [Using Instance Identity Credentials](https://docs.cloudfoundry.org/devguide/deploy-apps/instance-identity.html)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: route-integrity
 L: questions

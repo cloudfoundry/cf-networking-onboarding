@@ -1,6 +1,6 @@
 Networking Program Onboarding Week [a note for facilitators]
 
- Hi there, facilitators!
+Hi there, facilitators!
 
 This is a reminder to read the **[facilitation documentation](FACILITATION.md)** on GitHub.
 
@@ -13,6 +13,8 @@ It's also a short task list of things you might want to do before Onboarding Wee
 - [ ] Add morning standup to participant calendars so they know where to be Monday morning.
 - [ ] Schedule boxes and lines whiteboarding sessions
 - [ ] Add Retro to participant calendars (ideally EOD Fri)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: introduction
 
@@ -40,6 +42,8 @@ Networking Onboarding Week is a self-paced, guided exploration of the Cloud Foun
 
 **Pro Tip:** As you begin stories, click the "Start" button. If you feel confident about their content when you finish, click "Finish", "Deliver", and "Accept". If you still have questions on the material, leave it in the delivered state (i.e. with the "Accept"/"Reject" buttons showing) and decide at the end how you would like to follow up on your questions.
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L: introduction
 
 ---
@@ -62,6 +66,8 @@ How to Read Onboarding Stories
 
 - [ ] Read this story closely
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L: introduction
 
 ---
@@ -72,7 +78,10 @@ Set Up Your Environment
 
 1. Create and target an org and space where you will be doing all of your work. if you are working on a Networking Team machine, you hould have the script `cf_seed` in your workstation to do this for you. You can find this script [here](https://github.com/cloudfoundry/networking-workspace/blob/0925ac5f6d1ca214e2dd871a6e36662fbd8a74b3/shared.bash#L184-L188).
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L: introduction
+
 ---
 Meet Proxy!
 
@@ -124,6 +133,8 @@ Now you know the power of proxy!
 
 ## Resources
 [tcp vs udp](https://www.vpnmentor.com/blog/tcp-vs-udp/)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: introduction
 ---
@@ -196,6 +207,8 @@ Network traffic can go in many directions, and there are many jargony ways to re
 - You visit neopets in your browser.
 - Your pair ssh-es onto your computer.
 - You set up a local netcat server and send traffic to it from your terminal.
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: introduction
 L: questions

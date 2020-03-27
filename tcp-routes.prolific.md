@@ -26,6 +26,8 @@ The whole talk is great. If you have the time, watch the whole thing.
 ❓What layer is IP at?
 ❓What layer is HTTP at?
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L: tcp-routes
 L: questions
 ---
@@ -133,6 +135,8 @@ Don't delete your TCP app/route/domain yet! You'll need them in the next stories
 [netcat fun! by julia evans](https://jvns.ca/blog/2013/10/01/day-2-netcat-fun/)
 [Did you brew install nc on your mac and it broke bosh? yup.](https://github.com/cloudfoundry/bosh-cli/pull/403)
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L: tcp-routes
 L: user-workflow
 L: questions
@@ -192,6 +196,8 @@ All CF HTTP Routes resolve to the same IP. All CF TCP Routes resolve to the same
 ## Resources
 [understanding the dig command](https://mediatemple.net/community/products/dv/204644130/understanding-the-dig-command)
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L: tcp-routes
 L: questions
 ---
@@ -220,6 +226,8 @@ Let's look at a diagram of these ports.
 
 ## Resources
 [configuring app ports in CF](https://docs.cloudfoundry.org/devguide/custom-ports.html)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: tcp-routes
 L: questions
@@ -266,6 +274,8 @@ User-Agent: go-cli 6.43.0+815ea2f3d.2019-02-20 / darwin
 ## Resources
 [tcp header format](https://www.freesoft.org/CIE/Course/Section4/8.htm)
 [http headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: tcp-routes
 L: questions
@@ -380,6 +390,8 @@ You should see one TCP route that looks like the one below (this one is edited f
 ## Resources
 [routing api docs](https://github.com/cloudfoundry/routing-api/blob/master/docs/api_docs.md#list-tcp-routes)
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L: tcp-routes
 L: questions
 ---
@@ -429,6 +441,8 @@ Ready. Set. Debug!
 ## Resources
 [How to get into a container's networking namespace as root](https://cloudfoundry.slack.com/archives/GFXGACQUB/p1554758849206400)
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L: tcp-routes
 ---
 Why are my TCP routes broken? - Option 1 - hard
@@ -456,6 +470,8 @@ Don't forget to redeploy to your old state afterwards.
 
 ## Resources
 [How to get into a container's networking namespace as root](https://cloudfoundry.slack.com/archives/GFXGACQUB/p1554758849206400)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: tcp-routes
 ---
@@ -508,6 +524,8 @@ Don't forget to redeploy to your old state afterwards.
 
 ## Resources
 [How to get into a container's networking namespace as root](https://cloudfoundry.slack.com/archives/GFXGACQUB/p1554758849206400)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: tcp-routes
 L: questions
@@ -598,6 +616,8 @@ Don't forget to redeploy to your old state afterwards.
 
 ## Resources
 [How to get into a container's networking namespace as root](https://cloudfoundry.slack.com/archives/GFXGACQUB/p1554758849206400)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: tcp-routes
 L: questions

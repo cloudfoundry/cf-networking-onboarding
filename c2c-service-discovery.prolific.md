@@ -42,6 +42,8 @@ Now that you are using internal routes to communicate via c2c, it shouldn't matt
 [internal domain docs](https://github.com/cloudfoundry/cf-networking-release/blob/develop/docs/app-sd.md#internal-domains)
 [servide discovery docs](https://github.com/cloudfoundry/cf-networking-release/blob/develop/docs/app-sd.md)
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L: c2c-service-discovery
 L: user-workflow
 
@@ -102,6 +104,7 @@ appA should be able to successfully reach appB using the internal route with our
 https://github.com/cloudfoundry/cf-networking-release/blob/develop/docs/app-sd.md#internal-domains
 https://github.com/cloudfoundry/cf-networking-release/blob/develop/docs/app-sd.md
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: c2c-service-discovery
 L: user-workflow
@@ -178,6 +181,8 @@ AppA should no longer be able to access neopets. :(
 ## Resources
 https://github.com/cloudfoundry/cf-networking-release/blob/develop/docs/app-sd.md#internal-domains
 https://github.com/cloudfoundry/cf-networking-release/blob/develop/docs/app-sd.md
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: c2c-service-discovery
 

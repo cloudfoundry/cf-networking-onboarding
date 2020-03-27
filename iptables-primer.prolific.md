@@ -40,6 +40,8 @@ If you are the type of person who likes to experiment first, skip these videos a
 ["iptables: Packet Processing" by Dr. Murphy's Lectures](https://www.youtube.com/watch?v=yE82upHCxfU)
 ["iptables: Tables and Chains" by Dr. Murphy's Lectures](https://www.youtube.com/watch?v=jgH976ymdoQ)
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L: iptables-primer
 ---
 
@@ -131,6 +133,8 @@ You should know how to...
 [Aidan's iptables ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
 [iptables primer](https://danielmiessler.com/study/iptables/)
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L: iptables-primer
 
 ---
@@ -147,6 +151,8 @@ Now hopefully when you watch these videos the content will really stick because 
 
 1. 🎬 Watch this video ["iptables: Packet Processing" by Dr. Murphy's Lectures](https://www.youtube.com/watch?v=yE82upHCxfU) _length 14:22_
 1. 🎬 Watch this video ["iptables: Tables and Chains" by Dr. Murphy's Lectures](https://www.youtube.com/watch?v=jgH976ymdoQ) _length 10:34_
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: iptables-primer
 
@@ -184,6 +190,8 @@ Hopefully you realize by now that iptables rules are very powerful and very fun 
 [iptables.info - great resource linked to in Julia's blog, but only available with the way back machine](https://web.archive.org/web/20180310124055/http://www.iptables.info/en/iptables-contents.html) 
 [Aidan's iptables ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
 [iptables primer](https://danielmiessler.com/study/iptables/)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: iptables-primer
 L: questions

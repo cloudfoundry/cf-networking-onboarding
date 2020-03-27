@@ -42,6 +42,8 @@ _Now that we're on the same page about what is being asked, what is the answer? 
 PUT YOUR ANSWER HERE
 ```
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L: interrupt
 ---
 Interrupt: silk, VXLAN, and limitations
@@ -73,6 +75,8 @@ _Now that we're on the same page about what is being asked, what is the answer? 
 PUT YOUR ANSWER HERE
 ```
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L: interrupt
 ---
 
@@ -95,6 +99,8 @@ _Now that we're on the same page about what is being asked, what is the answer? 
 ```
 PUT YOUR ANSWER HERE
 ```
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: interrupt
 ---

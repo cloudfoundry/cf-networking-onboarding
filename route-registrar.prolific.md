@@ -14,7 +14,6 @@ Or, if you like analogies:  ```Route Registrar:CF Components::cf map-route:CF Ap
 
 In this Route Registrar series of stories you are going to create your own instance group to run a HTTP server. Then you are going to use route registrar to map a route to the server.
 
-
 ## Vocab 💬
 
 **Off-Platform** - Anything not in a Cloud Foundry deployment. This term is usually used when talking about where traffic originates. For example, traffic from Wendy (the end user) is off-platform traffic. Your local machine is off platform.
@@ -27,6 +26,8 @@ In this Route Registrar series of stories you are going to create your own insta
 
 ## Notes
 - This set of stories uses the instance group `my-http-server`, which you will create. It is handy to use this VM with nearly nothing on it so that there is much less traffic coming/going to it. However, all of this work _could_ be done on any VM.
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: route-registrar
 ---
@@ -103,6 +104,8 @@ instance_groups:
 
 MY_HTTP_SERVER_0_IP and MY_HTTP_SERVER_1_IP are both within CF's private network. This means that those IPs are only accessible from within the private network. You should be able to hit the HTTP server from any other VM in your CF deployment. You should not be able to hit the HTTP server from your local machine.
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L:route-registrar
 ---
 
@@ -170,6 +173,8 @@ You should see something like...
 ### Expected results
 You should see the mac address load balance evenly between the two instances of my-http-server. If you are only seeing one mac address, you might not have both servers running successfully.
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L:route-registrar
 ---
 
@@ -213,6 +218,8 @@ In the HTTP Routes section you learned how the Route Emitter on the Diego Cell r
 ### Expected Result
 There are (almost) no differences between the app routes and the component routes. GoRouter does not know the difference between them and treats them the same.
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L:route-registrar
 ---
 
@@ -248,6 +255,8 @@ In this story you are going to create instance specific component routes.
 0. Look at the gorouter routes table and find your instance component routes.
 
  ❓How do these routes differ from the route you saw in the `Life With Route Registrar` story?
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L:route-registrar
 ---

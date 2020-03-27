@@ -75,6 +75,8 @@ Delete the rate limiter app and unbind the route service before the next story.
 [CF docs - Route Services](https://docs.cloudfoundry.org/services/route-services.html)
 [Rate Limiting Route Service](https://github.com/cloudfoundry-samples/ratelimit-service)
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L: route-services
 L: user-workflow
 ---
@@ -146,6 +148,8 @@ You should see by the response, that traffic was never sent to the real whitehou
 ## Resources
 [CF docs - Route Services](https://docs.cloudfoundry.org/services/route-services.html)
 [Rate Limiting Route Service](https://github.com/cloudfoundry-samples/ratelimit-service)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: route-services
 L: questions

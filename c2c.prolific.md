@@ -78,6 +78,8 @@ watch  "curl CF_INSTANCE_INTERNAL_IP:8080"
 After you add the policy, the curl from inside of the appA container to appB should succeed.
 If it doesn't work, check that you created the policy in the correct direction, from appA --> appB, not the other way around.
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L: c2c
 L: user-workflow
 ---
@@ -98,6 +100,8 @@ And there's no better way to spend your time than reading a blog post by Julia E
 
 1. Spin up a docker container and try the commands in the blog post for yourself!
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L: c2c
 ---
 Overlay vs Underlay
@@ -116,12 +120,16 @@ Routing to an app using the Diego Cell IP and port is done on what we will refer
 ## Resources
 - [Difference between overlay and underlay](https://ipwithease.com/difference-between-underlay-network-and-overlay-network/)
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L: c2c
 ---
 
 Iptables Primer
 
 Please go to the section labeled "iptables-primer" and complete those stories before moving on.
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: c2c
 ---
@@ -163,6 +171,8 @@ The next few stories will go through and explain each of the steps marked with a
 
 ## Resources
 - [Difference between overlay and underlay](https://ipwithease.com/difference-between-underlay-network-and-overlay-network/)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: c2c
 ---
@@ -262,6 +272,8 @@ In the next story you'll explore network interfaces. You'll learn why the meow n
 [interface explanations](https://www.computerhope.com/unix/uifconfi.htm)
 [linux namespaces overview](https://medium.com/@teddyking/linux-namespaces-850489d3ccf)
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L: c2c
 L: questions
 ---
@@ -345,6 +357,8 @@ Look at the [code](https://github.com/cloudfoundry/silk/blob/master/cni/lib/pair
 ## Resources
 [interface explanations](https://www.computerhope.com/unix/uifconfi.htm)
 [linux network namespaces/veth/route table blog](https://devinpractice.com/2016/09/29/linux-network-namespace/)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: c2c
 ---
@@ -466,6 +480,8 @@ In the vxlan policy agent (vpa), there is a component called the planner. The pl
 
 [Here](https://github.com/cloudfoundry/silk-release/blob/develop/src/lib/rules/rules.go#L100-L105) is the implementation of *NewMarkSetRule*
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L: c2c
 L: questions
 ---
@@ -481,6 +497,8 @@ You may have noticed a discrepancy in the diagram and the steps about _where_ th
 **The mark for the overlay packet is _not_ part of the packet itself.** This mark is just a bit of metadata about the packet that the kernel keeps track of. This mark exists only as long as it's handled by the Linux kernel. So if a packet is marked before it is sent to a different host, the host will not receive the mark information.
 
 **When VTEP on the source host encapsulates the overlay packet, the mark gets recorded as a header in the unlay packet.** When the VTEP on the destination host decapsulates the underlay packet, it sets the mark on the kernel for the overlay packet.
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: c2c
 ---
@@ -521,6 +539,8 @@ In order for all overlay packets to be sent to the correct interface, the linux 
 
 ### Expected Outcome
 You understand the basics of a route table.
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: c2c
 ---
@@ -605,6 +625,8 @@ Destination     Gateway         Genmask         Iface
 ### Expected Outcome
 You look at the routes table on a Diego Cell and can decipher what you see.
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L: c2c
 ---
 
@@ -633,6 +655,7 @@ Let's define some terms.
 [VLAN wiki](https://en.wikipedia.org/wiki/Virtual_LAN)
 [VLAN vs VXLAN](http://www.fiber-optic-transceiver-module.com/vxlan-vs-vlan-which-is-best-fit-for-cloud.html)
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: c2c
 ---
@@ -744,6 +767,8 @@ Address                  HWtype  HWaddress           Flags Mask            Iface
 ## Resources
 [The Layers of Networking - OSI](https://www.webopedia.com/quick_ref/OSI_Layers.asp)
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L: c2c
 ---
 Container to Container Networking - Extra Credit - How are only some packets decapsulated?
@@ -777,6 +802,8 @@ tcpdump -n src DIEGO_CELL_1_IP
 You should see that all traffic to be decapsulated is sent to the same port. This is how some traffic is decapsulated by the VTEP but not others.
 
 You should also notice that all of the traffic is sent via UDP. WHAT? Read [here](https://blog.ipspace.net/2012/01/vxlan-runs-over-udp-does-it-matter.html) for more details on _that_.
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: c2c
 L: questions
@@ -888,6 +915,9 @@ Let's look at them line by line.
 ## Resources
 [iptables man page](http://ipset.netfilter.org/iptables.man.html)
 [Aidan's iptables in CF ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L: c2c
 L: questions
 ---
@@ -940,6 +970,8 @@ At the end of this story, you should know the traffic flow between two apps on t
 
 ## Resources
 [Aidan's iptables in CF ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: c2c
 L: questions
@@ -1009,6 +1041,8 @@ You (1) turned on this feature, (2) looked at the logs, and (3) saw how this fea
 
 ## Resources
 [Traffic Logging with Silk Release](https://github.com/cloudfoundry/silk-release/blob/77ecbb775780d74c5a8b6e87c5554dab375a9235/docs/traffic_logging.md#traffic-logging)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: c2c
 ---
@@ -1105,6 +1139,8 @@ You should see packets being sent in response from appB to appA. You should see 
 [helpful common tcpdump commands](https://www.rationallyparanoid.com/articles/tcpdump.html)
 [debugging non-c2c traffic in CF](https://github.com/cloudfoundry/cf-networking-release/blob/develop/docs/troubleshooting.md#debugging-non-c2c-packets)
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L: c2c
 L: questions
 ---
@@ -1181,6 +1217,8 @@ AppA should not be able to access appB_1. AppA should be able to access appB_2.
 
 ## Resources
 [Aidan's iptables in CF ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L: c2c
 L: questions

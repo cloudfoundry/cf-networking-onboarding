@@ -38,6 +38,8 @@ In this Bosh DNS story series you are going to add a custom URL for an HTTP serv
 ### Links
 - [Bosh DNS Docs](https://bosh.io/docs/dns/)
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L:bosh-dns
 ---
 
@@ -51,6 +53,8 @@ Read some docs!
 1. (At least) skim the rest
 
 ➡️ [Bosh DNS Docs](https://bosh.io/docs/dns/)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L:bosh-dns
 ---
@@ -182,6 +186,8 @@ dig URL [@SERVER_IP]
 dig neopets.com @169.254.4.4
 ```
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L:bosh-dns
 ---
 
@@ -248,6 +254,7 @@ In this story you are going to add your own fun alias for your go HTTP server.
 
 Your new alias should only be accessible within Cloud Foundry and not from your local machine.
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L:bosh-dns
 ---
@@ -287,6 +294,8 @@ So how does Bosh DNS work? How does it figure out what IP to send traffic to?
 
 ### Links
 - [Bosh DNS Docs](https://bosh.io/docs/dns/)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L:bosh-dns
 ---
@@ -376,6 +385,8 @@ dig neopets.com
 dig neopets.com @169.254.4.4
 ```
 
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
+
 L:bosh-dns
 ---
 
@@ -417,6 +428,8 @@ Most likely, the default security groups for your CF deployment do not give your
 If it is not working:
 - make sure you restarted your app after applying the security group
 - wait a couple minutes. The DNS records seem to take a little bit to propagate throughout the CF deployment.
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L:bosh-dns
 ---
