@@ -45,8 +45,8 @@ Let's focus on the first case. Here is what happens under the hood:
 
 Each step marked with a ✨ will be explained in more detail in a story in this track.
 **When an app dev pushes a new app with a route**
-1. ✨ The app dev pushes an app with a route using CAPI.
-1. CAPI sends this information to Diego.
+1. ✨ The app dev pushes an app with a route using the CF CLI.
+1. Cloud Controller receives this request and sends this information to Diego.
 1. Diego schedules the container create on a specific Diego Cell.
 1. Garden creates the container for your app.
 1. ✨ Diego deploys a sidecar envoy inside of the app container, which will proxy traffic to your app.
@@ -55,7 +55,7 @@ Each step marked with a ✨ will be explained in more detail in a story in this 
 1. ✨ The GoRouter keeps a mapping of routes -> ip:ports in a routes table, which is consulted when someone curls the route.
 
 ## How
-The following stories will look at how many components (CAPI, Diego BBS, Route Emitter, Nats, GoRouter, DNAT Rules, Envoy) work together to make routes work.
+The following stories will look at how many components (Cloud Controller, Diego BBS, Route Emitter, Nats, GoRouter, DNAT Rules, Envoy) work together to make routes work.
 
 0. 🤔 Step through steps above and follow along on [the HTTP Routing section of this diagram](https://realtimeboard.com/app/board/o9J_kyWPVPM=/).
 
@@ -67,9 +67,9 @@ In the next few stories, you are going to need to remember values from one story
 It can be annoying to scroll up and down in the story as you use the values, so it could be helpful to store these values in a doc outside of tracker.
 
 ## Resources for the entire route propagation track
-**Capi**
-[CAPI API docs](https://apidocs.cloudfoundry.org/7.8.0/)
-[CAPI V3 API docs](http://v3-apidocs.cloudfoundry.org/version/3.70.0/index.html)
+**Cloud Controller**
+[Cloud Controller V2 API docs](https://apidocs.cloudfoundry.org)
+[Cloud Controller V3 API docs](http://v3-apidocs.cloudfoundry.org)
 
 **Diego**
 [cfdot docs](https://github.com/cloudfoundry/cfdot)
@@ -117,7 +117,7 @@ Each step marked with a ✨ will be explained in more detail in a story in this 
 1. ✨ The Envoy terminates the TLS from the GoRouter and then sends the traffic on to the app.
 
 ## How
-The following stories will look at how many components (CAPI, Diego BBS, Route Emitter, Nats, GoRouter, DNAT Rules, Envoy) work together to make routes work.
+The following stories will look at how many components (Cloud Controller, Diego BBS, Route Emitter, Nats, GoRouter, DNAT Rules, Envoy) work together to make routes work.
 
 0. 🤔 Step through steps above and follow along on [the HTTP Routing section of this diagram](https://realtimeboard.com/app/board/o9J_kyWPVPM=/)
 
@@ -128,9 +128,9 @@ You can talk about HTTP network traffic flow with fellow CF engineers.
 In the next few stories, you are going to need to remember values from one story to another, there will be a space provided at the bottom of each story for your to record these values so you can store them.
 
 ## Resources for the entire route propagation track
-**Capi**
-[CAPI API docs](https://apidocs.cloudfoundry.org/7.8.0/)
-[CAPI V3 API docs](http://v3-apidocs.cloudfoundry.org/version/3.70.0/index.html)
+**Cloud Controller**
+[Cloud Controller V2 API docs](https://apidocs.cloudfoundry.org)
+[Cloud Controller V3 API docs](http://v3-apidocs.cloudfoundry.org)
 
 **Diego**
 [cfdot docs](https://github.com/cloudfoundry/cfdot)
@@ -160,7 +160,7 @@ In the next few stories, you are going to need to remember values from one story
 L: http-routes
 ---
 
-Route Propagation - Part 1 - CAPI
+Route Propagation - Part 1 - Cloud Controller
 
 ## Assumptions
 - You have a OSS CF deployed
@@ -168,26 +168,26 @@ Route Propagation - Part 1 - CAPI
 - I recommend deleting all other apps
 
 ## What
-The Cloud Controller API (CAPI) maintains the database of all apps, domains, routes, and route mappings.
-However CAPI does not keep track of *where* those apps are deployed. Nor does CAPI track the IPs and ports each
+The Cloud Controller API (CC API) maintains the database of all apps, domains, routes, and route mappings.
+However Cloud Controller does not keep track of *where* those apps are deployed. Nor does CC track the IPs and ports each
 route should, well, *route* to. That's the job of the router, often called GoRouter.
 
-CAPI keeps track of the desired state. The user wants a route called MY_ROUTE that sends traffic to appA.
+CC keeps track of the desired state. The user wants a route called MY_ROUTE that sends traffic to appA.
 But the user doesn't (shouldn't) care about the logistics needed to make that route happen. That is the responsibility of other components.
 
-Let's look at what information CAPI *does* keep track of.
+Let's look at what information Cloud Controller *does* keep track of.
 
 ## How
 
 0. 🤔 Map a route to appA. Let's call this route APP_A_ROUTE. I recommend _deleting_ all other routes.
 
-0. 🤔 Look at the domains, routes, route mappings, and apps in CAPI's database.
-    To look at all the domains you can curl CAPI using `cf curl /v2/domains`. Use the [CAPI docs](https://apidocs.cloudfoundry.org/7.8.0/) to figure out the APIs for the other resources.
+0. 🤔 Look at the domains, routes, destinations (route mappings), and apps via the Cloud Controller's API.
+    To look at all the domains you can curl using `cf curl /v3/domains`. Use the [API docs](https://v3-apidocs.cloudfoundry.org/) to figure out the endpoints for the other resources.
 
-This is all of the information that CAPI contains about routes. Note there are no IPs anywhere. Note that all of these routes are for CF apps, none of them are for CF components.
+This is all of the information that CC contains about routes. Note there are no IPs anywhere. Note that all of these routes are for CF apps, none of them are for CF components.
 
 ### Expected Result
-You can view data from CAPI about the route APP_A_ROUTE that you created.
+You can view data from CC about the route APP_A_ROUTE that you created.
 
 ## Recorded Values
 Record the following values that you generated or discovered during this story.
@@ -196,7 +196,7 @@ APP_A_ROUTE=<value>
 ```
 
 ## Resources
-[CAPI API docs](https://apidocs.cloudfoundry.org/7.8.0/)
+[Cloud Controller API docs](https://v3-apidocs.cloudfoundry.org/)
 
 🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
@@ -217,10 +217,10 @@ Route Propagation - Part 2 - Diego BBS
 
 **BBS** stands for Bulletin Board System. This is the database that the Diego components use to keep track of DesiredLRPs and ActualLRPs.
 
-**LRPs**, or Long Running Processes, represent work that a client (ie CAPI) wants Diego to keep running indefinitely. Apps are the primary example of LRPs. Diego will try to
+**LRPs**, or Long Running Processes, represent work that a client (ie Cloud Controller) wants Diego to keep running indefinitely. Apps are the primary example of LRPs. Diego will try to
 keep them running as best it can. When an app stops or fails, it will attempt to restart it and keep it running.
 
-**Desired LRPs** represent what a client (ie CAPI) wants "the world" to look like (for example, how many instances of which apps). They contain no information
+**Desired LRPs** represent what a client (ie Cloud Controller) wants "the world" to look like (for example, how many instances of which apps). They contain no information
 about where LRPs should be run, because the user shouldn't care.
 
 **Actual LRPs** represent what Diego is currently *actually* running. Actual LRPs contain information about which Diego Cell the LRP is running on and which port maps to the LRP.
@@ -370,7 +370,7 @@ can be a helpful debugging technique.
  ```
 
 ❓Do the values in the NATS message match the values you recorded previously from BBS? Which ones are present? Which ones aren't there?
-❓How does it compare to the information in CAPI?
+❓How does it compare to the information in Cloud Controller?
 
 
 ### Expected Result
@@ -427,7 +427,7 @@ Let's take a look at that route table.
  curl "http://USERNAME:PASSWORD@localhost:8080/routes" | jq .
  ```
 0. Scroll through and look at the routes.
-  ❓How does this differ from the route information you saw in CAPI?
+  ❓How does this differ from the route information you saw in Cloud Controller?
    For example, you should see routes for CF components, like UAA and doppler.
    This because the GoRouter is in charge of routing traffic to CF apps *AND* to CF components.
 0. Find APP_A_ROUTE in the list of routes. Let's dissect the most important bits.
