@@ -496,7 +496,7 @@ You may have noticed a discrepancy in the diagram and the steps about _where_ th
 
 **The mark for the overlay packet is _not_ part of the packet itself.** This mark is just a bit of metadata about the packet that the kernel keeps track of. This mark exists only as long as it's handled by the Linux kernel. So if a packet is marked before it is sent to a different host, the host will not receive the mark information.
 
-**When VTEP on the source host encapsulates the overlay packet, the mark gets recorded as a header in the unlay packet.** When the VTEP on the destination host decapsulates the underlay packet, it sets the mark on the kernel for the overlay packet.
+**When VTEP on the source host encapsulates the overlay packet, the mark gets recorded as a header in the underlay packet.** When the VTEP on the destination host decapsulates the underlay packet, it sets the mark on the kernel for the overlay packet.
 
 🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
