@@ -63,16 +63,15 @@ Let's ignore the technical implementation for now and go through the user workfl
 
 1. Get onto the container for appA and curl the appB internal IP and app port.
    ```
-cf ssh appA
-watch  "curl CF_INSTANCE_INTERNAL_IP:8080"
+   cf ssh appA
+   watch  "curl CF_INSTANCE_INTERNAL_IP:8080"
    ```
    You should get a `Connection refused` error because there is no network policy yet.
 
 1.  In another terminal, add a network policy from appA to appB, with protocol tcp, on port 8080.
- ```
- cf add-network-policy appA --destination-app appB --protocol tcp --port 8080
- ```
-
+    ```
+    cf add-network-policy appA --destination-app appB --protocol tcp --port 8080
+    ```
 
 ### Expected Result
 After you add the policy, the curl from inside of the appA container to appB should succeed.
@@ -113,7 +112,7 @@ Overlay vs Underlay
 
 The **underlay network** is the network that you're given to work with, on top of which you build a virtual **overlay network**. Routing for overlay networks is done at the software layer (in CF we use iptables rules). Overlay networks are used to create layers of abstraction that can be used to run multiple separate layers on top of the physical network — the bottom underlay network. These are general definitions that are not specific to Cloud Foundry.
 
-** Your ** underlay network is often someone else\'s overlay network, that engineer just works on a lower abstraction layer and might work on an IaaS rather than a PaaS, for example. It\'s all relative! 🤯
+** Your ** underlay network is often someone else's overlay network, that engineer just works on a lower abstraction layer and might work on an IaaS rather than a PaaS, for example. It's all relative! 🤯
 
 Routing to an app using the Diego Cell IP and port is done on what we will refer to as the **underlay network**. Container to container networking (c2c) is done on what we will refer to as the **overlay network**.
 
