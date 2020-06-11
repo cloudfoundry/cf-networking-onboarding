@@ -111,7 +111,11 @@ Overlay vs Underlay
 
 ## What
 
-The **underlay network** is the network that you're given to work with, on top of which you build a virtual **overlay network**. Routing for overlay networks is done at the software layer (in CF we use iptables rules). Overlay networks are used to create layers of abstraction that can be used to run multiple separate layers on top of the physical network — the bottom underlay network. These are general definitions that are not specific to Cloud Foundry.
+The **underlay network** is the network that you're given to work with, on top of which you build a virtual **overlay network**. Routing for overlay networks is done at the software layer. 
+
+Overlay networks are used to create layers of abstraction that can be used to run multiple separate layers on top of the physical network — the bottom underlay network. These are general definitions that are not specific to Cloud Foundry.
+
+In CF, the software that creates the overlay network uses a combination of tools including VXLAN and iptables rules. Much more about this in the stories that follow! 
 
 ** Your ** underlay network is often someone else\'s overlay network, that engineer just works on a lower abstraction layer and might work on an IaaS rather than a PaaS, for example. It\'s all relative! 🤯
 
