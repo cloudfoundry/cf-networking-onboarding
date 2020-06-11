@@ -243,21 +243,21 @@ bpm shell vxlan-policy-agent
 📝 **Make your own network namespace**
 
 1. Still on a Diego Cell as root, create your own network namespace called meow.
- ```
-ip netns add meow
-```
+    ```
+    ip netns add meow
+    ```
 1. List all of the networking namespaces
- ```
-ip netns
- ```
+    ```
+    ip netns
+    ```
  You should only see meow. Hmmm. You might think you would see the other networking namespaces for all the apps on this cell. (I certainly thought so when I first tried this.) You'll learn how to view an app's networking namespace one day, I promise.
 
-1. Curl google.com from the Diego Cell. See that it works! This is because Application Security Groups allow it. (Remember ASGs?! You might or might not have done the ASG stories yet. tl;dr ASGs are iptables firewall rules for egress traffic.)
+1. Curl google.com from the Diego Cell. See that it works!
 
 1. Curl google.com from inside of your networking namespace
- ```
-ip netns exec meow curl google.com
- ```
+    ```
+    ip netns exec meow curl google.com
+    ```
 
 What? It doesn't work!? You should see `curl: (6) Could not resolve host: google.com`. Try another URL. They will all fail.
 
