@@ -1,7 +1,7 @@
 User Workflow: Container to Container Networking
 
 ## Assumptions
-- You have a CF deployed with silk release
+- You have a CF deployed with silk release and at least 2 diego cells
 - You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and called appA
 - You have one route mapped to appA called APP_A_ROUTE
 
@@ -180,7 +180,7 @@ L: c2c
 Container to Container Networking - Part 1.1 - Network Namespaces
 
 ## Assumptions
-- You have an OS CF deployed
+- You have an OS CF deployed with at least 2 diego cells
 - You have done the other stories in this track
 
 ## Review
@@ -281,7 +281,7 @@ L: questions
 Container to Container Networking - Part 1.2 - Network Interfaces
 
  ## Assumptions
-- You have an OS CF deployed
+- You have an OS CF deployed with at least 2 diego cells
 - You have done the other stories in this track
 - You have the meow network namespace created
 - You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and named appA (the fewer apps you have deployed the better)
@@ -366,7 +366,7 @@ L: c2c
 Container to Container Networking - Part 2 - Marks
 
  ## Assumptions
-- You have an OS CF deployed
+- You have an OS CF deployed with at least 2 diego cells
 - You have done the other stories in this track
 - You have two [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) apps pushed and named appA and appB (the fewer apps you have deployed the better)
 
@@ -506,7 +506,7 @@ L: c2c
 Container to Container Networking - Part 3.1 - Linux Routes Table Primer
 
 ## Assumptions
-- You have an OS CF deployed
+- You have an OS CF deployed with at least 2 diego cells
 - You have done the other stories in this track
 - You have two [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) apps pushed and named appA and appB (the fewer apps you have deployed the better)
 
@@ -548,7 +548,7 @@ L: c2c
 Container to Container Networking - Part 3.2 - Diego Cell Routes Table
 
 ## Assumptions
-- You have an OS CF deployed
+- You have an OS CF deployed with at least 2 diego cells
 - You have done the other stories in this track
 - You have two [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) apps pushed and named appA and appB (the fewer apps you have deployed the better)
 
@@ -663,7 +663,7 @@ L: c2c
 Container to Container Networking - Part 4.2 - Overlay Leases and ARP
 
  ## Assumptions
-- You have an OS CF deployed
+- You have an OS CF deployed with at least 2 diego cells
 - You have done the other stories in this track
 - You have two [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) apps pushed and named appA and appB (the fewer apps you have deployed the better)
 
@@ -812,7 +812,7 @@ L: questions
 Container to Container Networking - Part 5.1 - Enforce Policy
 
 ## Assumptions
-- You have an OS CF deployed
+- You have an OS CF deployed with at least 2 diego cells
 - You have done the other stories in this track
 - You have two [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) apps pushed and named appA and appB (the fewer apps you have deployed the better)
 
@@ -925,7 +925,7 @@ L: questions
 Container to Container Networking - Part 5.2 - Enforce Policy - Same Cell vs Different Cell
 
 ## Assumptions
-- You have an OS CF deployed
+- You have an OS CF deployed with at least 2 diego cells
 - You have done the other stories in this track
 - You have two [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) apps pushed and named appA and appB (the fewer apps you have deployed the better)
 
@@ -980,7 +980,7 @@ L: questions
 Logging with Container to Container Networking
 
 ## Assumptions
-- You have an OS CF deployed
+- You have an OS CF deployed with at least 2 diego cells
 - You have two [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) apps pushed and named appA and appB (the fewer apps you have deployed the better)
 - There are no c2c policies
 
@@ -1050,7 +1050,7 @@ L: c2c
 Watch your c2c packets with tcpdump
 
 ## Assumptions
-- You have a CF deployed
+- You have a CF deployed with at least 2 diego cells
 - You have two [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) apps pushed and called appA and appB
 - There are no c2c network policies
 
@@ -1147,7 +1147,7 @@ L: questions
 Bypass container networking policies
 
 ## Assumptions
-- You have a OSS CF deployed
+- You have a OSS CF deployed with at least 2 diego cells
 - You have two [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) apps pushed and named appA and appB
 - You have at least 2 Diego Cells
 - There are no c2c network policies
