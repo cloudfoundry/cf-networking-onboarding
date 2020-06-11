@@ -325,7 +325,7 @@ $ ip link
 1: lo                 <------------- The loopback network interface that lets the system communicate with itself over localhost.
 2: eth0               <------------- A ethernet interface. Traffic goes here to leave the Diego Cell.
 1555: silk-vtep       <------------- A VXLAN overlay network interface. Overlay packets go here to be encapsulated in an  underlay packet before exiting the Diego Cell.
-1559: s-010255096003@if1558: link-netnsid 0   <-------------  The interface that links to the network namespace with id 0. The name is `s-CONTAINER-ID`. This is the veth interface.
+1559: s-010255096003@if1558: link-netnsid 0   <-------------  The interface that links to the network namespace with id 0. The name is `s-CONTAINER-IP`. This is the veth interface.
                                                                  There will be one of these network interfaces per app on the Diego Cell.
   ```
 
