@@ -63,16 +63,15 @@ Let's ignore the technical implementation for now and go through the user workfl
 
 1. Get onto the container for appA and curl the appB internal IP and app port.
    ```
-cf ssh appA
-watch  "curl CF_INSTANCE_INTERNAL_IP:8080"
+   cf ssh appA
+   watch  "curl CF_INSTANCE_INTERNAL_IP:8080"
    ```
    You should get a `Connection refused` error because there is no network policy yet.
 
 1.  In another terminal, add a network policy from appA to appB, with protocol tcp, on port 8080.
- ```
- cf add-network-policy appA --destination-app appB --protocol tcp --port 8080
- ```
-
+    ```
+    cf add-network-policy appA --destination-app appB --protocol tcp --port 8080
+    ```
 
 ### Expected Result
 After you add the policy, the curl from inside of the appA container to appB should succeed.
@@ -117,7 +116,7 @@ Overlay networks are used to create layers of abstraction that can be used to ru
 
 In CF, the software that creates the overlay network uses a combination of tools including VXLAN and iptables rules. Much more about this in the stories that follow! 
 
-** Your ** underlay network is often someone else\'s overlay network, that engineer just works on a lower abstraction layer and might work on an IaaS rather than a PaaS, for example. It\'s all relative! 🤯
+** Your ** underlay network is often someone else's overlay network, that engineer just works on a lower abstraction layer and might work on an IaaS rather than a PaaS, for example. It's all relative! 🤯
 
 Routing to an app using the Diego Cell IP and port is done on what we will refer to as the **underlay network**. Container to container networking (c2c) is done on what we will refer to as the **overlay network**.
 
