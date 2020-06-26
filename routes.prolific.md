@@ -414,10 +414,6 @@ Let's take a look at that route table.
 
 📝 **look at route table**
 0. Bosh ssh onto the router vm and become root.
-0. Install jq (a json manipulation and display tool)
- ```
- apt-get install jq
- ```
 0. Get the username and password for the routing api
  ```
  head /var/vcap/jobs/gorouter/config/gorouter.yml
