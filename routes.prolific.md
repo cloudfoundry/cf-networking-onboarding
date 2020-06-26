@@ -57,7 +57,7 @@ Each step marked with a ✨ will be explained in more detail in a story in this 
 ## How
 The following stories will look at how many components (CAPI, Diego BBS, Route Emitter, Nats, GoRouter, DNAT Rules, Envoy) work together to make routes work.
 
-0. 🤔 Step through steps above and follow along on [the HTTP Routing section of this diagram](https://realtimeboard.com/app/board/o9J_kyWPVPM=/).
+0. 🤔 Step through steps above and follow along on [the HTTP Routing section of this diagram](https://miro.com/app/board/o9J_kyWPVPM=/?moveToWidget=3074457346471397934).
 
 ### Expected Result
 You can talk about route propagation at a high level.
