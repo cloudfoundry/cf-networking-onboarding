@@ -74,7 +74,8 @@ L: introduction
 Set Up Your Environment
 
 ## How
-1. Grab a Networking OSS dev environment that is relatively up-to-date. You will be using this environment for the whole week.
+1. Grab an OSS Cloud Foundry development environment for your pair to use that is relatively up-to-date. You will be using this environment for the whole week. 
+    * _Note: consider using the [`smith` CLI](https://github.com/pivotal/smith) to grab a Toolsmiths environment from the [`cf-deployment` pool](https://pivotal.github.io/cf-toolsmiths-docs/pivotal-cf-experimental/toolsmiths-envs/cf-deployment/)._
 
 1. Create and target an org and space where you will be doing all of your work. if you are working on a Networking Team machine, you hould have the script `cf_seed` in your workstation to do this for you. You can find this script [here](https://github.com/cloudfoundry/networking-workspace/blob/0925ac5f6d1ca214e2dd871a6e36662fbd8a74b3/shared.bash#L184-L188).
 
