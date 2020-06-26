@@ -160,7 +160,7 @@ Checking the SAN for Route Integrity
 ## What
 In the last story you saw that Route Integrity ensures that appA.cf-app.com is *actually going to* appA and not misrouting to appB due to stale routes. But how does it  work?
 
-Route Integrity is implemented by giving the GoRouter a [CA certificate](https://github.com/cloudfoundry/routing-release/blob/develop/jobs/gorouter/spec#L106-L107) at deploy time. At runtime, when an app container is created, Diego generates a certificate from that CA for each app instance and puts it in the app container. The certificate has a unique subject alternative name (SAN) per app instance.
+Route Integrity is implemented by giving the GoRouter a [CA certificate](https://github.com/cloudfoundry/routing-release/blob/f25df8de6aaa3fca02bd51343df70bd800d0ab75/jobs/gorouter/spec#L125-L126) at deploy time. At runtime, when an app container is created, Diego generates a certificate from that CA for each app instance and puts it in the app container. The certificate has a unique subject alternative name (SAN) per app instance.
 
 Diego runs a sidecar Envoy inside of the app container which intercepts all incoming traffic from the GoRouter. It uses the generated certificate to terminate TLS before forwarding traffic to the app. When the GoRouter checks the certificate from the Envoy sidecar, it checks that the SAN matches the app instance id that it has for that IP and port. This way GoRouter is able to make sure that appA.cf-app.com is *actually going to* appA and not misrouting to appB due to stale routes.
 
