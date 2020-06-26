@@ -24,7 +24,7 @@ In this story you are going to skim/read a couple great resources on iptables ru
 
 1. Flip through [Aidan's "iptables in Cloud Foundry" powerpoint](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
 
-1. Check out [Julian Evan's Blog on iptables](https://jvns.ca/blog/2017/06/07/iptables-basics/).
+1. Check out [Julia Evan's Blog on iptables](https://jvns.ca/blog/2017/06/07/iptables-basics/).
 
 ## Optional Videos
 Here are some thorough videos on iptables rules. If you are the type of person who likes getting lots of information up front, watch them now. 
