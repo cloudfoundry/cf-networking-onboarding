@@ -1598,7 +1598,7 @@ Let's define some terms.
 
 **VXLAN** - Virtual eXtensible Local Area Network - VXLAN was developed to provide the same network services as VLAN does, but with greater extensibility and flexibility. Container to container (c2c) networking uses VXLAN to create the overlay network.
 
-**VTEP**- VXLAN EndPoints - are VXLAN tunnels that encapsulate outgoing overlay traffic into underlay packets and decapsulate incoming underlay packets into overlay packets. The VTEP that c2c uses is called silk-vtep.
+**VTEP**- VXLAN Tunnel EndPoints - are VXLAN tunnels that encapsulate outgoing overlay traffic into underlay packets and decapsulate incoming underlay packets into overlay packets. The VTEP that c2c uses is called silk-vtep.
 
 ## Resources
 [LAN](https://www.webopedia.com/TERM/L/local_area_network_LAN.html)
