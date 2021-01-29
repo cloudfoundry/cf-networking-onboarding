@@ -213,7 +213,7 @@ Route Propagation - Part 2 - Diego BBS
 
 ## What
 
-**Diego** is an umbrella term for many components that work together to make CF container orchestration happen. These components are maintained by the Diego team.
+**Diego** is an umbrella term for many components that work together to make CF container orchestration happen. These jobs are bundled together in [diego-release](https://github.com/cloudfoundry/diego-release/tree/develop/jobs).
 
 **BBS** stands for Bulletin Board System. This is the database that the Diego components use to keep track of DesiredLRPs and ActualLRPs.
 
