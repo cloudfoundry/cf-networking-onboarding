@@ -130,9 +130,9 @@ In the GoRouter bosh logs you should see a line about pruning the bad route.
 Route Integrity doesn't actually prevent route staleness, but it *does* prevent leaking data from appB when you are trying to access appA.
 
 ## Look at the code
-GoRouter analyses different types of errors from the backend. In the case of misrouting, we are running into this [HostnameMismatch error](https://github.com/cloudfoundry/gorouter/blob/bdcae7b94f6ccdc4353f0b1844333b01764fef5f/proxy/fails/basic_classifiers.go#L58-L65).
+GoRouter analyses different types of errors from the backend. In the case of misrouting, we are running into this [HostnameMismatch error](https://github.com/cloudfoundry/gorouter/blob/68fb24bfe35a379fee6591651b96660dc9712a80/proxy/fails/basic_classifiers.go#L62-L69).
 
-Depending on the type of error, GoRouter may choose to retry or not. Look at these [failure classifiers](https://github.com/cloudfoundry/gorouter/blob/8cac07acb1860bfb52e092c0865868f629431190/proxy/fails/classifier_group.go#L5-L18).
+Depending on the type of error, GoRouter may choose to retry or not. Look at these [failure classifiers](https://github.com/cloudfoundry/gorouter/blob/68fb24bfe35a379fee6591651b96660dc9712a80/proxy/fails/classifier_group.go#L13-L22).
 
 ## Questions
 1. ❓Are HostnameMismatch errors retried?
