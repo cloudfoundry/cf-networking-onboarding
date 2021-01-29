@@ -81,8 +81,8 @@ cf push appA
 
 🤔 **Use the proxy app**
 
-Sadly, there are not docs around all of the endpoints the proxy app has. (Maybe you will be the one write these docs? Please?)
-The best way to look at all the endpoints is to go to [the code](https://github.com/cloudfoundry/cf-networking-release/blob/develop/src/example-apps/proxy/main.go#L14-L26).
+Check out the [docs](https://github.com/cloudfoundry/cf-networking-release/blob/develop/src/example-apps/proxy/README.md) for the proxy app to find all the endpoints.
+If you want to see how the endpoints are implemented, go to [the code](https://github.com/cloudfoundry/cf-networking-release/blob/develop/src/example-apps/proxy/main.go#L14-L26).
 
 When you push an app, an HTTP route is automatically created. Let's call this route PROXY_ROUTE.
 
