@@ -350,9 +350,15 @@ can be a helpful debugging technique.
 
 0. Find the NATs message for APP_A_ROUTE.
  ```
- nats-sub "*.*" -s nats://NATS_USERNAME:NATS_PASSWORD@NATS_ADDRESS` | grep APP_A_ROUTE
+ $ nats-sub "*.*" -s nats://NATS_USERNAME:NATS_PASSWORD@NATS_ADDRESS | grep APP_A_ROUTE
+
+ Server Error: TLS/SSL required by server
  ```
- If you wait, you should see a message that contains information about the route you created. It will look something like this and contain APP_A_ROUTE:
+ Oh no! You just tried to connect to a TLS endpoint without supplying any certificates.
+0. Either (a) change your command to connect to the [non-tls port](https://github.com/cloudfoundry/nats-release/blob/c679cd9220f9081ef01966c5adb07950e63d74c7/jobs/nats/spec#L47) or (b) change your command to send credentials.
+
+
+0. When you successfully connect to nats, plus a few seconds of waiting, you should see a message that contains information about the route you created. It will look something like this and contain APP_A_ROUTE:
  ```
    [#32] Received on [router.register] :
 {
