@@ -210,8 +210,8 @@ Each step marked with a ✨ will be explained in more detail in a story in this 
 1. CAPI sends this information to Diego.
 1. Diego schedules the container create on a specific Diego Cell.
 1. Garden creates the container for your app.
-1. ✨ Diego deploys a sidecar envoy inside of the app container, which will proxy traffic to your app.
-1. ✨ When the container is being set up, iptables rules are created on the Diego Cell to send traffic that is intended for the app to the sidecar proxy.
+1. ✨ Diego deploys an envoy sidecar inside of the app container, which will proxy traffic to your app.
+1. ✨ When the container is being set up, iptables rules are created on the Diego Cell to send traffic that is intended for the app to the envoy sidecar.
 1. ✨ When the app is created, Diego sends the route information to the Route Emitter. The Route Emitter sends the route information to GoRouter via NATS.
 1. ✨ The GoRouter keeps a mapping of routes -> ip:ports in a routes table, which is consulted when someone curls the route.
 
