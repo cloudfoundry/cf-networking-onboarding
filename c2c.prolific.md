@@ -336,9 +336,13 @@ $ ip link
 
 1. Now list all of the networking interfaces in the meow networking namespace
   ```
-ip netns exec meow ip link
+$ ip netns exec meow ip link
+
+1: lo: <LOOPBACK> mtu 65536 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
   ```
-Nothing! No wonder you can't curl google.com! There is no network interface for packets to travel through.
+There is only the loopback interface. The loopback interface is a special virtual network interface that a computer uses to communicate with itself. The standard domain name for the address is localhost.
+No wonder you can't curl google.com! There is no network interface for packets that want to leave the network.
 
 The solution is to create a veth (virtual ethernet) pair. A veth pair consists of two virtual ethernet interfaces. One is placed in the host network namespace, the other in the meow network namespace. The veth pair acts like a bridge between the network namespace and the host.
 You already saw one side of the veth pair for the proxy app when you ran `ip link` inside of the Diego Cell.  Let's look at the other half of the veth pair.
