@@ -802,7 +802,7 @@ Let's figure it out by inspecting the packets with tcpdump! Tcpdump is a CLI too
 1. In terminal 2, ssh onto Diego Cell 2, where appB is running.
 1. The underlay packet is from Diego Cell 1 to Diego Cell 2, so use tcpdump to look at all traffic from Diego Cell 1.
  ```
-tcpdump -n src DIEGO_CELL_1_IP
+tcpdump -n src DIEGO_CELL_1_IP -v
  ```
 ❓What do you notice about all of the traffic? What do they have in common? Based on this information how do you think only this traffic is being decapsulated?
 ❓What protocol is this traffic using? Is that surprising to you?
