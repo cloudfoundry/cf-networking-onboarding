@@ -44,7 +44,8 @@ How to Read Onboarding Stories,feature,"### Rules
 
 🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_",introduction,Read this story closely
 Set Up Your Environment,feature,"## How
-1. Grab a Networking OSS dev environment that is relatively up-to-date. You will be using this environment for the whole week.
+1. Grab an OSS Cloud Foundry development environment for your pair to use that is relatively up-to-date. You will be using this environment for the whole week. 
+    * _Note: consider using the [`smith` CLI](https://github.com/pivotal/smith) to grab a Toolsmiths environment from the [`cf-deployment` pool](https://pivotal.github.io/cf-toolsmiths-docs/pivotal-cf-experimental/toolsmiths-envs/cf-deployment/)._
 
 1. Create and target an org and space where you will be doing all of your work. if you are working on a Networking Team machine, you hould have the script `cf_seed` in your workstation to do this for you. You can find this script [here](https://github.com/cloudfoundry/networking-workspace/blob/0925ac5f6d1ca214e2dd871a6e36662fbd8a74b3/shared.bash#L184-L188).
 
@@ -81,8 +82,8 @@ cf push appA
 
 🤔 **Use the proxy app**
 
-Check out the [docs](https://github.com/cloudfoundry/cf-networking-release/blob/develop/src/example-apps/proxy/README.md) for the proxy app to find all the endpoints.
-If you want to see how the endpoints are implemented, go to [the code](https://github.com/cloudfoundry/cf-networking-release/blob/develop/src/example-apps/proxy/main.go#L14-L26).
+Sadly, there are not docs around all of the endpoints the proxy app has. (Maybe you will be the one write these docs? Please?)
+The best way to look at all the endpoints is to go to [the code](https://github.com/cloudfoundry/cf-networking-release/blob/develop/src/example-apps/proxy/main.go#L14-L26).
 
 When you push an app, an HTTP route is automatically created. Let's call this route PROXY_ROUTE.
 
@@ -197,7 +198,7 @@ And routes can send traffic to many apps. So Route Mappings is a many-to-many ma
 ### Expected Result
 You have a route that maps to both appA and appB. See that the overlay IP changes, showing that you are routed evenly(ish) between all the apps mapped to the routes.
 
-🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_","http-routes,user-workflow"
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Open [this file in GitHub](https://github.com/pivotal/cf-networking-program-onboarding/edit/master/routes.prolific.md). Search for the phrase you want to edit. Make the fix!_","http-routes,user-workflow"
 Route Propagation - Part 0.1 - Creating a Route Overview,feature,"## What
 In the previous story you used the CF CLI to create and map routes. But what happens under the hood to make all of this work? (hint: iptables is involved)
 There are two main data flows for routes, (1) when an app dev pushes a new app with a route and (2) when an internet user connects to an app using the route.
@@ -206,19 +207,19 @@ Let's focus on the first case. Here is what happens under the hood:
 
 Each step marked with a ✨ will be explained in more detail in a story in this track.
 **When an app dev pushes a new app with a route**
-1. ✨ The app dev pushes an app with a route using CAPI.
-1. CAPI sends this information to Diego.
+1. ✨ The app dev pushes an app with a route using the CF CLI.
+1. Cloud Controller receives this request and sends this information to Diego.
 1. Diego schedules the container create on a specific Diego Cell.
 1. Garden creates the container for your app.
-1. ✨ Diego deploys an envoy sidecar inside of the app container, which will proxy traffic to your app.
-1. ✨ When the container is being set up, iptables rules are created on the Diego Cell to send traffic that is intended for the app to the envoy sidecar.
+1. ✨ Diego deploys a sidecar envoy inside of the app container, which will proxy traffic to your app.
+1. ✨ When the container is being set up, iptables rules are created on the Diego Cell to send traffic that is intended for the app to the sidecar proxy.
 1. ✨ When the app is created, Diego sends the route information to the Route Emitter. The Route Emitter sends the route information to GoRouter via NATS.
 1. ✨ The GoRouter keeps a mapping of routes -> ip:ports in a routes table, which is consulted when someone curls the route.
 
 ## How
-The following stories will look at how many components (CAPI, Diego BBS, Route Emitter, Nats, GoRouter, DNAT Rules, Envoy) work together to make routes work.
+The following stories will look at how many components (Cloud Controller, Diego BBS, Route Emitter, Nats, GoRouter, DNAT Rules, Envoy) work together to make routes work.
 
-0. 🤔 Step through steps above and follow along on [the HTTP Routing section of this diagram](https://miro.com/app/board/o9J_kyWPVPM=/?moveToWidget=3074457346471397934&cot=14).
+0. 🤔 Step through steps above and follow along on [the HTTP Routing section of this diagram](https://miro.com/app/board/o9J_kyWPVPM=/?moveToWidget=3074457346471397934).
 
 ### Expected Result
 You can talk about route propagation at a high level.
@@ -228,9 +229,9 @@ In the next few stories, you are going to need to remember values from one story
 It can be annoying to scroll up and down in the story as you use the values, so it could be helpful to store these values in a doc outside of tracker.
 
 ## Resources for the entire route propagation track
-**Capi**
-[CAPI API docs](https://apidocs.cloudfoundry.org/7.8.0/)
-[CAPI V3 API docs](http://v3-apidocs.cloudfoundry.org/version/3.70.0/index.html)
+**Cloud Controller**
+[Cloud Controller V2 API docs](https://apidocs.cloudfoundry.org)
+[Cloud Controller V3 API docs](http://v3-apidocs.cloudfoundry.org)
 
 **Diego**
 [cfdot docs](https://github.com/cloudfoundry/cfdot)
@@ -255,7 +256,7 @@ It can be annoying to scroll up and down in the story as you use the values, so 
 **Envoy**
 [What is Envoy?](https://www.envoyproxy.io/docs/envoy/latest/intro/what_is_envoy)
 
-🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_",http-routes
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Open [this file in GitHub](https://github.com/pivotal/cf-networking-program-onboarding/edit/master/routes.prolific.md). Search for the phrase you want to edit. Make the fix!_",http-routes
 Route Propagation - Part 0.2 - HTTP Traffic Overview,feature,"## What
 In the previous story you went over the first of two main data flows for routes:
 (1) when an app dev pushes a new app with a route and (2) when an internet user connects to an app using the route.
@@ -272,7 +273,7 @@ Each step marked with a ✨ will be explained in more detail in a story in this 
 1. ✨ The Envoy terminates the TLS from the GoRouter and then sends the traffic on to the app.
 
 ## How
-The following stories will look at how many components (CAPI, Diego BBS, Route Emitter, Nats, GoRouter, DNAT Rules, Envoy) work together to make routes work.
+The following stories will look at how many components (Cloud Controller, Diego BBS, Route Emitter, Nats, GoRouter, DNAT Rules, Envoy) work together to make routes work.
 
 0. 🤔 Step through steps above and follow along on [the HTTP Routing section of this diagram](https://realtimeboard.com/app/board/o9J_kyWPVPM=/)
 
@@ -283,9 +284,9 @@ You can talk about HTTP network traffic flow with fellow CF engineers.
 In the next few stories, you are going to need to remember values from one story to another, there will be a space provided at the bottom of each story for your to record these values so you can store them.
 
 ## Resources for the entire route propagation track
-**Capi**
-[CAPI API docs](https://apidocs.cloudfoundry.org/7.8.0/)
-[CAPI V3 API docs](http://v3-apidocs.cloudfoundry.org/version/3.70.0/index.html)
+**Cloud Controller**
+[Cloud Controller V2 API docs](https://apidocs.cloudfoundry.org)
+[Cloud Controller V3 API docs](http://v3-apidocs.cloudfoundry.org)
 
 **Diego**
 [cfdot docs](https://github.com/cloudfoundry/cfdot)
@@ -310,33 +311,33 @@ In the next few stories, you are going to need to remember values from one story
 **Envoy**
 [What is Envoy?](https://www.envoyproxy.io/docs/envoy/latest/intro/what_is_envoy)
 
-🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_",http-routes
-Route Propagation - Part 1 - CAPI,feature,"## Assumptions
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Open [this file in GitHub](https://github.com/pivotal/cf-networking-program-onboarding/edit/master/routes.prolific.md). Search for the phrase you want to edit. Make the fix!_",http-routes
+Route Propagation - Part 1 - Cloud Controller,feature,"## Assumptions
 - You have a OSS CF deployed
 - You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and called appA
 - I recommend deleting all other apps
 
 ## What
-The Cloud Controller API (CAPI) maintains the database of all apps, domains, routes, and route mappings.
-However CAPI does not keep track of *where* those apps are deployed. Nor does CAPI track the IPs and ports each
+The Cloud Controller API (CC API) maintains the database of all apps, domains, routes, and route mappings.
+However Cloud Controller does not keep track of *where* those apps are deployed. Nor does CC track the IPs and ports each
 route should, well, *route* to. That's the job of the router, often called GoRouter.
 
-CAPI keeps track of the desired state. The user wants a route called MY_ROUTE that sends traffic to appA.
+CC keeps track of the desired state. The user wants a route called MY_ROUTE that sends traffic to appA.
 But the user doesn't (shouldn't) care about the logistics needed to make that route happen. That is the responsibility of other components.
 
-Let's look at what information CAPI *does* keep track of.
+Let's look at what information Cloud Controller *does* keep track of.
 
 ## How
 
 0. 🤔 Map a route to appA. Let's call this route APP_A_ROUTE. I recommend _deleting_ all other routes.
 
-0. 🤔 Look at the domains, routes, route mappings, and apps in CAPI's database.
-    To look at all the domains you can curl CAPI using `cf curl /v2/domains`. Use the [CAPI docs](https://apidocs.cloudfoundry.org/7.8.0/) to figure out the APIs for the other resources.
+0. 🤔 Look at the domains, routes, destinations (route mappings), and apps via the Cloud Controller's API.
+    To look at all the domains you can curl using `cf curl /v3/domains`. Use the [API docs](https://v3-apidocs.cloudfoundry.org/) to figure out the endpoints for the other resources.
 
-This is all of the information that CAPI contains about routes. Note there are no IPs anywhere. Note that all of these routes are for CF apps, none of them are for CF components.
+This is all of the information that CC contains about routes. Note there are no IPs anywhere. Note that all of these routes are for CF apps, none of them are for CF components.
 
 ### Expected Result
-You can view data from CAPI about the route APP_A_ROUTE that you created.
+You can view data from CC about the route APP_A_ROUTE that you created.
 
 ## Recorded Values
 Record the following values that you generated or discovered during this story.
@@ -345,9 +346,9 @@ APP_A_ROUTE=<value>
 ```
 
 ## Resources
-[CAPI API docs](https://apidocs.cloudfoundry.org/7.8.0/)
+[Cloud Controller API docs](https://v3-apidocs.cloudfoundry.org/)
 
-🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_",http-routes
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Open [this file in GitHub](https://github.com/pivotal/cf-networking-program-onboarding/edit/master/routes.prolific.md). Search for the phrase you want to edit. Make the fix!_",http-routes
 Route Propagation - Part 2 - Diego BBS,feature,"## Assumptions
 - You have a OSS CF deployed
 - You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and called appA
@@ -356,14 +357,14 @@ Route Propagation - Part 2 - Diego BBS,feature,"## Assumptions
 
 ## What
 
-**Diego** is an umbrella term for many components that work together to make CF container orchestration happen. These components are maintained by the Diego team.
+**Diego** is an umbrella term for many components that work together to make CF container orchestration happen. These jobs are bundled together in [diego-release](https://github.com/cloudfoundry/diego-release/tree/develop/jobs).
 
 **BBS** stands for Bulletin Board System. This is the database that the Diego components use to keep track of DesiredLRPs and ActualLRPs.
 
-**LRPs**, or Long Running Processes, represent work that a client (ie CAPI) wants Diego to keep running indefinitely. Apps are the primary example of LRPs. Diego will try to
+**LRPs**, or Long Running Processes, represent work that a client (ie Cloud Controller) wants Diego to keep running indefinitely. Apps are the primary example of LRPs. Diego will try to
 keep them running as best it can. When an app stops or fails, it will attempt to restart it and keep it running.
 
-**Desired LRPs** represent what a client (ie CAPI) wants ""the world"" to look like (for example, how many instances of which apps). They contain no information
+**Desired LRPs** represent what a client (ie Cloud Controller) wants ""the world"" to look like (for example, how many instances of which apps). They contain no information
 about where LRPs should be run, because the user shouldn't care.
 
 **Actual LRPs** represent what Diego is currently *actually* running. Actual LRPs contain information about which Diego Cell the LRP is running on and which port maps to the LRP.
@@ -377,7 +378,10 @@ For this story, let's look at the data stored in the BBS and see what informatio
  ```
  cf app appA --guid
  ```
-0. Ssh onto the Diego Cell vm where appA is running and become root.
+0. Ssh onto the Diego Cell vm where appA is running and become root. You can find where appA is running by running the following command:
+ ```
+ cf curl /v2/apps/<app-guid>/stats
+ ```
 0. Use the [cfdot CLI](https://github.com/cloudfoundry/cfdot) to query BBS for actualLRPs. Cfdot is a helpful CLI for using the BBS API.
  It's a great tool for debugging on the Diego Cell.
  ```
@@ -435,7 +439,7 @@ OVERLAY_IP=<value>
 [cfdot docs](https://github.com/cloudfoundry/cfdot)
 [diego design notes](https://github.com/cloudfoundry/diego-design-notes#what-are-all-these-repos-and-what-do-they-do)
 
-🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_","http-routes,questions"
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Open [this file in GitHub](https://github.com/pivotal/cf-networking-program-onboarding/edit/master/routes.prolific.md). Search for the phrase you want to edit. Make the fix!_","http-routes,questions"
 Route Propagation - Part 3 - Route Emitter and NATS,feature,"## Assumptions
 - You have a OSS CF deployed
 - You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and called appA
@@ -483,9 +487,14 @@ can be a helpful debugging technique.
 
 0. Find the NATs message for APP_A_ROUTE.
  ```
- nats-sub ""*.*"" -s nats://NATS_USERNAME:NATS_PASSWORD@NATS_ADDRESS` | grep APP_A_ROUTE
+ $ nats-sub ""*.*"" -s nats://NATS_USERNAME:NATS_PASSWORD@NATS_ADDRESS | grep APP_A_ROUTE
+
+ Server Error: TLS/SSL required by server
  ```
- If you wait, you should see a message that contains information about the route you created. It will look something like this and contain APP_A_ROUTE:
+ Oh no! You just tried to connect to a TLS endpoint without supplying any certificates.
+0. Either (a) change your command to connect to the [non-tls port](https://github.com/cloudfoundry/nats-release/blob/c679cd9220f9081ef01966c5adb07950e63d74c7/jobs/nats/spec#L47) or (b) change your command to send credentials.
+
+0. When you successfully connect to nats, plus a few seconds of waiting, you should see a message that contains information about the route you created. It will look something like this and contain APP_A_ROUTE:
  ```
    [#32] Received on [router.register] :
 {
@@ -506,7 +515,7 @@ can be a helpful debugging technique.
  ```
 
 ❓Do the values in the NATS message match the values you recorded previously from BBS? Which ones are present? Which ones aren't there?
-❓How does it compare to the information in CAPI?
+❓How does it compare to the information in Cloud Controller?
 
 ### Expected Result
 Inspect NATs messages. Look at what route information is sent to the GoRouter.
@@ -515,7 +524,7 @@ Inspect NATs messages. Look at what route information is sent to the GoRouter.
 [NATS message bus repo](https://github.com/nats-io/gnatsd)
 [NATS ruby gem repo](https://github.com/nats-io/ruby-nats)
 
-🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_","http-routes,questions"
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Open [this file in GitHub](https://github.com/pivotal/cf-networking-program-onboarding/edit/master/routes.prolific.md). Search for the phrase you want to edit. Make the fix!_","http-routes,questions"
 Route Propagation - Part 4 - GoRouter,feature,"## Assumptions
 - You have a OSS CF deployed
 - You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and called appA
@@ -542,10 +551,6 @@ Let's take a look at that route table.
 
 📝 **look at route table**
 0. Bosh ssh onto the router vm and become root.
-0. Install jq (a json manipulation and display tool)
- ```
- apt-get install jq
- ```
 0. Get the username and password for the routing api
  ```
  head /var/vcap/jobs/gorouter/config/gorouter.yml
@@ -555,7 +560,7 @@ Let's take a look at that route table.
  curl ""http://USERNAME:PASSWORD@localhost:8080/routes"" | jq .
  ```
 0. Scroll through and look at the routes.
-  ❓How does this differ from the route information you saw in CAPI?
+  ❓How does this differ from the route information you saw in Cloud Controller?
    For example, you should see routes for CF components, like UAA and doppler.
    This because the GoRouter is in charge of routing traffic to CF apps *AND* to CF components.
 0. Find APP_A_ROUTE in the list of routes. Let's dissect the most important bits.
@@ -581,7 +586,7 @@ In the next story we will see what what is listening on that port on the cell.
 
 [GoRouter routing table docs](https://github.com/cloudfoundry/gorouter#the-routing-table)
 
-🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_","http-routes,questions"
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Open [this file in GitHub](https://github.com/pivotal/cf-networking-program-onboarding/edit/master/routes.prolific.md). Search for the phrase you want to edit. Make the fix!_","http-routes,questions"
 Route Propagation - Part 4.5 - see what's listening with netstat,feature,"## Assumptions
 - You have a OSS CF deployed
 - You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and called appA
@@ -627,7 +632,7 @@ You won't see the DIEGO_CELL_ENVOY_PORT anywhere in the netstat output because n
 But if there's nothing running there, how does the traffic reach the app? Would you believe that iptables are involved?
 Check out the next story to learn more :)
 
-🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_",http-routes
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Open [this file in GitHub](https://github.com/pivotal/cf-networking-program-onboarding/edit/master/routes.prolific.md). Search for the phrase you want to edit. Make the fix!_",http-routes
 Route Propagation - Part 5 - DNAT Rules,feature,"## Assumptions
 - You have a OSS CF deployed
 - You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and called appA
@@ -703,7 +708,7 @@ Inspect the iptables rules that DNAT the traffic from the GoRouter and send it t
 [iptables man page](http://ipset.netfilter.org/iptables.man.html)
 [Aidan's iptables in CF ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
 
-🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_",http-routes
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Open [this file in GitHub](https://github.com/pivotal/cf-networking-program-onboarding/edit/master/routes.prolific.md). Search for the phrase you want to edit. Make the fix!_",http-routes
 Route Propagation - Part 6.1 - Envoy Primer,feature,"## Assumptions
 - None
 
@@ -716,7 +721,7 @@ Before you go further it will help if you read a quick primer on Envoy.
 1. 📚 Read Julia Evan's blog post [""Some Envoy Basics""](https://jvns.ca/blog/2018/10/27/envoy-basics/).
  Unfortunately, the envoy in the docker container referenced in the blog post doesn't work anymore. However, just reading the post is enough to get a nice overview.
 
-🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_",http-routes
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Open [this file in GitHub](https://github.com/pivotal/cf-networking-program-onboarding/edit/master/routes.prolific.md). Search for the phrase you want to edit. Make the fix!_",http-routes
 Route Propagation - Part 6.2 - Route Integrity and Envoy,feature,"## Assumptions
 - You have a OSS CF deployed
 - You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and called appA
@@ -749,7 +754,7 @@ Let's look at how the Envoy sidecar is configured to proxy traffic to the app.
 
 📝 **Look at envoy config**
 0. Ssh onto AppA
-0. Hit the Envoy admin endpoint `curl localhost:61003/admin`
+0. Hit the Envoy `help` endpoint: `curl localhost:61003/help`
     These are all of the endpoints you can hit. Try `/clusters` what do you see?
 0. Run `curl localhost:61003/config_dump`. This gives you all of the information about how the Envoy is configured.
 0. Search for the CONTAINER_ENVOY_PORT, in the example it is 61001. This is where the DNAT rules forwarded the traffic to, as we saw in the last story. Find a listener called `listener-8080` that looks similar to the following: 
@@ -799,7 +804,7 @@ Look at the Envoy's 8080 listener and related cluster and see how network traffi
 [Route Integrity/Misrouting Docs](https://docs.cloudfoundry.org/concepts/http-routing.html#-preventing-misrouting)
 [What is Envoy?](https://www.envoyproxy.io/docs/envoy/latest/intro/what_is_envoy)
 
-🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_",http-routes
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Open [this file in GitHub](https://github.com/pivotal/cf-networking-program-onboarding/edit/master/routes.prolific.md). Search for the phrase you want to edit. Make the fix!_",http-routes
 Route Propagation - Part 7 - Wrap Up,feature,"## Assumptions
 - You have completed the previous stories in this track
 
@@ -813,7 +818,7 @@ Let's review!
 ### Expected Result
 You know everything about routes. (Just kidding.)
 
-🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_",http-routes
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Open [this file in GitHub](https://github.com/pivotal/cf-networking-program-onboarding/edit/master/routes.prolific.md). Search for the phrase you want to edit. Make the fix!_",http-routes
 HTTP Routes ⇧,release,,http-routes
 Stale Routes Reenactment,feature,"## Assumptions
 - You have a CF deployed
@@ -937,9 +942,9 @@ In the GoRouter bosh logs you should see a line about pruning the bad route.
 Route Integrity doesn't actually prevent route staleness, but it *does* prevent leaking data from appB when you are trying to access appA.
 
 ## Look at the code
-GoRouter analyses different types of errors from the backend. In the case of misrouting, we are running into this [HostnameMismatch error](https://github.com/cloudfoundry/gorouter/blob/master/proxy/fails/basic_classifiers.go#L44-L51).
+GoRouter analyses different types of errors from the backend. In the case of misrouting, we are running into this [HostnameMismatch error](https://github.com/cloudfoundry/gorouter/blob/68fb24bfe35a379fee6591651b96660dc9712a80/proxy/fails/basic_classifiers.go#L62-L69).
 
-Depending on the type of error, GoRouter may choose to retry or not. Look at these [failure classifiers](https://github.com/cloudfoundry/gorouter/blob/master/proxy/fails/classifier_group.go#L5-L17).
+Depending on the type of error, GoRouter may choose to retry or not. Look at these [failure classifiers](https://github.com/cloudfoundry/gorouter/blob/68fb24bfe35a379fee6591651b96660dc9712a80/proxy/fails/classifier_group.go#L13-L22).
 
 ## Questions
 1. ❓Are HostnameMismatch errors retried?
@@ -959,7 +964,7 @@ Checking the SAN for Route Integrity,feature,"## Assumptions
 ## What
 In the last story you saw that Route Integrity ensures that appA.cf-app.com is *actually going to* appA and not misrouting to appB due to stale routes. But how does it  work?
 
-Route Integrity is implemented by giving the GoRouter a [CA certificate](https://github.com/cloudfoundry/routing-release/blob/develop/jobs/gorouter/spec#L106-L107) at deploy time. At runtime, when an app container is created, Diego generates a certificate from that CA for each app instance and puts it in the app container. The certificate has a unique subject alternative name (SAN) per app instance.
+Route Integrity is implemented by giving the GoRouter a [CA certificate](https://github.com/cloudfoundry/routing-release/blob/f25df8de6aaa3fca02bd51343df70bd800d0ab75/jobs/gorouter/spec#L125-L126) at deploy time. At runtime, when an app container is created, Diego generates a certificate from that CA for each app instance and puts it in the app container. The certificate has a unique subject alternative name (SAN) per app instance.
 
 Diego runs a sidecar Envoy inside of the app container which intercepts all incoming traffic from the GoRouter. It uses the generated certificate to terminate TLS before forwarding traffic to the app. When the GoRouter checks the certificate from the Envoy sidecar, it checks that the SAN matches the app instance id that it has for that IP and port. This way GoRouter is able to make sure that appA.cf-app.com is *actually going to* appA and not misrouting to appB due to stale routes.
 
@@ -1024,8 +1029,490 @@ You should see the same SAN value stored in GoRouter routes table and in the app
 
 🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_","route-integrity,questions"
 Route Integrity ⇧,release,,route-integrity
+Gorouter the Code (TM),feature,"⚠️⚠️⚠️
+**WARNING: The ""Gorouter the Code"" stories are very new. ** You will probably find some typos. You will probably find some things that aren't as clear as they could be.
+Please open a [PR or an issue](https://github.com/pivotal/cf-networking-program-onboarding/edit/master/gorouter-the-code.prolific.md) when you find these problems. This is my first attempt at making stories that dive into the implementation of a component. Good luck! All feedback is a 🎁 and is very appreciated.
+⚠️⚠️⚠️
+
+**The goal of this section is**
+ * introduce the golang concepts gorouter uses as a reverse proxy
+ * give you an understanding of what code is evaluated for each request/response
+ * give you time and prompts to encourage you to look around gorouter code 
+ * get you more comfortable poking around the gorouter code",gorouter-the-code
+What is Gorouter?,feature,"## Assumptions
+* You have completed the stories in the ""http-routes"" section.
+
+## What
+
+So what is Gorouter? 
+
+[Gorouter](https://github.com/cloudfoundry/gorouter) is a bosh job in [routing release](https://github.com/cloudfoundry/routing-release). It is in charge of a handful of things, including: 
+
+* subscribing to route registration messages from nats and keeping an up-to-date routing table
+* acting as a reverse proxy and routing to backends 👈👈👈
+* serving a healthcheck endpoint
+
+In this section we are going to focus on the second bullet: how gorouter acts as a reverse proxy and routes to backends.
+
+## How
+1. 📚Skim through [bosh configuration options for gorouter](https://github.com/cloudfoundry/routing-release/blob/develop/jobs/gorouter/spec) to start getting the sense of what this component can do.
+
+## Links
+* [Gorouter](https://github.com/cloudfoundry/gorouter) 
+* [routing release](https://github.com/cloudfoundry/routing-release)
+* [bosh configuration options for gorouter](https://github.com/cloudfoundry/routing-release/blob/develop/jobs/gorouter/spec)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? [Open this file in GitHub](https://github.com/pivotal/cf-networking-program-onboarding/edit/master/gorouter-the-code.prolific.md). Search for the phrase you want to edit. Make the fix!_",gorouter-the-code
+What is a reverse proxy?,feature,"## Assumptions
+* You have completed all the previous stories in this track.
+
+## What 
+
+In the last story we learned that part of Gorouter's job is to be a reverse proxy.
+
+But what _is_ a reverse proxy??? Let's find out!
+
+## How
+
+1. 🎬Watch this Hussein Nasser's video [""Proxy vs Reverse Proxy Server Explained""](https://www.youtube.com/watch?v=SqqrOspasag&ab_channel=HusseinNasser) _length 14:17_
+
+and/or 
+
+1. 📚Read [CloudFlare's ""What Is A Reverse Proxy?""](https://www.cloudflare.com/learning/cdn/glossary/reverse-proxy/)
+
+## Questions
+❓Hussein mentioned 5 use cases for a reverse proxy: caching, load balancing, ingress, canary deployment, and microservices. Which use cases do you think Gorouter is used for?
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? [Open this file in GitHub](https://github.com/pivotal/cf-networking-program-onboarding/edit/master/gorouter-the-code.prolific.md). Search for the phrase you want to edit. Make the fix!_","gorouter-the-code,questions"
+http.ReverseProxy in Gorouter,feature,"## Assumptions
+* You have completed all of the other stories in this track
+
+## What 
+In the last story you learned what a reverse proxy is at a high level. In this story you will look at how golang implements a reverse proxy and how gorouter uses that reverse proxy struct.
+
+## How
+
+**Read some docs**
+
+1. 📚Read [these golang docs on the Reverse Proxy struct ](https://golang.org/pkg/net/http/httputil/#ReverseProxy)
+
+**Look at Gorouter code**
+1. Gorouter's `main.go`, like many `main.go`s, is where everything is set up and initialized, but not much happens. Skim through [main.go](https://github.com/cloudfoundry/gorouter/blob/main/main.go). 
+  ❓ Do you see anything interesting in there? Did anything catch your eye?
+1. In `main.go` it initializes a new proxy. [Look at the code here](https://github.com/cloudfoundry/gorouter/blob/68fb24bfe35a379fee6591651b96660dc9712a80/main.go#L184-L196).
+
+1. When this new proxy is created, it creates a new http.ReverseProxy. [Look at the code here](https://github.com/cloudfoundry/gorouter/blob/68fb24bfe35a379fee6591651b96660dc9712a80/proxy/proxy.go#L143-L149).
+
+1. Golang's http.ReverseProxy struct has 7 configurable properties. Gorouter configures 5 of them. 
+  ❓ Which http.ReverseProxy properties does gorouter configure?
+  ❓ Which http.ReverseProxy properties does gorouter leave alone?
+
+1. The ~~meatiest~~ tofu-iest bit of configuration that gorouter does is that it assigns its own Proxy Round Tripper to the http.ReverseProxyTransport. [Look at the code here](https://github.com/cloudfoundry/gorouter/blob/68fb24bfe35a379fee6591651b96660dc9712a80/proxy/proxy.go#L145).
+
+1. This Proxy Round Tripper handles gorouter's custom routing logic and is a wrapper around the default Transport roundTrip function. [Take a quick look at the code for the Proxy Round Tripper](https://github.com/cloudfoundry/gorouter/blob/68fb24bfe35a379fee6591651b96660dc9712a80/proxy/round_tripper/proxy_round_tripper.go). We will looker closer at this component in a later story.
+
+## Links
+* [Golang docs on the Reverse Proxy struct ](https://golang.org/pkg/net/http/httputil/#ReverseProxy)
+* [Gorouter main.go](https://github.com/cloudfoundry/gorouter/blob/68fb24bfe35a379fee6591651b96660dc9712a80/main.go#L184-L196)
+* [Code where http.ReverseProxy is made](https://github.com/cloudfoundry/gorouter/blob/68fb24bfe35a379fee6591651b96660dc9712a80/proxy/proxy.go#L143-L149)
+* [Proxy Round Tripper Code](https://github.com/cloudfoundry/gorouter/blob/68fb24bfe35a379fee6591651b96660dc9712a80/proxy/round_tripper/proxy_round_tripper.go)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? [Open this file in GitHub](https://github.com/pivotal/cf-networking-program-onboarding/edit/master/gorouter-the-code.prolific.md). Search for the phrase you want to edit. Make the fix!_","gorouter-the-code,questions"
+Gorouter middleware via handlers,feature,"## Assumptions
+* You have completed all of the previous stories in this track.
+
+## What 
+In the previous story you learned that there is a component called proxy round tripper that handles the custom routing logic for gorouter. But what component(s) is in charge of all of the other logic? Where are all those VCAP headers added? Where are the access logs created? Where are the metrics emitted? 
+
+All of this per request logic is done in **handlers**. Handlers are middleware and in this story we are going to learn more about them.
+
+## How
+**Look at the code** 
+1. All of these handlers are set up in order in proxy.go. [Take a look](https://github.com/cloudfoundry/gorouter/blob/68fb24bfe35a379fee6591651b96660dc9712a80/proxy/proxy.go#L162-L191).
+  ❓Can you guess what most of the handlers are for? 
+  ❓Are there any handlers that you don't know what they are for?
+
+**Look at the docs** 
+1. These handlers are implemented via [negroni](https://github.com/urfave/negroni). Negroni is a BYOR (Bring your own Router) middleware-focused library that is designed to work directly with golang's net/http package.
+
+## Links
+* [Code where the handlers are set up](https://github.com/cloudfoundry/gorouter/blob/68fb24bfe35a379fee6591651b96660dc9712a80/proxy/proxy.go#L162-L191)
+* [negroni github docs](https://github.com/urfave/negroni)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? [Open this file in GitHub](https://github.com/pivotal/cf-networking-program-onboarding/edit/master/gorouter-the-code.prolific.md). Search for the phrase you want to edit. Make the fix!_","gorouter-the-code,questions"
+Gorouter is an onion,feature,"## Assumptions
+* You have completed all of the previous stories in this track
+
+## What 
+In the last story you learned that there are handlers that act as middleware in gorouter. But how do these handlers work?
+
+![middleware onion](https://storage.googleapis.com/cf-networking-onboarding-images/onion-layers-abstract.png)
+
+**Gorouter is like an onion**
+This middleware is organized like an onion. A request goes through all of the middleware layers to get to the app (the center of the onion). Then the app sends a response, which goes through all the layers again in reverse order. This means that the handlers have two chances to do things during each request/response: once when the request is on the way to the app and once when the response in on the way back to the client.
+
+![gorouter onion img](https://storage.googleapis.com/cf-networking-onboarding-images/the-gorouter-onion.png)
+
+**But what does this look like in the code?**
+
+Each handler has a function with the signature: `ServeHTTP(rw http.ResponseWriter, r *http.Request, next http.HandlerFunc)`. Inside the function each handler calls `next(rw, r)`. The stuff inside the function _before_ the `next(rw, r)` is done when request is at this handler on its way to the app. The stuff inside the function _after_ the `next(rw, r)` is done once the response has made it back to this handler on its way back to the client. Some handlers only do things when the request is on its way to the app. Some handlers only do things when the response is returning to the client. Some handlers do stuff in both cases.
+
+**Handlers need to share information**
+In order for handlers to pass information between each other there is a [Request Info](https://github.com/cloudfoundry/gorouter/blob/68fb24bfe35a379fee6591651b96660dc9712a80/handlers/requestinfo.go#L22-L32) struct. There is one Request Info struct per request. The handlers can look up this struct using the request. [See here for an example in the lookup handler](https://github.com/cloudfoundry/gorouter/blob/68fb24bfe35a379fee6591651b96660dc9712a80/handlers/lookup.go#L102). 
+
+## How
+
+🤔 **Examine the lookup handler**
+
+1. Look at [the lookup handler](https://github.com/cloudfoundry/gorouter/blob/68fb24bfe35a379fee6591651b96660dc9712a80/handlers/lookup.go#L55-L109).
+  ❓ What does this handler do? 
+  ❓ What does this handler set on the Request Info struct? 
+  ❓ When does this handler do its logic? When the request is on its way to the app or when the response is on its way to the client? Or both? How do you know?
+
+## Extra Credit 
+🤔 Find another handler that only contains logic that occurs when the request is on its way to the app. 
+🤔 Find a handler that only contains logic that occurs when the response is on its way to the client. 
+
+## Links
+* [code for all handlers](https://github.com/cloudfoundry/gorouter/blob/68fb24bfe35a379fee6591651b96660dc9712a80/handlers)
+* [request info struct definition](https://github.com/cloudfoundry/gorouter/blob/68fb24bfe35a379fee6591651b96660dc9712a80/handlers/requestinfo.go#L22-L32)
+* [the lookup handler code](https://github.com/cloudfoundry/gorouter/blob/68fb24bfe35a379fee6591651b96660dc9712a80/handlers/lookup.go#L55-L109)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? [Open this file in GitHub](https://github.com/pivotal/cf-networking-program-onboarding/edit/master/gorouter-the-code.prolific.md). Search for the phrase you want to edit. Make the fix!_","gorouter-the-code,questions"
+A formal introduction to handlers 1 - 5,feature,"## Assumptions
+* You have completed all of the previous stories in this track.
+
+## What 
+In the past few stories you have learned about what handlers are and what their code looks like. In this story you are going to be formally introduced to the first five handlers in Gorouter. 
+
+## How
+1. Read the summary for each handler. 
+1. Where there is a ✨ make sure you take a look at the code.
+
+## The first five handlers
+**1\. ✨[Panic Check](https://github.com/cloudfoundry/gorouter/blob/main/handlers/paniccheck.go)**
+    If a request/response causes a panic this handler will catch it and log. This way the gorouter continues working for other requests.
+
+**2\.✨ [Request Info](https://github.com/cloudfoundry/gorouter/blob/main/handlers/requestinfo.go)**
+    This handler creates the [RequestInfo struct](https://github.com/cloudfoundry/gorouter/blob/68fb24bfe35a379fee6591651b96660dc9712a80/handlers/requestinfo.go#L22-L32). There is one per request. The handlers use this struct to pass information to other handlers. For example, this handler sets the [reqInfo.StartedAt time to time.Now()](https://github.com/cloudfoundry/gorouter/blob/68fb24bfe35a379fee6591651b96660dc9712a80/handlers/requestinfo.go#L51). Later the access log handler will use this information.
+
+**3\. [Proxy Writer](https://github.com/cloudfoundry/gorouter/blob/main/handlers/proxywriter.go)**
+  This handler creates the response writer.
+
+**4\. [Vcap Request ID Header](https://github.com/cloudfoundry/gorouter/blob/main/handlers/request_id.go)**
+  This handler generates and sets the ""X-Vcap-Request-Id"" on the request. This header value is unique per each request and is used for debugging and tracing requests/responses through different components.
+
+**5\. [HTTP Start Stop](https://github.com/cloudfoundry/gorouter/blob/main/handlers/httpstartstop.go)**
+    This handler emits HTTP Start Stop events. You can see these events by [installing the firehose nozzle](https://docs.cloudfoundry.org/loggregator/cli-plugin.html), sending traffic to an app, and watching for this event: `cf nozzle --filter HttpStartStop | grep gorouter `
+
+## Questions
+❓Why do you think that the panic handler is first?
+
+## Links
+* [Code where the handlers are set up](https://github.com/cloudfoundry/gorouter/blob/68fb24bfe35a379fee6591651b96660dc9712a80/proxy/proxy.go#L162-L191)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? [Open this file in GitHub](https://github.com/pivotal/cf-networking-program-onboarding/edit/master/gorouter-the-code.prolific.md). Search for the phrase you want to edit. Make the fix!_","gorouter-the-code,questions"
+A formal introduction to handlers 6 - 10,feature,"## Assumptions
+* You have completed all of the previous stories in this track.
+
+## What 
+In the past few stories you have learned about what handlers are and what their code looks like. In this story you are going to be formally introduced to the next five handlers in Gorouter. 
+
+## How
+1. Read the summary for each handler. 
+1. Where there is a ✨ make sure you take a look at the code.
+
+## The next five handlers
+**6\. ✨[Access Log](https://github.com/cloudfoundry/gorouter/blob/main/handlers/access_log.go)**
+    This handler creates and emits the access logs. There is one access log per request/response. You can find these logs at /var/vcap/sys/log/gorouter/access.log.
+
+**7\. [Reporter](https://github.com/cloudfoundry/gorouter/blob/main/handlers/reporter.go)**
+    This handler emits a metric containing the status code of the response and sets information about the response latency on the RequestInfo struct.
+
+**8\. [HTTP Rewrite](https://github.com/cloudfoundry/gorouter/blob/main/handlers/http_rewrite.go)**
+    This handler alters the headers on the request. It adds [these headers](https://github.com/cloudfoundry/routing-release/blob/4dd3ff8ebded5667232bfa0a7a7a0f5e89b3a8c1/jobs/gorouter/spec#L218-L220) and [removes these headers](https://github.com/cloudfoundry/routing-release/blob/4dd3ff8ebded5667232bfa0a7a7a0f5e89b3a8c1/jobs/gorouter/spec#L226-L228) based on bosh properties.
+
+**9\. [Proxy Healthcheck](https://github.com/cloudfoundry/gorouter/blob/main/handlers/proxy_healthcheck.go)**
+    This handler responds to healthcheck requests.
+
+**10\. [Zipkin](https://github.com/cloudfoundry/gorouter/blob/68fb24bfe35a379fee6591651b96660dc9712a80/handlers/zipkin.go)**
+    Zipkin is a distributed tracing system. If you enable the [`router.tracing.enable_zipkin` bosh property](https://github.com/cloudfoundry/routing-release/blob/4dd3ff8ebded5667232bfa0a7a7a0f5e89b3a8c1/jobs/gorouter/spec#L242-L244), then this handler will attach zipkin headers on the request.
+
+## Questions
+❓If an invalid response results in a panic in golang's transport code, do you think that there will be a log line in the access logs? Why or why not? Consult the onion diagram if you need.
+
+## Links
+* [Code where the handlers are set up](https://github.com/cloudfoundry/gorouter/blob/68fb24bfe35a379fee6591651b96660dc9712a80/proxy/proxy.go#L162-L191)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? [Open this file in GitHub](https://github.com/pivotal/cf-networking-program-onboarding/edit/master/gorouter-the-code.prolific.md). Search for the phrase you want to edit. Make the fix!_","gorouter-the-code,questions"
+A formal introduction to handlers 11 - 17,feature,"## Assumptions
+* You have completed all of the other stories in this track.
+
+## What 
+In the past few stories you have learned about what handlers are and what their code looks like. In this story you are going to be formally introduced to the last 7 handlers in Gorouter. 
+
+## How
+1. Read the summary for each handler. 
+1. Where there is a ✨ make sure you take a look at the code.
+
+## The next seven handlers
+
+**11\. [w3c](https://github.com/cloudfoundry/gorouter/blob/68fb24bfe35a379fee6591651b96660dc9712a80/handlers/w3c.go)**
+    [W3c is a type of tracing header](https://www.w3.org/TR/trace-context/). If you enable the [`router.tracing.enable_w3c` bosh property](https://github.com/cloudfoundry/routing-release/blob/4dd3ff8ebded5667232bfa0a7a7a0f5e89b3a8c1/jobs/gorouter/spec#L245-L250), then this handler will attach w3c headers on the request.
+
+**12\. ✨[Protocol Check](https://github.com/cloudfoundry/gorouter/blob/main/handlers/protocolcheck.go)**
+    This handler checks to make sure that the request is a valid HTTP protocol. 
+
+**13\. ✨[Lookup](https://github.com/cloudfoundry/gorouter/blob/main/handlers/lookup.go)**
+    This handler looks up the host in the route table and gets the route pool. The route pool contains all backends (IPs and Ports) for that route. The handler sets the route pool on the RequestInfo struct.
+
+**14\. [Client Cert](https://github.com/cloudfoundry/gorouter/blob/main/handlers/clientcert.go)**
+    This handler handles the ""X-Forwarded-Client-Cert"" and either passes it on to the app or not [based on configuration](https://docs.google.com/spreadsheets/d/1Zlws0TJibQLbjDZWXKeRYrSyM9sOSyTbNhA7DX-_fAA/edit#gid=0). 
+
+**15\. [XForwarded Proto](https://github.com/cloudfoundry/gorouter/blob/main/handlers/x_forwarded_proto.go)**
+    This handler handles the ""X-Forwarded-Proto"" header based on configuration. 
+
+**16\. [Route Service](https://github.com/cloudfoundry/gorouter/blob/main/handlers/routeservice.go)**
+    This handler handles requests for route services and request that are coming from a route service. (Route services are explained in another section).
+
+**17\. ✨ [Proxy](https://github.com/cloudfoundry/gorouter/blob/main/proxy/proxy.go#L223-L266)**
+    This handler handles web socket requests 
+
+18\. That's it! Next comes the routing decisions with the Proxy Round Tripper! That's in the next story.
+
+## Questions
+❓If someone tries to send HTTP/2 traffic where will it fail? 
+
+## Links
+* [Code where the handlers are set up](https://github.com/cloudfoundry/gorouter/blob/68fb24bfe35a379fee6591651b96660dc9712a80/proxy/proxy.go#L162-L191)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? [Open this file in GitHub](https://github.com/pivotal/cf-networking-program-onboarding/edit/master/gorouter-the-code.prolific.md). Search for the phrase you want to edit. Make the fix!_","gorouter-the-code,questions"
+The Proxy Round Tripper,feature,"## Assumptions
+* You have completed all of the previous stories in this track.
+
+## What 
+In the past stories you were _thoroughly_ introduced to all of the handlers. Those handlers are the first layers of the gorouter onion. 
+
+![gorouter onion img](https://storage.googleapis.com/cf-networking-onboarding-images/the-gorouter-onion.png)
+
+In this story we are going to go deeper into the Proxy Round Tripper. 
+
+## How
+
+**Read docs**
+1. You have seen this Proxy Round Tripper before in the story ""http.ReverseProxy in gorouter"". In that story you looked at where the proxy created an http.ReverseProxy. It set the Proxy Round Tripper (prt) as the http.ReverseProxy.Transport. [Take a look at this code again here](https://github.com/cloudfoundry/gorouter/blob/68fb24bfe35a379fee6591651b96660dc9712a80/proxy/proxy.go#L145).
+
+1. Take a look again at the [golang docs for the http.ReverseProxy](https://golang.org/pkg/net/http/httputil/#ReverseProxy).
+
+1. Based on those docs you can see that our Proxy Round Tripper has to match the interface for an http.RoundTripper. Look at the [golang docs for the http.RoundTripper](https://golang.org/pkg/net/http/#RoundTripper).
+  ❓Based on the [golang docs for the http.RoundTripper](https://golang.org/pkg/net/http/#RoundTripper) what function must our Proxy Round Tripper implement? 
+  ❓What arguments does this function take?
+  ❓What values does this function return?
+
+**Look at code**
+1. Look at the [Proxy Round Tripper code](https://github.com/cloudfoundry/gorouter/blob/68fb24bfe35a379fee6591651b96660dc9712a80/proxy/round_tripper/proxy_round_tripper.go).
+1. Find and record the line numbers where the following events happen:
+  * It selects a backend endpoint
+  * It forwards the request to a backend (app or component)
+  * It retries if it failed to connect to a backend
+  * It forwards the request to a route service 
+  * It retries if it failed to connect to a route service
+  * It sets the VCAP_ID for sticky sessions. [Learn about sticky sessions here](https://github.com/cloudfoundry/routing-release/blob/develop/docs/session-affinity.md).
+
+**But this proxy round tripper code looks fairly high level? What actually makes the connection to the backend?**
+
+Our Proxy Round Tripper does not re-implement the low-level stuff related to sending traffic. Instead the Proxy Round Tripper wraps a different round tripper that uses the default Trasport 
+1. Look at [where the other round tripper with the default Transport is made](https://github.com/cloudfoundry/gorouter/blob/1e285091233eec98592cb11bad7d23c8dcbc90c4/proxy/proxy.go#L109-L118).
+1. Read (skim) more about http.Transport and its version of roundTrip [here](https://golang.org/src/net/http/transport.go). 
+
+## Hint
+[This code in Proxy Round Tripper`reqInfo.RouteServiceURL == nil`](https://github.com/cloudfoundry/gorouter/blob/68fb24bfe35a379fee6591651b96660dc9712a80/proxy/round_tripper/proxy_round_tripper.go#L132) means that this app is not bound to a  route service and that the gorouter should send the request onto a backend.
+
+## Links
+* [golang docs for the http.ReverseProxy](https://golang.org/pkg/net/http/httputil/#ReverseProxy)
+* [golang docs for the http.RoundTripper](https://golang.org/pkg/net/http/#RoundTripper)
+* [Proxy Round Tripper code](https://github.com/cloudfoundry/gorouter/blob/68fb24bfe35a379fee6591651b96660dc9712a80/proxy/round_tripper/proxy_round_tripper.go).
+* [Learn about sticky sessions here](https://github.com/cloudfoundry/routing-release/blob/develop/docs/session-affinity.md)
+* [where the other round tripper with the default Transport is made](https://github.com/cloudfoundry/gorouter/blob/1e285091233eec98592cb11bad7d23c8dcbc90c4/proxy/proxy.go#L109-L118).
+* [http.Transport](https://golang.org/src/net/http/transport.go) 
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? [Open this file in GitHub](https://github.com/pivotal/cf-networking-program-onboarding/edit/master/gorouter-the-code.prolific.md). Search for the phrase you want to edit. Make the fix!_","gorouter-the-code,questions"
+Gorouter the Code (TM) ⇧,release,Congrats! You made it! Time to start making some PRs to Gorouter!,gorouter-the-code
+Iptables - a primer,feature,"## What
+ASGs and c2c network policies are implemented using iptables rules. Think of iptables as a firewall implementation. (Iptables can do more than firewall things, but we have to start somewhere.)
+
+All network traffic on linux machines is evaluated against the iptables rules written on the machine. To organize these rules, there are tables and chains. Tables have chains and chains have rules. Users (that's you!) can create custom chains and rules for their own needs. Traffic hits different tables and chains depending on if the traffic is ingress, egress, or East/West.
+
+Let's look at the anatomy of an iptables rule.
+
+![iptables rule anatomy](https://deliveryimages.acm.org/10.1145/2070000/2062737/10822f2.png)
+
+The example above can be translated as:
+- (**table/chain**) For any traffic that is evaluated against the filter table on the INPUT chain...
+- (**match**)...if that traffic is using the tcp protocol...
+- (**match**)...and if that traffic is sending traffic to port 80...
+- (**jump rule/target**) ... then ACCEPT that traffic.
+
+Once a packet hits ACCEPT, then it stops evaluating in that table and chain. It would also stop if it hit a DROP or REJECT target.
+
+In this story you are going to skim/read a couple great resources on iptables rules.
+
+## How
+1. Give the [iptables man page](http://ipset.netfilter.org/iptables.man.html) a skim. At least the description, targets, and tables sections. It leaves out a lot of commonly used features that are covered in [the iptables-extensions man page](http://ipset.netfilter.org/iptables-extensions.man.html).
+
+1. Flip through [Aidan's ""iptables in Cloud Foundry"" powerpoint](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
+
+1. Check out [Julia Evan's Blog on iptables](https://jvns.ca/blog/2017/06/07/iptables-basics/).
+
+## Optional Videos
+Here are some thorough videos on iptables rules. If you are the type of person who likes getting lots of information up front, watch them now. 
+If you are the type of person who likes to experiment first, skip these videos and watch them after the next story. (Don't worry I'll remind you.)
+
+1. 🎬 Watch this video [""iptables: Packet Processing"" by Dr. Murphy's Lectures](https://www.youtube.com/watch?v=yE82upHCxfU) _length 14:22_
+1. 🎬 Watch this video [""iptables: Tables and Chains"" by Dr. Murphy's Lectures](https://www.youtube.com/watch?v=jgH976ymdoQ) _length 10:34_
+
+## Resources
+[iptables man page](http://ipset.netfilter.org/iptables.man.html)
+[Aidan's iptables in CF ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
+[Julia Evans iptables basics](https://jvns.ca/blog/2017/06/07/iptables-basics/)
+[""iptables: Packet Processing"" by Dr. Murphy's Lectures](https://www.youtube.com/watch?v=yE82upHCxfU)
+[""iptables: Tables and Chains"" by Dr. Murphy's Lectures](https://www.youtube.com/watch?v=jgH976ymdoQ)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_",iptables-primer
+Write your own iptables DROP rule in a docker container,feature,"## Assumptions
+- You have the docker CLI installed
+
+### What?
+Experiment with writing your own iptables rules within the safety of your own docker container.
+
+### How?
+
+📝 **Get your docker container setup**
+0. Run an ubuntu docker container and attach to it: `docker run --privileged -it ubuntu bin/bash`
+0. Set up the docker container
+    ```
+    apt-get update
+    apt-get install iptables
+    apt-get install curl
+    ```
+
+📝 **What's the current state of the world?**
+0. Look at the default iptables rules `iptables -S`.
+    It should look like this:
+    ```
+    -P INPUT ACCEPT
+    -P FORWARD ACCEPT
+    -P OUTPUT ACCEPT
+    ```
+   Input, forward, and output are all names of chains. Currently there are no rules attached to these chains. What beautiful empty chains! This means that traffic is not being restricted by iptables.
+
+0. See that traffic is not being restricted. `curl google.com`.  It works!
+
+📝 **Make your own DROP rule**
+Let's make a rule to DROP all traffic from the container so that the curl will fail.
+
+0. Make your own custom chain.
+ ```
+ iptables -N drop-everything
+ ```
+0. Append a rule to your chain.
+ ```
+ iptables -A drop-everything -j DROP
+ ```
+0. View your handiwork. Oooooh. Ahhhhhhh.
+ ```
+ iptables -S
+ ```
+0. See if you can still `curl google.com`. What! The curl still works!
+   That's because currently nothing is hitting your rule. You need to attach your custom chain to the INPUT, FORWARD, and/or OUTPUT chain in order for traffic to hit it.
+
+    The INPUT, FORWARD, and OUTPUT chains are hit in different situations. (See diagram below)
+    - The INPUT chain is hit by ingress traffic (remember, the traffic is coming *in*).
+    - The FORWARD chain is hit by East/West traffic (remember... idk for this one).
+    - The OUTPUT chain is hit by egress traffic (remember, the traffic is *e*xiting the container and going *out*).
+
+   ![iptables chains and tables diagram](https://storage.googleapis.com/cf-networking-onboarding-images/iptables-tables-and-chains-diagram.png)
+
+0. The request to google is egress traffic, so we want to attach out custom chain to the OUTPUT chain.
+ ```
+ iptables -A OUTPUT -j drop-everything
+ ```
+
+0. See if you can still `curl google.com`. You should see the error `Could not resolve host: google.com`.
+0. Delete all of the rules and the chain that you created.
+   Before you can delete the chain itself, you need to delete the rules attached to it using the `-D` flag.
+   ```
+iptables -D EITHER-INPUT-FORWARD-OR-OUTPUT -j drop-everything
+iptables -D drop-everything -j DROP
+   ```
+   Then you can delete the chain itself using the `-X` flag
+   ```
+iptables -X drop-everything
+   ```
+
+Don't leave your docker container yet! You're going to need it in the next story!
+
+### Expected Result
+
+You should know how to...
+- add/remove a iptables chain on a particular table
+- add/remove a rule to an iptables chain
+
+### Resources
+[iptables man page](http://ipset.netfilter.org/iptables.man.html)
+[Julia Evans iptables basics](https://jvns.ca/blog/2017/06/07/iptables-basics/)
+[Aidan's iptables ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
+[iptables primer](https://danielmiessler.com/study/iptables/)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_",iptables-primer
+Watch Iptables Videos,feature,"## Assumptions
+- None!
+
+### What?
+If you haven't watched these videos yet, now is a great time. In the last story you had a chance to poke around with iptables. 
+Now hopefully when you watch these videos the content will really stick because you are more familiar with the concepts.
+
+### How?
+
+1. 🎬 Watch this video [""iptables: Packet Processing"" by Dr. Murphy's Lectures](https://www.youtube.com/watch?v=yE82upHCxfU) _length 14:22_
+1. 🎬 Watch this video [""iptables: Tables and Chains"" by Dr. Murphy's Lectures](https://www.youtube.com/watch?v=jgH976ymdoQ) _length 10:34_
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_",iptables-primer
+Write your own iptables firewall in a docker container,feature,"## What
+
+Make a super basic firewall for your docker container. This (extremely practical) firewall will only let egress traffic exit if it is going to neopets.com.
+
+## How
+
+🤔 **Make your own rule**
+0. Make your own chain.
+0. Attach rule to that chain that accepts traffic if it is sent to ip 23.96.35.235 (neopets!) port 80 using tcp.
+0. Attach a rule to that chain that drops all other traffic.
+0. Add a jump rule to either the OUTPUT, FORWARD, or INPUT chains so that the traffic exiting the docker container will hit your custom chain.
+0. Curl google.com. Does it fail?
+0. Curl 23.96.35.235:80. Does it succeed?
+0. Curl http://neopets.com. Does it fail or succeed? Why?
+0. Practice deleting chains and rules: delete all of the rules and chains that you created.
+
+### Expected Result
+Hopefully you realize by now that iptables rules are very powerful and very fun :D
+
+❓Why didn't curling http://neopets.com work?
+
+### Extra Credit
+1. Use iptables rules to make it so you can curl neopets.com, but not google.com
+
+## Resources
+[iptables man page](http://ipset.netfilter.org/iptables.man.html)
+[Julia Evans iptables basics](https://jvns.ca/blog/2017/06/07/iptables-basics/)
+[iptables.info - great resource linked to in Julia's blog, but only available with the way back machine](https://web.archive.org/web/20180310124055/http://www.iptables.info/en/iptables-contents.html) 
+[Aidan's iptables ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
+[iptables primer](https://danielmiessler.com/study/iptables/)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_","iptables-primer,questions"
+Iptables Primer ⇧,release,,iptables-primer
 User Workflow: Container to Container Networking,feature,"## Assumptions
-- You have a CF deployed with silk release
+- You have a CF deployed with silk release and at least 2 diego cells
 - You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and called appA
 - You have one route mapped to appA called APP_A_ROUTE
 
@@ -1087,15 +1574,15 @@ Let's ignore the technical implementation for now and go through the user workfl
 
 1. Get onto the container for appA and curl the appB internal IP and app port.
    ```
-cf ssh appA
-watch  ""curl CF_INSTANCE_INTERNAL_IP:8080""
+   cf ssh appA
+   watch  ""curl CF_INSTANCE_INTERNAL_IP:8080""
    ```
    You should get a `Connection refused` error because there is no network policy yet.
 
 1.  In another terminal, add a network policy from appA to appB, with protocol tcp, on port 8080.
- ```
- cf add-network-policy appA appB --protocol tcp --port 8080
- ```
+    ```
+    cf add-network-policy appA --destination-app appB --protocol tcp --port 8080
+    ```
 
 ### Expected Result
 After you add the policy, the curl from inside of the appA container to appB should succeed.
@@ -1123,9 +1610,13 @@ Overlay vs Underlay,feature,"## Assumptions
 
 ## What
 
-The **underlay network** is the network that you're given to work with, on top of which you build a virtual **overlay network**. Routing for overlay networks is done at the software layer (in CF we use iptables rules). Overlay networks are used to create layers of abstraction that can be used to run multiple separate layers on top of the physical network — the bottom underlay network. These are general definitions that are not specific to Cloud Foundry.
+The **underlay network** is the network that you're given to work with, on top of which you build a virtual **overlay network**. Routing for overlay networks is done at the software layer. 
 
-** Your ** underlay network is often someone else\'s overlay network, that engineer just works on a lower abstraction layer and might work on an IaaS rather than a PaaS, for example. It\'s all relative! 🤯
+Overlay networks are used to create layers of abstraction that can be used to run multiple separate layers on top of the physical network — the bottom underlay network. These are general definitions that are not specific to Cloud Foundry.
+
+In CF, the software that creates the overlay network uses a combination of tools including VXLAN and iptables rules. Much more about this in the stories that follow! 
+
+** Your ** underlay network is often someone else's overlay network, that engineer just works on a lower abstraction layer and might work on an IaaS rather than a PaaS, for example. It's all relative! 🤯
 
 Routing to an app using the Diego Cell IP and port is done on what we will refer to as the **underlay network**. Container to container networking (c2c) is done on what we will refer to as the **overlay network**.
 
@@ -1151,8 +1642,10 @@ Follow the steps below on the diagram. (Higher quality diagram [here](https://st
 
 ![c2c traffic flow](https://storage.googleapis.com/cf-networking-onboarding-images/overlay-underlay-silk-network.png)
 
+_Note: There are a lot of new terms below: ""veth"", ""VTEP"", ""VXLAN"", etc. Feel free to google if you _need_ to know now, but if not, hang tight. We'll unpack these terms more in the stories that follow._
+
 1. AppB (10.255.1.4) makes a request to AppA's overlay IP address (10.255.2.7). This packet is called the overlay packet (aka the c2c packet).
-1. ✨ The packet exits the app container through the veth interface.
+1. ✨ The packet exits the app container through the [veth](https://man7.org/linux/man-pages/man4/veth.4.html) interface.
 1. ✨ The overlay packet is marked with a ...mark... that is unique to the source app.
 1. ✨ Because the packet is an overlay packet, it is sent to the silk-vtep interface on the Diego Cell. This interface is a VXLAN interface.
 1. ✨ The overlay packet is encapsulated inside of an underlay packet. This underlay packet is addressed to underlay IP of the Diego Cell where the destination app is located (appA in this case).
@@ -1174,7 +1667,7 @@ The next few stories will go through and explain each of the steps marked with a
 
 🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_",c2c
 Container to Container Networking - Part 1.1 - Network Namespaces,feature,"## Assumptions
-- You have an OS CF deployed
+- You have an OS CF deployed with at least 2 diego cells
 - You have done the other stories in this track
 
 ## Review
@@ -1237,21 +1730,21 @@ bpm shell vxlan-policy-agent
 📝 **Make your own network namespace**
 
 1. Still on a Diego Cell as root, create your own network namespace called meow.
- ```
-ip netns add meow
-```
+    ```
+    ip netns add meow
+    ```
 1. List all of the networking namespaces
- ```
-ip netns
- ```
+    ```
+    ip netns
+    ```
  You should only see meow. Hmmm. You might think you would see the other networking namespaces for all the apps on this cell. (I certainly thought so when I first tried this.) You'll learn how to view an app's networking namespace one day, I promise.
 
-1. Curl google.com from the Diego Cell. See that it works! This is because Application Security Groups allow it. (Remember ASGs?! You might or might not have done the ASG stories yet. tl;dr ASGs are iptables firewall rules for egress traffic.)
+1. Curl google.com from the Diego Cell. See that it works!
 
 1. Curl google.com from inside of your networking namespace
- ```
-ip netns exec meow curl google.com
- ```
+    ```
+    ip netns exec meow curl google.com
+    ```
 
 What? It doesn't work!? You should see `curl: (6) Could not resolve host: google.com`. Try another URL. They will all fail.
 
@@ -1268,7 +1761,7 @@ In the next story you'll explore network interfaces. You'll learn why the meow n
 
 🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_","c2c,questions"
 Container to Container Networking - Part 1.2 - Network Interfaces,feature," ## Assumptions
-- You have an OS CF deployed
+- You have an OS CF deployed with at least 2 diego cells
 - You have done the other stories in this track
 - You have the meow network namespace created
 - You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and named appA (the fewer apps you have deployed the better)
@@ -1310,15 +1803,19 @@ $ ip link
 1: lo                 <------------- The loopback network interface that lets the system communicate with itself over localhost.
 2: eth0               <------------- A ethernet interface. Traffic goes here to leave the Diego Cell.
 1555: silk-vtep       <------------- A VXLAN overlay network interface. Overlay packets go here to be encapsulated in an  underlay packet before exiting the Diego Cell.
-1559: s-010255096003@if1558: link-netnsid 0   <-------------  The interface that links to the network namespace with id 0. The name is `s-CONTAINER-ID`. This is the veth interface.
+1559: s-010255096003@if1558: link-netnsid 0   <-------------  The interface that links to the network namespace with id 0. The name is `s-CONTAINER-IP`. This is the veth interface.
                                                                  There will be one of these network interfaces per app on the Diego Cell.
   ```
 
 1. Now list all of the networking interfaces in the meow networking namespace
   ```
-ip netns exec meow ip link
+$ ip netns exec meow ip link
+
+1: lo: <LOOPBACK> mtu 65536 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
   ```
-Nothing! No wonder you can't curl google.com! There is no network interface for packets to travel through.
+There is only the loopback interface. The loopback interface is a special virtual network interface that a computer uses to communicate with itself. The standard domain name for the address is localhost.
+No wonder you can't curl google.com! There is no network interface for packets that want to leave the network.
 
 The solution is to create a veth (virtual ethernet) pair. A veth pair consists of two virtual ethernet interfaces. One is placed in the host network namespace, the other in the meow network namespace. The veth pair acts like a bridge between the network namespace and the host.
 You already saw one side of the veth pair for the proxy app when you ran `ip link` inside of the Diego Cell.  Let's look at the other half of the veth pair.
@@ -1345,7 +1842,7 @@ Look at the [code](https://github.com/cloudfoundry/silk/blob/master/cni/lib/pair
 
 🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_",c2c
 Container to Container Networking - Part 2 - Marks,feature," ## Assumptions
-- You have an OS CF deployed
+- You have an OS CF deployed with at least 2 diego cells
 - You have done the other stories in this track
 - You have two [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) apps pushed and named appA and appB (the fewer apps you have deployed the better)
 
@@ -1471,7 +1968,7 @@ You may have noticed a discrepancy in the diagram and the steps about _where_ th
 
 🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_",c2c
 Container to Container Networking - Part 3.1 - Linux Routes Table Primer,feature,"## Assumptions
-- You have an OS CF deployed
+- You have an OS CF deployed with at least 2 diego cells
 - You have done the other stories in this track
 - You have two [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) apps pushed and named appA and appB (the fewer apps you have deployed the better)
 
@@ -1506,7 +2003,7 @@ You understand the basics of a route table.
 
 🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_",c2c
 Container to Container Networking - Part 3.2 - Diego Cell Routes Table,feature,"## Assumptions
-- You have an OS CF deployed
+- You have an OS CF deployed with at least 2 diego cells
 - You have done the other stories in this track
 - You have two [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) apps pushed and named appA and appB (the fewer apps you have deployed the better)
 
@@ -1598,7 +2095,7 @@ Let's define some terms.
 
 **VXLAN** - Virtual eXtensible Local Area Network - VXLAN was developed to provide the same network services as VLAN does, but with greater extensibility and flexibility. Container to container (c2c) networking uses VXLAN to create the overlay network.
 
-**VTEP**- VXLAN Tunnel EndPoints - are VXLAN tunnels that encapsulate outgoing overlay traffic into underlay packets and decapsulate incoming underlay packets into overlay packets. The VTEP that c2c uses is called silk-vtep.
+**VTEP**- VXLAN EndPoints - are VXLAN tunnels that encapsulate outgoing overlay traffic into underlay packets and decapsulate incoming underlay packets into overlay packets. The VTEP that c2c uses is called silk-vtep.
 
 ## Resources
 [LAN](https://www.webopedia.com/TERM/L/local_area_network_LAN.html)
@@ -1607,7 +2104,7 @@ Let's define some terms.
 
 🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_",c2c
 Container to Container Networking - Part 4.2 - Overlay Leases and ARP,feature," ## Assumptions
-- You have an OS CF deployed
+- You have an OS CF deployed with at least 2 diego cells
 - You have done the other stories in this track
 - You have two [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) apps pushed and named appA and appB (the fewer apps you have deployed the better)
 
@@ -1729,7 +2226,7 @@ Let's figure it out by inspecting the packets with tcpdump! Tcpdump is a CLI too
 1. In terminal 2, ssh onto Diego Cell 2, where appB is running.
 1. The underlay packet is from Diego Cell 1 to Diego Cell 2, so use tcpdump to look at all traffic from Diego Cell 1.
  ```
-tcpdump -n src DIEGO_CELL_1_IP
+tcpdump -n src DIEGO_CELL_1_IP -v
  ```
 ❓What do you notice about all of the traffic? What do they have in common? Based on this information how do you think only this traffic is being decapsulated?
 ❓What protocol is this traffic using? Is that surprising to you?
@@ -1741,7 +2238,7 @@ You should also notice that all of the traffic is sent via UDP. WHAT? Read [here
 
 🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_","c2c,questions"
 Container to Container Networking - Part 5.1 - Enforce Policy,feature,"## Assumptions
-- You have an OS CF deployed
+- You have an OS CF deployed with at least 2 diego cells
 - You have done the other stories in this track
 - You have two [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) apps pushed and named appA and appB (the fewer apps you have deployed the better)
 
@@ -1843,7 +2340,7 @@ Let's look at them line by line.
 
 🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_","c2c,questions"
 Container to Container Networking - Part 5.2 - Enforce Policy - Same Cell vs Different Cell,feature,"## Assumptions
-- You have an OS CF deployed
+- You have an OS CF deployed with at least 2 diego cells
 - You have done the other stories in this track
 - You have two [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) apps pushed and named appA and appB (the fewer apps you have deployed the better)
 
@@ -1890,7 +2387,7 @@ At the end of this story, you should know the traffic flow between two apps on t
 
 🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_","c2c,questions"
 Logging with Container to Container Networking,feature,"## Assumptions
-- You have an OS CF deployed
+- You have an OS CF deployed with at least 2 diego cells
 - You have two [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) apps pushed and named appA and appB (the fewer apps you have deployed the better)
 - There are no c2c policies
 
@@ -1951,7 +2448,7 @@ You (1) turned on this feature, (2) looked at the logs, and (3) saw how this fea
 
 🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_",c2c
 Watch your c2c packets with tcpdump,feature,"## Assumptions
-- You have a CF deployed
+- You have a CF deployed with at least 2 diego cells
 - You have two [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) apps pushed and called appA and appB
 - There are no c2c network policies
 
@@ -2040,7 +2537,7 @@ You should see packets being sent in response from appB to appA. You should see 
 
 🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_","c2c,questions"
 Bypass container networking policies,feature,"## Assumptions
-- You have a OSS CF deployed
+- You have a OSS CF deployed with at least 2 diego cells
 - You have two [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) apps pushed and named appA and appB
 - You have at least 2 Diego Cells
 - There are no c2c network policies
@@ -2279,179 +2776,6 @@ https://github.com/cloudfoundry/cf-networking-release/blob/develop/docs/app-sd.m
 
 🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_",c2c-service-discovery
 Container to Container Networking with Service Discovery ⇧,release,,c2c-service-discovery
-Iptables - a primer,feature,"## What
-ASGs and c2c network policies are implemented using iptables rules. Think of iptables as a firewall implementation. (Iptables can do more than firewall things, but we have to start somewhere.)
-
-All network traffic on linux machines is evaluated against the iptables rules written on the machine. To organize these rules, there are tables and chains. Tables have chains and chains have rules. Users (that's you!) can create custom chains and rules for their own needs. Traffic hits different tables and chains depending on if the traffic is ingress, egress, or East/West.
-
-Let's look at the anatomy of an iptables rule.
-
-![iptables rule anatomy](https://deliveryimages.acm.org/10.1145/2070000/2062737/10822f2.png)
-
-The example above can be translated as:
-- (**table/chain**) For any traffic that is evaluated against the filter table on the INPUT chain...
-- (**match**)...if that traffic is using the tcp protocol...
-- (**match**)...and if that traffic is sending traffic to port 80...
-- (**jump rule/target**) ... then ACCEPT that traffic.
-
-Once a packet hits ACCEPT, then it stops evaluating in that table and chain. It would also stop if it hit a DROP or REJECT target.
-
-In this story you are going to skim/read a couple great resources on iptables rules.
-
-## How
-1. Give the [iptables man page](http://ipset.netfilter.org/iptables.man.html) a skim. At least the description, targets, and tables sections. It leaves out a lot of commonly used features that are covered in [the iptables-extensions man page](http://ipset.netfilter.org/iptables-extensions.man.html).
-
-1. Flip through [Aidan's ""iptables in Cloud Foundry"" powerpoint](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
-
-1. Check out [Julian Evan's Blog on iptables](https://jvns.ca/blog/2017/06/07/iptables-basics/).
-
-## Optional Videos
-Here are some thorough videos on iptables rules. If you are the type of person who likes getting lots of information up front, watch them now. 
-If you are the type of person who likes to experiment first, skip these videos and watch them after the next story. (Don't worry I'll remind you.)
-
-1. 🎬 Watch this video [""iptables: Packet Processing"" by Dr. Murphy's Lectures](https://www.youtube.com/watch?v=yE82upHCxfU) _length 14:22_
-1. 🎬 Watch this video [""iptables: Tables and Chains"" by Dr. Murphy's Lectures](https://www.youtube.com/watch?v=jgH976ymdoQ) _length 10:34_
-
-## Resources
-[iptables man page](http://ipset.netfilter.org/iptables.man.html)
-[Aidan's iptables in CF ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
-[Julia Evans iptables basics](https://jvns.ca/blog/2017/06/07/iptables-basics/)
-[""iptables: Packet Processing"" by Dr. Murphy's Lectures](https://www.youtube.com/watch?v=yE82upHCxfU)
-[""iptables: Tables and Chains"" by Dr. Murphy's Lectures](https://www.youtube.com/watch?v=jgH976ymdoQ)
-
-🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_",iptables-primer
-Write your own iptables DROP rule in a docker container,feature,"## Assumptions
-- You have the docker CLI installed
-
-### What?
-Experiment with writing your own iptables rules within the safety of your own docker container.
-
-### How?
-
-📝 **Get your docker container setup**
-0. Run an ubuntu docker container and attach to it: `docker run --privileged -it ubuntu bin/bash`
-0. Set up the docker container
-    ```
-    apt-get update
-    apt-get install iptables
-    apt-get install curl
-    ```
-
-📝 **What's the current state of the world?**
-0. Look at the default iptables rules `iptables -S`.
-    It should look like this:
-    ```
-    -P INPUT ACCEPT
-    -P FORWARD ACCEPT
-    -P OUTPUT ACCEPT
-    ```
-   Input, forward, and output are all names of chains. Currently there are no rules attached to these chains. What beautiful empty chains! This means that traffic is not being restricted by iptables.
-
-0. See that traffic is not being restricted. `curl google.com`.  It works!
-
-📝 **Make your own DROP rule**
-Let's make a rule to DROP all traffic from the container so that the curl will fail.
-
-0. Make your own custom chain.
- ```
- iptables -N drop-everything
- ```
-0. Append a rule to your chain.
- ```
- iptables -A drop-everything -j DROP
- ```
-0. View your handiwork. Oooooh. Ahhhhhhh.
- ```
- iptables -S
- ```
-0. See if you can still `curl google.com`. What! The curl still works!
-   That's because currently nothing is hitting your rule. You need to attach your custom chain to the INPUT, FORWARD, and/or OUTPUT chain in order for traffic to hit it.
-
-    The INPUT, FORWARD, and OUTPUT chains are hit in different situations. (See diagram below)
-    - The INPUT chain is hit by ingress traffic (remember, the traffic is coming *in*).
-    - The FORWARD chain is hit by East/West traffic (remember... idk for this one).
-    - The OUTPUT chain is hit by egress traffic (remember, the traffic is *e*xiting the container and going *out*).
-
-   ![iptables chains and tables diagram](https://storage.googleapis.com/cf-networking-onboarding-images/iptables-tables-and-chains-diagram.png)
-
-0. The request to google is egress traffic, so we want to attach out custom chain to the OUTPUT chain.
- ```
- iptables -A OUTPUT -j drop-everything
- ```
-
-0. See if you can still `curl google.com`. You should see the error `Could not resolve host: google.com`.
-0. Delete all of the rules and the chain that you created.
-   Before you can delete the chain itself, you need to delete the rules attached to it using the `-D` flag.
-   ```
-iptables -D EITHER-INPUT-FORWARD-OR-OUTPUT -j drop-everything
-iptables -D drop-everything -j DROP
-   ```
-   Then you can delete the chain itself using the `-X` flag
-   ```
-iptables -X drop-everything
-   ```
-
-Don't leave your docker container yet! You're going to need it in the next story!
-
-### Expected Result
-
-You should know how to...
-- add/remove a iptables chain on a particular table
-- add/remove a rule to an iptables chain
-
-### Resources
-[iptables man page](http://ipset.netfilter.org/iptables.man.html)
-[Julia Evans iptables basics](https://jvns.ca/blog/2017/06/07/iptables-basics/)
-[Aidan's iptables ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
-[iptables primer](https://danielmiessler.com/study/iptables/)
-
-🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_",iptables-primer
-Watch Iptables Videos,feature,"## Assumptions
-- None!
-
-### What?
-If you haven't watched these videos yet, now is a great time. In the last story you had a chance to poke around with iptables. 
-Now hopefully when you watch these videos the content will really stick because you are more familiar with the concepts.
-
-### How?
-
-1. 🎬 Watch this video [""iptables: Packet Processing"" by Dr. Murphy's Lectures](https://www.youtube.com/watch?v=yE82upHCxfU) _length 14:22_
-1. 🎬 Watch this video [""iptables: Tables and Chains"" by Dr. Murphy's Lectures](https://www.youtube.com/watch?v=jgH976ymdoQ) _length 10:34_
-
-🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_",iptables-primer
-Write your own iptables firewall in a docker container,feature,"## What
-
-Make a super basic firewall for your docker container. This (extremely practical) firewall will only let egress traffic exit if it is going to neopets.com.
-
-## How
-
-🤔 **Make your own rule**
-0. Make your own chain.
-0. Attach rule to that chain that accepts traffic if it is sent to ip 23.96.35.235 (neopets!) port 80 using tcp.
-0. Attach a rule to that chain that drops all other traffic.
-0. Add a jump rule to either the OUTPUT, FORWARD, or INPUT chains so that the traffic exiting the docker container will hit your custom chain.
-0. Curl google.com. Does it fail?
-0. Curl 23.96.35.235:80. Does it succeed?
-0. Curl http://neopets.com. Does it fail or succeed? Why?
-0. Practice deleting chains and rules: delete all of the rules and chains that you created.
-
-### Expected Result
-Hopefully you realize by now that iptables rules are very powerful and very fun :D
-
-❓Why didn't curling http://neopets.com work?
-
-### Extra Credit
-1. Use iptables rules to make it so you can curl neopets.com, but not google.com
-
-## Resources
-[iptables man page](http://ipset.netfilter.org/iptables.man.html)
-[Julia Evans iptables basics](https://jvns.ca/blog/2017/06/07/iptables-basics/)
-[iptables.info - great resource linked to in Julia's blog, but only available with the way back machine](https://web.archive.org/web/20180310124055/http://www.iptables.info/en/iptables-contents.html) 
-[Aidan's iptables ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
-[iptables primer](https://danielmiessler.com/study/iptables/)
-
-🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_","iptables-primer,questions"
-Iptables Primer ⇧,release,,iptables-primer
 User Workflow: Application Security Groups,feature,"## Assumptions
 - You have a CF deployed
 - You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and named appA
@@ -3608,209 +3932,6 @@ You should see one TCP route that looks like the one below (this one is edited f
 
 ## Resources
 [routing api docs](https://github.com/cloudfoundry/routing-api/blob/master/docs/api_docs.md#list-tcp-routes)
-
-🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_","tcp-routes,questions"
-Why are my TCP routes broken? - Part 0 - Setup,feature,"## Assumptions
-- You have a CF deployed
-- The CF was deployed with the help of `bbl`
-- You have completed the ""iptables-primer"" track
-- You have a TCP server deployed named tcp-app
-- You have a TCP route mapped to tcp-app called TCP_ROUTE:TCP_PORT
-
-## What
-When writing these stories, I happened to have a particular deploy setup that caused TCP routes to break and took me awhile to debug. Hopefully this bug is fixed by the time you are reading this, so for this story you're going to have to deploy older code to get the broken state.
-
-## How
-🤔**Setup**
-1. If your environment is running istio-release 1.2.0 you are good to go. Skip to the next section.
-1. Save your current manifest so you can get back to it easily after this story.
- ```
-bosh manifest > /tmp/bosh.yml
- ```
-1. Deploy with istio-release 1.2.0 and use the [recommended opsfiles](https://github.com/cloudfoundry/istio-release/tree/v1.2.0/deploy/cf-deployment-operations).
-   Make sure that the `experimental_enable_ingress_proxy_redirect` property on the `garden-cni` job is set to true
-
-📝 **See it break**
-1. See that `curl TCP_ROUTE:PORT` no longer works
-
-🤔 **Now fix it!**
-At this point it is a choose your own adventure.
-There are 3 stories that you could follow, each with different levels of help text.
-
-Option 1: Solo adventure. No map. No compass. - This option has no hand holding. You are left on your own to find and fix the bug.
-
-Option 2: Some hints. You have a compass, but no map. - This option provides thoughtful questions and hints to probe you in the correct direction.
-
-Option 3: Step by step directions. You have a compass and a map. - This option provides instructions on how to debug each component to figure out which component is broken.
-
-I suggest starting with option 1 or 2 and then looking ahead to options 2 and 3 as you need help.
-
-All of the previous stories that taught you about iptables, tcpdump, routing tables, etc should set you up how to debug CF. However, one thing that will become helpful, but that hasn't been covered previously is [how to get into a container's networking namespace as root](https://cloudfoundry.slack.com/archives/GFXGACQUB/p1554758849206400).
-
-This your chance to put your debugging skills to the test. You can do it.
-Ready. Set. Debug!
-
-## Resources
-[How to get into a container's networking namespace as root](https://cloudfoundry.slack.com/archives/GFXGACQUB/p1554758849206400)
-
-🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_",tcp-routes
-Why are my TCP routes broken? - Option 1 - hard,feature,"## Assumptions
-- You have a CF deployed
-- The CF was deployed with the help of `bbl`
-- You have a TCP server deployed named tcp-app
-- You have a TCP route mapped to tcp-app called TCP_ROUTE:TCP_PORT
-
-## What
-Find the bug that is breaking TCP routes and fix it.
-This is option 1. This option has no hand holding. You are left on your own to find and fix the bug.
-
-## How
-📝 **See it break**
-1. See that `curl TCP_ROUTE:PORT` no longer works
-
-🤔 **Now fix it!**
-1. Debug
-
-### Expected Result
-Find the bug. Remove the offender and get this TCP route working!
-Don't forget to redeploy to your old state afterwards.
-
-## Resources
-[How to get into a container's networking namespace as root](https://cloudfoundry.slack.com/archives/GFXGACQUB/p1554758849206400)
-
-🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_",tcp-routes
-Why are my TCP routes broken? - Option 2 - medium,feature,"## Assumptions
-- You have a CF deployed
-- The CF was deployed with the help of `bbl`
-- You have a TCP server deployed named tcp-app
-- You have a TCP route mapped to tcp-app called TCP_ROUTE:TCP_PORT
-
-## What
-Find the bug that is breaking TCP routes and fix it.
-This is option 2. This option provides thoughtful questions and hints to probe you in the correct direction.
-
-## How
-📝 **See it break**
-1. See that `curl TCP_ROUTE:PORT` no longer works
-
-🤔 **Now fix it! With hints!**
-1. Draw out the data flow for TCP routes include: the client, the load balancer, the TCP router, the Diego Cell, and the app container.
- Any step in that process could be broken.
-
-1. Start at the beginning of the flow and test if the traffic is successfully making it to the next hop.
-
-1. Follow the helpful questions to systematically debug the system.
-
-## Hints
-🔎 **helpful questions**
-❓Is the URL being resolved to the correct load balancer IP?
-❓Is the traffic making it to the TCP router?
-❓Does the TCP Router have information about the route in its route table?
-❓Is the TCP Router information correct?
-❓Is the traffic making it to the Diego Cell?
-❓Are the DNAT rules on the Diego Cell correct?
-❓Is the traffic making it to the app container?
-❓Is the traffic making it to the app process?
-
-🔎 **helpful tools**
-- Use dig for DNS resolution. It turns a URL into an IP. See story _Dig-ing TCP and HTTP Routes_ for help.
-- Use iptables to see if traffic is being directed somewhere (un)expected. See story _Route Propagation - Part 5 - DNAT Rules_ for help.
-- Use tcpdump to see if traffic is making it to a container or vm. See story _Watch your c2c packets with tcpdump_ for help.
-- Always look at logs
-- See the resources section for how to get in the container's network namespace as root. So you can run all these helpful tool inside of the app container too.
-
-### Expected Result
-Find the bug. Remove the offender and get this TCP route working!
-Don't forget to redeploy to your old state afterwards.
-
-## Resources
-[How to get into a container's networking namespace as root](https://cloudfoundry.slack.com/archives/GFXGACQUB/p1554758849206400)
-
-🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_","tcp-routes,questions"
-Why are my TCP routes broken? - Option 3 - easy...er,feature,"## Assumptions
-- You have a CF deployed
-- The CF was deployed with the help of `bbl`
-- You have a TCP server deployed named tcp-app
-- You have a TCP route mapped to tcp-app called TCP_ROUTE:TCP_PORT
-
-## What
-Find the bug that is breaking TCP routes and fix it.
-This is option 3: Step by step directions. You have a compass and a map. - This option provides instructions on how to debug each component to figure out which component is broken.
-
-## How
-📝 **See it break**
-1. See that `curl TCP_ROUTE:TCP_PORT` no longer works
-
-🤔 **Now fix it! With extra hints!**
-1. Here is a diagram of the traffic flow for _working_ TCP routes.
- ![tcp route traffic flow](https://storage.googleapis.com/cf-networking-onboarding-images/tcp-trafficflow-ports.png)
-
- Any step in that process could be broken. Start at the beginning of the flow and test if the traffic is successfully making it to the next hop.
-
-❓Is the URL being resolved to the correct load balancer IP?
-1. Use dig with the tcp route to determine if DNS is resolving the route correctly. The IP should match the TCP Load Balancer. Look back at the story _Dig-ing TCP and HTTP Routes_ if you forget how.
- If the IP matches the load balancer, then you know the request is being sent to the correct place. Check the next hop.
-
-❓Is the traffic making it to the TCP router?
-1. Ssh onto the TCP router and become root.
-1. Look at all network packets where the destination port is the TCP_PORT using tcpdump.
- ```
-tcpdump 'port TCP_PORT'
- ```
-1. Run  `curl TCP_ROUTE:TCP_PORT` while tcpdump is watching.
-If tcpdump is seeing packets, that indicates that the load balancer is correctly proxying traffic to the TCP Router. It also means that the traffic is making it to the TCP Router.
-
-❓Does the TCP Router have information about the route in the its route table?
-1. Follow the steps in the story _TCP Routes Tables_ and see if there is an entry for TCP_PORT. If there is, then you know know that the router is being configured. Note down the Diego Cell IP and backend port (BACKEND_PORT).
-
-❓Does the TCP Router's route table entry match app's backend information?
-The TCP Router is proxying traffic for TCP_PORT to the Diego Cell IP and BACKEND_PORT, but are the variables correct?
-1. CF ssh onto tcp_app and look at the environment variables. Do they match? If so, then you know that the TCP Router is proxying traffic to the correct location.
-
-❓Is the traffic making it to the Diego Cell?
-The TCP Router is trying to  proxy traffic to the Diego Cell, but is the traffic making it there?
-1. Ssh onto the Diego Cell where tcp_app is running and become root.
-1. Use tcpdump to look at traffic destined for BACKEND_PORT.
- ```
-tcpdump 'port BACKEND_PORT'
- ```
-1. Run  `curl TCP_ROUTE:TCP_PORT` while tcpdump is watching.
-If tcpdump is seeing packets, that indicates that the traffic is making it to the Diego Cell.
-
-❓Are the DNAT rules on the Diego Cell correct?
-From the story _Route Propagation - Part 5 - DNAT Rules_ you learned that iptables rules redirect traffic that is sent to a Diego cell and backend port and send it to the overlay ip and app port. The same thing happens with TCP routes. Make sure that these DNAT rules are set up correctly.
-
-1. Still on the Diego Cell, look at the DNAT rules.
- ```
-iptables -S -t nat
- ```
-
-1. Search through the rules for the one that includes the BACKEND_PORT for tcp_app. If it is set up correctly, then it should look something like this.
-
- ```
--A netin--b86c9487-2224-4264-47 -d DIEGO_CELL_IP/32 -p tcp -m tcp --dport BACKEND_PORT -j DNAT --to-destination OVERLAY_IP:8080
- ```
-
-1. Compare the overlay IP in the DNAT rule with the overlay IP from the app's environment variables. They should match. If they match then this indicates that traffic should be correctly redirected to the correct app container.
-
-❓Is the traffic making it to the app container?
-1. Using the link in the resources, start a bash session inside of the networking namespace of the app.
-1. Run `tcpdump`.
-1. Run  `curl TCP_ROUTE:TCP_PORT` while tcpdump is watching.
-1. Ctl + C out of tcpdump in the app container. (Idk why, but tcpdump doesn't tail correctly when you are in a network namespace like this. So you need to kill it before you will see the output.)
-If you see traffic, that means that the packets are making to inside of the app container.
-
-❓Is the traffic making it to the app process?
-1. Still inside of the app's network namespace, look at the DNAT rules. Are there any rules here that are sending all tcp 8080 traffic to somewhere else?
-1. Delete the bad DNAT rule and try curling the route again.
-1. Success!
-
-### Expected Result
-Find the bug. Remove the offender and get this TCP route working!
-Don't forget to redeploy to your old state afterwards.
-
-## Resources
-[How to get into a container's networking namespace as root](https://cloudfoundry.slack.com/archives/GFXGACQUB/p1554758849206400)
 
 🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_","tcp-routes,questions"
 TCP Routes ⇧,release,,tcp-routes
