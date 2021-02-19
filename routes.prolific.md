@@ -35,7 +35,7 @@ L: http-routes
 L: user-workflow
 ---
 
-Route Propagation - Part 0.1 - Creating a Route Overview
+Route Propagation - Part 0 - Creating a Route Overview
 
 ## What
 In the previous story you used the CF CLI to create and map routes. But what happens under the hood to make all of this work? (hint: iptables is involved)
@@ -65,67 +65,6 @@ You can talk about route propagation at a high level.
 ## Logistics
 In the next few stories, you are going to need to remember values from one story to another, there will be a space provided at the bottom of each story for your to record these values so you can store them.
 It can be annoying to scroll up and down in the story as you use the values, so it could be helpful to store these values in a doc outside of tracker.
-
-## Resources for the entire route propagation track
-**Cloud Controller**
-[Cloud Controller V2 API docs](https://apidocs.cloudfoundry.org)
-[Cloud Controller V3 API docs](http://v3-apidocs.cloudfoundry.org)
-
-**Diego**
-[cfdot docs](https://github.com/cloudfoundry/cfdot)
-[diego design notes](https://github.com/cloudfoundry/diego-design-notes#what-are-all-these-repos-and-what-do-they-do)
-[diego bbs API docs](https://github.com/cloudfoundry/bbs/tree/master/doc)
-
-**NATs**
-[NATS message bus repo](https://github.com/nats-io/gnatsd)
-[NATS ruby gem repo](https://github.com/nats-io/ruby-nats)
-
-**GoRouter**
-[GoRouter routing table docs](https://github.com/cloudfoundry/gorouter#the-routing-table)
-[Detailed Diagram of several Route Related User Flows](https://realtimeboard.com/app/board/o9J_kyWPVPM=/)
-
-**Iptables**
-[iptables man page](http://ipset.netfilter.org/iptables.man.html)
-[Aidan's iptables in CF ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
-
-**Route Integrity**
-[Route Integrity/Misrouting Docs](https://docs.cloudfoundry.org/concepts/http-routing.html#-preventing-misrouting)
-
-**Envoy**
-[What is Envoy?](https://www.envoyproxy.io/docs/envoy/latest/intro/what_is_envoy)
-
-🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Open [this file in GitHub](https://github.com/pivotal/cf-networking-program-onboarding/edit/master/routes.prolific.md). Search for the phrase you want to edit. Make the fix!_
-
-L: http-routes
----
-
-Route Propagation - Part 0.2 - HTTP Traffic Overview
-
-## What
-In the previous story you went over the first of two main data flows for routes:
-(1) when an app dev pushes a new app with a route and (2) when an internet user connects to an app using the route.
-
-Here is what happens under the hood for the second case:
-
-Each step marked with a ✨ will be explained in more detail in a story in this track.
-**When an internet user sends traffic to your app**
-1. The user visits your route in the browser or curls it via the command line.
-1. The traffic first hits a load balancer in front of the CF Foundation.
-1. The load balancer sends it to one of the GoRouters.
-1. ✨ The GoRouter consults the route table and sends it to the listed IP and port. If Route Integrity is enabled, it sends this traffic via TLS.
-1. ✨ The traffic makes its way to the correct Diego Cell, where it hits iptables DNAT rules that reroutes the traffic to the sidecar envoy for the app.
-1. ✨ The Envoy terminates the TLS from the GoRouter and then sends the traffic on to the app.
-
-## How
-The following stories will look at how many components (Cloud Controller, Diego BBS, Route Emitter, Nats, GoRouter, DNAT Rules, Envoy) work together to make routes work.
-
-0. 🤔 Step through steps above and follow along on [the HTTP Routing section of this diagram](https://realtimeboard.com/app/board/o9J_kyWPVPM=/)
-
-### Expected Result
-You can talk about HTTP network traffic flow with fellow CF engineers.
-
-## Logistics
-In the next few stories, you are going to need to remember values from one story to another, there will be a space provided at the bottom of each story for your to record these values so you can store them.
 
 ## Resources for the entire route propagation track
 **Cloud Controller**
@@ -452,8 +391,8 @@ Let's take a look at that route table.
 Access the route table on the router vm. Inspect app routes and CF component routes.
 
 See that the GoRouter sends traffic for this route to DIEGO_CELL_IP:DIEGO_CELL_ENVOY_PORT.
-In the next story we will see what what is listening on that port on the cell.
 
+The route has now been propagated all the way to the Gorouter! In the next stories we will learn what happens when somone uses that route.
 ## Resources
 
 [GoRouter routing table docs](https://github.com/cloudfoundry/gorouter#the-routing-table)
@@ -464,7 +403,64 @@ L: http-routes
 L: questions
 ---
 
-Route Propagation - Part 4.5 - see what's listening with netstat
+Incoming HTTP Requests - Part 0 - HTTP Traffic Overview
+
+## What
+In the previous stories you learned what happens when an app dev pushes a new app with a route. In this story you will learn an at a high level what happens when an end user connects to an app using the route.
+
+Each step marked with a ✨ will be explained in more detail in a story in this track.
+**When an internet user sends traffic to your app**
+1. The user visits your route in the browser or curls it via the command line.
+1. The traffic first hits a load balancer in front of the CF Foundation.
+1. The load balancer sends it to one of the GoRouters.
+1. ✨ The GoRouter consults the route table and sends it to the listed IP and port. If Route Integrity is enabled, it sends this traffic via TLS. (This was explored in the previous story!)
+1. ✨ The traffic makes its way to the correct Diego Cell, where it hits iptables DNAT rules that reroutes the traffic to the sidecar envoy for the app.
+1. ✨ The Envoy terminates the TLS from the GoRouter and then sends the traffic on to the app.
+
+## How
+The following stories will look at how many components (Cloud Controller, Diego BBS, Route Emitter, Nats, GoRouter, DNAT Rules, Envoy) work together to make routes work.
+
+0. 🤔 Step through steps above and follow along on [the HTTP Routing section of this diagram](https://realtimeboard.com/app/board/o9J_kyWPVPM=/)
+
+### Expected Result
+You can talk about HTTP network traffic flow with fellow CF engineers.
+
+## Logistics
+In the next few stories, you are going to need to remember values from one story to another, there will be a space provided at the bottom of each story for your to record these values so you can store them.
+
+## Resources for the entire route propagation track
+**Cloud Controller**
+[Cloud Controller V2 API docs](https://apidocs.cloudfoundry.org)
+[Cloud Controller V3 API docs](http://v3-apidocs.cloudfoundry.org)
+
+**Diego**
+[cfdot docs](https://github.com/cloudfoundry/cfdot)
+[diego design notes](https://github.com/cloudfoundry/diego-design-notes#what-are-all-these-repos-and-what-do-they-do)
+[diego bbs API docs](https://github.com/cloudfoundry/bbs/tree/master/doc)
+
+**NATs**
+[NATS message bus repo](https://github.com/nats-io/gnatsd)
+[NATS ruby gem repo](https://github.com/nats-io/ruby-nats)
+
+**GoRouter**
+[GoRouter routing table docs](https://github.com/cloudfoundry/gorouter#the-routing-table)
+[Detailed Diagram of several Route Related User Flows](https://realtimeboard.com/app/board/o9J_kyWPVPM=/)
+
+**Iptables**
+[iptables man page](http://ipset.netfilter.org/iptables.man.html)
+[Aidan's iptables in CF ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
+
+**Route Integrity**
+[Route Integrity/Misrouting Docs](https://docs.cloudfoundry.org/concepts/http-routing.html#-preventing-misrouting)
+
+**Envoy**
+[What is Envoy?](https://www.envoyproxy.io/docs/envoy/latest/intro/what_is_envoy)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Open [this file in GitHub](https://github.com/pivotal/cf-networking-program-onboarding/edit/master/routes.prolific.md). Search for the phrase you want to edit. Make the fix!_
+
+L: http-routes
+---
+Incoming HTTP Requests - Part 1 - see what's listening with netstat
 
 ## Assumptions
 - You have a OSS CF deployed
@@ -516,7 +512,7 @@ Check out the next story to learn more :)
 L: http-routes
 ---
 
-Route Propagation - Part 5 - DNAT Rules
+Incoming HTTP Requests - Part 2 - DNAT Rules
 
 ## Assumptions
 - You have a OSS CF deployed
@@ -598,7 +594,7 @@ Inspect the iptables rules that DNAT the traffic from the GoRouter and send it t
 L: http-routes
 ---
 
-Route Propagation - Part 6.1 - Envoy Primer
+Incoming HTTP Requests - Part 3 - Envoy Primer
 
 ## Assumptions
 - None
@@ -617,7 +613,7 @@ Before you go further it will help if you read a quick primer on Envoy.
 L: http-routes
 ---
 
-Route Propagation - Part 6.2 - Route Integrity and Envoy
+Incoming HTTP Requests - Part 4 - Route Integrity and Envoy
 
 ## Assumptions
 - You have a OSS CF deployed
@@ -706,7 +702,191 @@ Look at the Envoy's 8080 listener and related cluster and see how network traffi
 L: http-routes
 ---
 
-Route Propagation - Part 7 - Wrap Up
+Incoming HTTP Requests - Part 5 - Access logs
+
+## Assumptions
+- You have a OSS CF deployed
+- You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and called appA
+- You have one route mapped to appA called APP_A_ROUTE
+- You have completed the previous stories in this track
+
+## Recorded values from previous stories
+```
+APP_A_ROUTE=<value>
+APP_A_GUID=<value>
+DIEGO_CELL_IP=<value>
+CONTAINER_APP_PORT=<value>
+DIEGO_CELL_APP_PORT=<value>
+CONTAINER_ENVOY_PORT=<value>
+DIEGO_CELL_ENVOY_PORT=<value>
+OVERLAY_IP=<value>
+```
+
+## What
+In the previous stories you followed the path of a request from a client to an app deployed on Cloud Foundry.
+
+For every successful* response that Gorouter returns to a client it logs an access log. Here successful means "that there was a response from the app with any status code". 
+
+These access logs can be very helpful for debugging. One common situation is that a customer sees via metrics that they are getting lots of 502s. But what apps are returning 502s? Let's look at the access logs to find out!
+
+## How
+
+📝 **Look at access logs**
+1. Ssh onto the Router VM and become root
+1. Tail the access log `/var/vcap/sys/log/gorouter/access.log`
+1. In another terminal curl APP_A_ROUTE.
+
+You should see something that looks like this: 
+```
+APP_A_ROUTE - [2021-02-18T21:22:32.355501523Z] "GET / HTTP/1.1" 200 0 62 "-" "curl/7.54.0" "35.191.2.80:51628" "10.0.1.11:61002" x_forwarded_for:"142.105.202.35, 35.227.211.74, 35.191.2.80" x_forwarded_proto:"http" vcap_request_id:"6cb8b8de-bc85-4479-5f90-1c3a52d88d84" response_time:0.011962 gorouter_time:0.000467 app_id:"cabd9e08-384e-4689-b868-1ba3d5d838bf" app_index:"0" x_cf_routererror:"-" x_b3_traceid:"9d30688835227cf3" x_b3_spanid:"9d30688835227cf3" x_b3_parentspanid:"-" b3:"9d30688835227cf3-9d30688835227cf3"
+```
+
+❓Can you find the status code in the access log?
+❓Can you find the x-cf-routererror in the access log? 
+
+1. 📚Read about the [X-CF-RouterError here](https://docs.cloudfoundry.org/adminguide/troubleshooting-router-error-responses.html#gorouter-specific-response-headers) and learn how it can be used for debugging. 
+
+1. Look at the app logs for APP_A.
+  ❓Can you find a log line that looks like the access log line? 
+  ❓What additional information does the app log contain?
+
+### Expected Result
+You have found the access log from your curl in the log file on the router VM and in the app logs.
+
+## Resources
+* [X-CF-RouterError docs](https://docs.cloudfoundry.org/adminguide/troubleshooting-router-error-responses.html#gorouter-specific-response-headers)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Open [this file in GitHub](https://github.com/pivotal/cf-networking-program-onboarding/edit/master/routes.prolific.md). Search for the phrase you want to edit. Make the fix!_
+
+L: http-routes
+L: questions
+---
+Debugging tip: skip the lb and send traffic straight to gorouter
+
+## Assumptions
+- You have a OSS CF deployed
+- You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and called appA
+- You have one route mapped to appA called APP_A_ROUTE
+- You have completed the previous stories in this track
+
+## What
+In this story we are going to learn how to remove the LB (load balancer) from the data flow.
+
+Here is simplified diagram of the data flow of an http route: 
+```
++----+    +----------+         +-------+     +-----+
+| LB +--->+ Gorouter +-------->+ Envoy +---->+ App |
++----+    +----------+         +-------+     +-----+
+```
+
+When to do this: 
+* when you are having problems connecting to an app and you want to start picking off items on by one that are _not_ the problem.
+* when one particular gorouter is having problems and you want to send traffic to just that gorouter.
+* when you are debugging and want to point your traffic at a particular gorouter so you can find the logs easier.
+
+## How
+
+📝**Send HTTP traffic using LB**
+1. Curl the route for your app!
+  ```
+  curl APP_A_ROUTE -v
+  ```
+1. Save this output.
+
+❓Do you see a host header on the request? How did that get there?
+
+📝**Send HTTP traffic without using LB**
+1. Get the IP for your router VM.
+1. Send the traffic to the Gorouter IP and set the route in the host header:
+  ```
+  curl GOROUTER_IP -H "Host: APP_A_ROUTE" -v
+  ```
+1. Huh. That timed out and failed. 
+1. Ssh onto any bosh VM and try again. 
+
+❓Why did it fail the first time and succeed when you were ssh-ed onto any bosh VM?
+❓How does the output for this curl differ from the one you did in the first section?
+
+### Expected Result
+You were able to send traffic to a specific gorouter bypassing the LB.
+
+## Resources
+- [Host Header Docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Host)
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Open [this file in GitHub](https://github.com/pivotal/cf-networking-program-onboarding/edit/master/routes.prolific.md). Search for the phrase you want to edit. Make the fix!_
+
+L: http-routes
+L: questions
+---
+So how many data flow options are there?
+
+## Assumptions
+* You have completed all the previous stories in this track.
+
+## What 
+
+When we talk about the data flow from client to Cloud Foundry app, we often draw it like this: 
+```
++----+    +----------+         +-------+     +-----+
+| LB +--->+ Gorouter +-------->+ Envoy +---->+ App |
++----+    +----------+         +-------+     +-----+
+```
+
+But that diagram is very general. Often that is okay because the details don't always matter. But sometimes the details _do_ matter (like with HTTP/2).
+
+In this story we will look at some more specific data flow diagrams for Cloud Foundry.
+
+## How
+
+First we need to understand what L4 (TCP) LBs and L7 (HTTPS) LBs _are_. 
+1. 📚 Read [this medium article about "TCP vs HTTP(S) Load Balancing."](https://medium.com/martinomburajr/distributed-computing-tcp-vs-http-s-load-balancing-7b3e9efc6167)
+1. 📚 Read [these cloudfoundry docs on TLS Termination Options for HTTP Routing](https://docs.pivotal.io/application-service/2-10/adminguide/securing-traffic.html).
+1. Look at the following diagrams and think about the following questions for each: 
+  ❓What connections (the arrows between boxes) are encrypted? Which are not? 
+  ❓The big question: How will this work with HTTP/2?
+
+
+**With a L4 LB in front** 
+```
++-------+    +----------+         +-------+     +-----+
+| L4 LB +--->+ Gorouter +-------->+ Envoy +---->+ App |
++-------+    +----------+         +-------+     +-----+
+```
+
+**With a L7 LB in front** 
+```
++-------+    +----------+         +-------+     +-----+
+| L7 LB +--->+ Gorouter +-------->+ Envoy +---->+ App |
++-------+    +----------+         +-------+     +-----+
+```
+
+**With an HAProxy in front** 
+```
++----------+    +----------+         +-------+     +-----+
+| HA Proxy +--->+ Gorouter +-------->+ Envoy +---->+ App |
++----------+    +----------+         +-------+     +-----+
+```
+
+**With an L4 LB and an HAProxy in front** 
+```
++-------+    +----------+    +----------+         +-------+     +-----+
+| L4 LB +--->| HA Proxy +--->+ Gorouter +-------->+ Envoy +---->+ App |
++-------+    +----------+    +----------+         +-------+     +-----+
+```
+
+**With an L7 LB and an HAProxy in front** 
+```
++-------+    +----------+    +----------+         +-------+     +-----+
+| L7 LB +--->| HA Proxy +--->+ Gorouter +-------->+ Envoy +---->+ App |
++-------+    +----------+    +----------+         +-------+     +-----+
+```
+
+🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Open [this file in GitHub](https://github.com/pivotal/cf-networking-program-onboarding/edit/master/routes.prolific.md). Search for the phrase you want to edit. Make the fix!_
+
+L: http-routes
+L: questions
+---
+HTTP Routes Wrap Up
 
 ## Assumptions
 - You have completed the previous stories in this track
@@ -719,13 +899,11 @@ Let's review!
 1. Go to a whiteboard and have the other pair diagram what happens when a person on the internet makes an HTTP request to a CF route.
 
 ### Expected Result
-You know everything about routes. (Just kidding.)
+You know everything about routes. (Just kidding... maybe?)
 
 🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Open [this file in GitHub](https://github.com/pivotal/cf-networking-program-onboarding/edit/master/routes.prolific.md). Search for the phrase you want to edit. Make the fix!_
 
 L: http-routes
-
 ---
-
 [RELEASE] HTTP Routes ⇧
 L: http-routes
