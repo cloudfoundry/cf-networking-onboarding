@@ -31,7 +31,7 @@ Networking Onboarding Week is a self-paced, guided exploration of the Cloud Foun
 1. Empathy for the customer who uses that product.
 1. Knowledge of the breadth of work that the networking program does
 1. Knowledge of how to debug networking components when things don't go as planned
-1. Experience teaching. Unless you joined Pivotal at the same time as your pair and have been arm-in-arm ever since, you have different backgrounds. Moreover, you each have something valuable to offer to the other. Make sure you share it.
+1. Experience teaching. Unless you joined VMWare at the same time as your pair and have been arm-in-arm ever since, you have different backgrounds. Moreover, you each have something valuable to offer to the other. Make sure you share it.
 
 ### How?
 1. Take your time.
