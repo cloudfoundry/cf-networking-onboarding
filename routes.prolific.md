@@ -175,7 +175,7 @@ For this story, let's look at the data stored in the BBS and see what informatio
  ```
 0. Ssh onto the Diego Cell vm where appA is running and become root. You can find where appA is running by running the following command:
  ```
- cf curl /v2/apps/<app-guid>/stats
+ cf curl /v3/processes/<app-guid>/stats
  ```
 0. Use the [cfdot CLI](https://github.com/cloudfoundry/cfdot) to query BBS for actualLRPs. Cfdot is a helpful CLI for using the BBS API.
  It's a great tool for debugging on the Diego Cell.
