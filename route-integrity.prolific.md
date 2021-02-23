@@ -52,7 +52,7 @@ bosh manifest > /tmp/env-with-route-integrity.yml
 
 1. Ensure that appA has an HTTP route.
 
-1. Push one instance of [dora](https://github.com/cloudfoundry/cf-acceptance-tests/tree/master/assets/dora) and name it appB.
+1. Push one instance of [dora](https://github.com/cloudfoundry/cf-acceptance-tests/tree/main/assets/dora) and name it appB.
 
 1. Ensure that there is an HTTP Route mapped to appB.
 
