@@ -70,7 +70,7 @@ Let's ignore the technical implementation for now and go through the user workfl
 
 1.  In another terminal, add a network policy from appA to appB, with protocol tcp, on port 8080.
     ```
-    cf add-network-policy appA --destination-app appB --protocol tcp --port 8080
+    cf add-network-policy appA appB --protocol tcp --port 8080
     ```
 
 ### Expected Result
