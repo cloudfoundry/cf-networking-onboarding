@@ -275,27 +275,24 @@ can be a helpful debugging technique.
 
 📝 **subscribe to NATs messages**
 0. Bosh ssh onto the Diego Cell where your app is running and become root
-0. Download ruby and the NATS gem
+0. Download the NATS cli
     ```
-    apt-get install -y ruby ruby-dev
-    gem install nats
+    wget https://github.com/nats-io/natscli/releases/download/0.0.25/nats-0.0.25-linux-amd64.zip
+    unzip nats-0.0.25-linux-amd64.zip
+    chmod +x nats-0.0.25-linux-amd64
+    mv nats-0.0.25-linux-amd64/nats /usr/bin
     ```
 0. Get NATS username, password, and server address
     ```
     cat /var/vcap/jobs/route_emitter/config/route_emitter.json | jq . | grep nats
     ```
-0. Use the nats gem to connect to nats: `nats-sub "*.*" -s nats://NATS_USERNAME:NATS_PASSWORD@NATS_ADDRESS`. The `"*.*"` means that you are subscribing to all NATs messages.
+0. Use the nats gem to connect to nats: `nats sub "*.*" -s nats://NATS_USERNAME:NATS_PASSWORD@NATS_ADDRESS`. The `"*.*"` means that you are subscribing to all NATs messages.
     The Route Emitter registers routes every 20 seconds (by default) so that the GoRouter (which subscribes to these messages) has the most up-to-date information about which IPs map to which apps and routes. Depending on how many routes there are, this might be a lot of information.
 
 0. Find the NATs message for APP_A_ROUTE.
  ```
- $ nats-sub "*.*" -s nats://NATS_USERNAME:NATS_PASSWORD@NATS_ADDRESS | grep APP_A_ROUTE
-
- Server Error: TLS/SSL required by server
+ $ nats sub "*.*" -s nats://NATS_USERNAME:NATS_PASSWORD@NATS_ADDRESS | grep APP_A_ROUTE
  ```
- Oh no! You just tried to connect to a TLS endpoint without supplying any certificates.
-0. Either (a) change your command to connect to the [non-tls port](https://github.com/cloudfoundry/nats-release/blob/c679cd9220f9081ef01966c5adb07950e63d74c7/jobs/nats/spec#L47) or (b) change your command to send credentials.
-
 
 0. When you successfully connect to nats, plus a few seconds of waiting, you should see a message that contains information about the route you created. It will look something like this and contain APP_A_ROUTE:
  ```
