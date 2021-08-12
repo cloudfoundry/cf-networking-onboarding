@@ -51,12 +51,16 @@ In this story we are going to create a user-provided route service to rate limit
  ```
 
 📝 **Use a Route Service**
+0. Set [this](https://github.com/cloudfoundry/routing-release/blob/2e1cc8b89df0b569102489f7eda159107094fc9f/jobs/gorouter/spec#L145-L147) gorouter bosh proprty and redeploy: 
+   ```
+   router.ssl_skip_validation: true
+   ```
 0. Follow [these instructions](https://github.com/cloudfoundry-samples/ratelimit-service) to deploy a rate limiting Route Service and bind it to appA.
 This example Route Service is old and you may get errors that it is running on an old go version. Fix it! Even better, submit a PR with your fix.
 
 🤔 **Take measurements with Route Service**
 
-1. Bind the Route Service to appA.
+1. Bind the Route Service to appA. See instructions from previous link.
 1. Make the Route Service seriously limit traffic.
 1. Run the benchmarking tests.
 
@@ -96,7 +100,7 @@ In the previous story when you created your own Route Service you ran a command 
 `cf create-user-provided-service MY_SERVICE -r MY_SERVICE_URL`
 
 The route MY_SERVICE_URL could be inside or outside of your Cloud Foundry. However, one takes precedence.
-Let's say that MY_SERVICE_URL exists inside *and* outside of your Cloud Foundry. (Before a recent fix) GoRouter would
+Let's say that MY_SERVICE_URL exists inside *and* outside of your Cloud Foundry. (Before a fix) GoRouter would
 "hairpin" and always default to the MY_SERVICE_URL that exists *inside* the Cloud Foundry.
 
 Let's exploit this.
