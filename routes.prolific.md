@@ -352,7 +352,7 @@ OVERLAY_IP=<value>
 ```
 
 ## What
-So the Route Emitter emits routes via the NATS message Bus. GoRouter subscribes to those messages and keeps a route table that is uses to route network traffic bound for CF apps and CF components.
+So the Route Emitter emits routes via the NATS message Bus. GoRouter subscribes to those messages and keeps a route table that it uses to route network traffic bound for CF apps and CF components.
 
 Let's take a look at that route table.
 ## How
