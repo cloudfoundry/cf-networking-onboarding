@@ -657,13 +657,40 @@ Let's look at how the Envoy sidecar is configured to proxy traffic to the app.
        },
        "filter_chains": [
         {
-         "tls_context": { "require_client_certificate": true },                    <---- This means Route Integrity is turned on
          "filters": [
           {
            "name": "envoy.tcp_proxy",
            "config": { "stat_prefix": "0-stats", "cluster": "0-service-cluster" }  <---- This is the name of the cluster where Envoy will forward traffic that is sent to the CONTAINER_ENVOY_PORT, let's call this CLUSTER-NAME
           }
          ]
+         "transport_socket": {
+          "name": "listener-8080",
+          "typed_config": {
+           "@type": "type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.DownstreamTlsContext", 
+           "common_tls_context": {
+            "tls_params": {
+             "cipher_suites": [
+              "ECDHE-RSA-AES256-GCM-SHA384",
+              "ECDHE-RSA-AES128-GCM-SHA256"
+             ]
+            },
+            "tls_certificate_sds_secret_configs": [
+             {
+              "name": "server-cert-and-key",
+              "sds_config": {
+               "path": "/etc/cf-assets/envoy_config/sds-server-cert-and-key.yaml" <---- This means TLS Route Integrity is turned on
+              }
+             }
+            ],
+            "validation_context_sds_secret_config": {
+             "name": "server-validation-context",
+             "sds_config": {
+              "path": "/etc/cf-assets/envoy_config/sds-server-validation-context.yaml" <---- This is required when mTLS Route Integrity is turned on
+             }
+            }
+           },
+           "require_client_certificate": true <---- This means mTLS Route Integrity is turned on
+          }
         }
        ]
       }
