@@ -633,7 +633,7 @@ OVERLAY_IP=<value>
 ## What
 A **proxy** is a process that sits in-between the client and the server and intercepts traffic before forwarding it on to the server. Proxies can add extra functionality, like caching or SSL termination.
 
-In this case, Envoy is a sidecar proxy (Envoy can be other types of proxies too, but forget about that for now). The sidecar Envoy is only present when Route Integrity is turned on (which is done by default).
+In this case, Envoy is a sidecar proxy (Envoy can be other types of proxies too, but forget about that for now). The sidecar Envoy is only present when Route Integrity is turned on (which is done by default). Diego's `rep` process is [responsible for setting up the envoy sidecar](https://github.com/cloudfoundry/diego-release/blob/master/docs/envoy-proxy-configuration.md) when starting the LRP. The [executor's codebase](https://github.com/cloudfoundry/executor/blob/master/depot/containerstore/proxy_config_handler.go) is responsible for generating the Envoy config.
 
 Route Integrity is when the GoRouter sends all app traffic via TLS. As part of the TLS handshake, the GoRouter validates the certificate's SAN against the ID found in its route table to make sure it is connecting to the intended app instance. This makes communication more secure and prevents stale routes in the route table from causing misrouting, which is a large security concern. Read more about how Route Integrity prevents misrouting [here](https://docs.cloudfoundry.org/concepts/http-routing.html#-preventing-misrouting).
 
