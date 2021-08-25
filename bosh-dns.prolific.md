@@ -72,6 +72,13 @@ In this story you are going to follow the DNS request for an external URL. Surpr
 
 ## How?
 
+📝**Ensure Bosh DNS has DEBUG logging enabled**
+By default Bosh DNS logs at INFO level, which does not include per-request logs that are referenced in this and subsequent stories.
+1. Run `bosh runtime-config --name dns` and look for the `log_level` property.
+1. If it is present, you can skip to the next section.
+1. If it is not present, save the `dns` runtime config to a local file, and add `log_level: DEBUG` to the bosh-dns job's properties.
+1. Update the `dns` runtime config, and redeploy your `cf` deployment. Hint: check out `bosh help runtime-config && bosh help update-runtime-config` 
+
 📝**See that your VM already has Bosh DNS**
 By default Bosh DNS is on every VM in a OSS Cloud Foundry deployment.
 1. Bosh ssh onto one of the my-http-server VMs and become root.
@@ -149,6 +156,7 @@ So you have a value for BOSH_DNS_IP, but who do you _know_ this is the Bosh DNS 
 
 Do you recognize that server IP? That's the BOSH_DNS_IP that you recorded earlier!
 
+
 📝**Look at logs**
 
 1. Look at the bosh DNS logs. You should see something like...
@@ -157,9 +165,10 @@ Do you recognize that server IP? That's the BOSH_DNS_IP that you recorded earlie
 $ tail -f /var/vcap/sys/log/bosh-dns/bosh_dns*
 
  [ForwardHandler] 2019/10/03 18:15:20
- INFO - handlers.ForwardHandler Request [1]
+ DEBUG - handlers.ForwardHandler Request [1]
  [neopets.com.] 0 [recursor=169.254.169.254:53] 49064000ns
  ```
+
 1. Do you recognize that recursor IP? That's the NON_BOSH_DNS_IP you recorded earlier!
 
 ❓What is a recursor?
@@ -186,6 +195,9 @@ dig URL [@SERVER_IP]
 dig neopets.com @169.254.4.4
 ```
 
+### Links
+- [Bosh Runtime Config Docs](https://bosh.io/docs/runtime-config/)
+
 🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
 L:bosh-dns
@@ -194,7 +206,7 @@ L:bosh-dns
 Add a Custom Bosh DNS Alias
 
 ## Assumptions
-- You have a CF deployed
+- You have a CF deployed with Bosh DNS using `log_level: DEBUG`
 - You have done the other stories in this section
 - You have 2 my-http-server instances deployed (see the story `User Workflow - Life Without Route Registrar` for setup)
 
@@ -262,7 +274,7 @@ L:bosh-dns
 Bosh DNS Records Table
 
 ## Assumptions
-- You have a CF deployed
+- You have a CF deployed with Bosh DNS using `log_level: DEBUG`
 - You have done the other stories in this section
 - You have my-http-server deployed with an alias setup from the previous story
 
@@ -303,7 +315,7 @@ L:bosh-dns
 Bosh DNS - DNS Requests for Bosh DNS Aliases
 
 ## Assumptions
-- You have a CF deployed
+- You have a CF deployed with Bosh DNS using `log_level: DEBUG`
 - You have done the other stories in this section
 - You have my-http-server deployed with an alias setup from the previous story
 
@@ -353,7 +365,7 @@ In this story you are going to look at what happens under the hood when you do a
  $ tail -f /var/vcap/sys/log/bosh-dns/bosh_dns*
 
  [RequestLoggerHandler] 2019/10/03 20:49:43
- INFO - handlers.DiscoveryHandler Request [1]
+ DEBUG - handlers.DiscoveryHandler Request [1]
  [amelia.meow.] 0 160000ns                     # <------------ Note, there is no recursor
  ```
 
