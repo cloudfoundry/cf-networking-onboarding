@@ -613,7 +613,7 @@ Destination     Gateway         Genmask         Iface
 ⬇️This is the overlay IP range for the other Diego Cell on the network. (We'll talk more about this in a later story.)
 ```
 Destination     Gateway         Genmask         Iface
-10.255.82.0     10.255.82.0     255.255.255.0   silk-vtep
+10.255.82.0     10.255.82.0     255.255.255.0   silk-vtep     # <------- The gateway here is the IP of the silk-vtep interface on the other diego cell. Let's save as DIEGO_CELL_1_GATEWAY_IP
 ```
 
 ⬇️These are istio routers, which are also on the overlay network. If you don't have istio-release deployed, you won't see these.
@@ -705,8 +705,9 @@ The Silk Controller is a database backed process that keeps track of which subne
 
 ARP is at layer 2 in the OSI (Open System Interconnection) model. If you haven't heard of OSI, read [this](https://www.webopedia.com/quick_ref/OSI_Layers.asp) as a primer. The main bit, is that at layer 2 [MAC addresses](https://whatismyipaddress.com/mac-address) are used to address data. Because of this, in the ARP table and in the silk database, the Diego Cells are referenced by their MAC addresses and not their underlay IPs. If you aren't familiar with OSI or MAC addresses, read those links before continuing on.
 
-In this story, you are going to look at the Silk Controller database to see what overlay subnet is leased to which Diego Cells. Then you'll going to look at the ARP table.
+The routinng and ARP table information will tell Diego how to construct a packet bound for hardware address of the overlay gateway for the destination diego cell. However, that IP and MAC address aren't part of the underlay network. So how does a Diego Cell know how to get the packet to the right place? When the kernel goes to encapsulate the overlay packet as it exits the VTEP interface, it consults the bridge forwarding table (also called FDB). In addition to populating the ARP and routing tables, the Silk daemon will also populate the FDB to map each diego cell's VTEP MAC address with the underlay IP of the corresponding cell.
 
+In this story, you are going to look at the Silk Controller database to see what overlay subnet is leased to which Diego Cells. Then you're going to look at the ARP table, and the FDB.
 
 ## How
 
@@ -747,7 +748,7 @@ ip link show silk-vtep <---- Should match DIEGO_CELL_0_VTEP_MAC_ADDRESS
  You should see something like this. The output is split up so we can look at it section by section. Yours might be in a different order.
 
 
-⬇️This is the entry for the other Diego Cell. This should match DIEGO_CELL_1_OVERLAY_SUBNET and DIEGO_CELL_1_VTEP_MAC_ADDRESS.
+⬇️This is the entry for the other Diego Cell. This should match DIEGO_CELL_1_OVERLAY_GATEWAY_IP and DIEGO_CELL_1_VTEP_MAC_ADDRESS. When the kernel routes packets to the DIEGO_CELL1_OVERLAY_SUBNET, it uses this IP, and consults the ARP table to find the MAC address for the interface that should respond to that IP.
  ```
 Address                  HWtype  HWaddress           Flags Mask            Iface
 10.255.82.0              ether   ee:ee:0a:ff:52:00   CM                    silk-vtep
@@ -773,6 +774,23 @@ Address                  HWtype  HWaddress           Flags Mask            Iface
 10.0.0.1                 ether   42:01:0a:00:00:01   C                     eth0
  ```
 
+📝**Look at the FDB**
+
+1. Ssh onto the Diego Cell with DIEGO_CELL_0_IP as the underlay IP and become root.
+1. Examine the FDB for the silk-vtep interface
+ ```
+ bridge fdb show brport silk-vtep
+ ```
+ You should see something like this. The MAC address here should match the DIEGO_CELL_1_VTEP_MAC_ADDRESS, and map it to the DIEGO_CELL_1_IP. The kernel will consult this when encapsulating the packet with VXLAN information. 
+```
+ee:ee:0a:ff:63:00 dst 10.0.1.16 self permanent
+```
+
+## Extra Credit
+
+Take a look at the [silk code](https://github.com/cloudfoundry/silk/blob/b43a84e20bbcecdf4340ce4cf03d552f9a79afbb/daemon/vtep/converger.go#L21) that updates the ARP, Routing, and FDB tables. 
+
+ 
 ## Resources
 [The Layers of Networking - OSI](https://www.webopedia.com/quick_ref/OSI_Layers.asp)
 
@@ -806,11 +824,20 @@ tcpdump -n src DIEGO_CELL_1_IP -v
  ```
 ❓What do you notice about all of the traffic? What do they have in common? Based on this information how do you think only this traffic is being decapsulated?
 ❓What protocol is this traffic using? Is that surprising to you?
+❓How did the kernel know to use that port to send the traffic? (hint: `ip -D link show silk-vtep`)
 
 ### Expected outcome
-You should see that all traffic to be decapsulated is sent to the same port. This is how some traffic is decapsulated by the VTEP but not others.
+You should see that all traffic to be decapsulated is sent to the same port. This is how some traffic is decapsulated by the VTEP but not others. 
 
 You should also notice that all of the traffic is sent via UDP. WHAT? Read [here](https://blog.ipspace.net/2012/01/vxlan-runs-over-udp-does-it-matter.html) for more details on _that_.
+
+### Extra Credit
+1. Run a on DIEGO_CELL_1 `tcpdump -i eth0 -s0 -w /tmp/tcpdump.out port 4789` and issue a single  from appA to appB.
+1. Copy /tmp/tcpdump.out down to your laptop from the Deigo Cell and take a look at it in Wireshark (to install: `brew install --cask wireshark`, check out [this video](https://www.youtube.com/watch?v=TkCSr30UojM) for a tutorial).
+❓What ports, MAC, and IP addresses do you see in each layer of the packet?
+❓How do the response packets differ from request packets?
+❓How does the behavior of UDP source/destination ports in VXLAN differ from source/destination ports in most other UDP and all TCP communication?
+
 
 🙏 _If this story needs to be updated: please, please, PLEASE submit a PR. Amelia will be eternally grateful. How? Go to [this repo](https://github.com/pivotal/cf-networking-program-onboarding). Search for the phrase you want to edit. Make the fix!_
 
