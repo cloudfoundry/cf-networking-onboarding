@@ -93,9 +93,12 @@ Let's create a TCP Route and send traffic to it!
  ```
 cf create-shared-domain TCP_DOMAIN --router-group default-tcp
  ```
-1. See that `cf map-route --help` has different usage instructions for TCP routes and HTTP routes.
+1. See that `cf map-route --help` has different usage instructions for TCP routes and HTTP routes. It also is different depending on which cf cli version you use
 1. Create a route with the TCP domain and map it to tcp-app, let's call this TCP_ROUTE:TCP_PORT.
  ```
+ # cf cli v7+
+ cf map-route tcp-app TCP_DOMAIN # --random-port is implied unless --port is provided
+ # cf cli prior to v7
  cf map-route tcp-app TCP_DOMAIN --random-port
  ```
 
