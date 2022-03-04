@@ -4,15 +4,22 @@ title: About
 permalink: /about/
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
+CF Networking Onboarding is a guided exploration of the Cloud Foundry Networking components.
 
-You can find the source code for Minima at GitHub:
-[jekyll][jekyll-organization] /
-[minima](https://github.com/jekyll/minima)
+[Amelia](https://github.com/ameowlia) created the first batch of the onboarding
+stories in early 2019. She wanted an easy way to onboard new team members to
+the Cloud Foundry Networking Team.
 
-You can find the source code for Jekyll at GitHub:
-[jekyll][jekyll-organization] /
-[jekyll](https://github.com/jekyll/jekyll)
+Though she initially built it for R&D engineers joining her team, it turned out
+that there was a large demand for currated ways to learn more about the
+inner-workings of Cloud Foundry. Over 75 people -including
+R&D engineers, support engineers, platform architects, and project managers- have
+gone through these stories as a week long class.
 
+These stories have now been converted to this website to make the content
+available to anyone.
 
-[jekyll-organization]: https://github.com/jekyll
+🙏 _If any story needs to be updated: please, please, PLEASE submit a PR.
+Amelia will be eternally grateful. How? Open [this file in
+GitHub](https://github.com/cloudfoundry/cf-networking-onboarding/tree/gh-pages).
+Search for the phrase you want to edit. Make the fix!_
