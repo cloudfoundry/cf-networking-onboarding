@@ -1,0 +1,52 @@
+# main links
+main:
+  - title: "Get Started"
+    url: /get-started/
+  - title: "About"
+    url: /about/
+  - title: "Curriculum"
+    url: /curriculum/
+  # - title: "Sitemap"
+  #   url: /sitemap/
+
+sidebar-http-routes:
+  - title: "Start Here"
+    children:
+      - title: "Intro"
+        url: /http-routes/
+      - title: "User Workflow"
+        url: /http-routes/user-workflow
+  - title: "Route Propagation"
+    children:
+      - title: "Part 0 - Overview"
+        url: /http-routes/route-propagation-pt-0
+      - title: "Part 1 - Cloud Controller"
+        url: /http-routes/route-propagation-pt-1
+      - title: "Part 2 - Diego BBS"
+        url: /http-routes/route-propagation-pt-2
+      - title: "Part 3 - Route Emitter and NATS"
+        url: /http-routes/route-propagation-pt-3
+      - title: "Part 4 - GoRouter"
+        url: /http-routes/route-propagation-pt-4
+  - title: "Incoming HTTP Requests"
+    children:
+      - title: "Part 0 - Overview"
+        url: /http-routes/incoming-http-requests-pt-0
+      - title: "Part 1 - See whats listening with netstat"
+        url: /http-routes/incoming-http-requests-pt-1
+      - title: "Part 2 - DNAT Rules"
+        url: /http-routes/incoming-http-requests-pt-2
+      - title: "Part 3 - Envoy Primer"
+        url: /http-routes/incoming-http-requests-pt-3
+      - title: "Part 4 - Route Integrity and Envoy"
+        url: /http-routes/incoming-http-requests-pt-4
+      - title: "Part 5 - Access Logs"
+        url: /http-routes/incoming-http-requests-pt-5
+  - title: "Finish Here"
+    children:
+      - title: "Debugging Tip: Skip the load balancer"
+        url: /http-routes/debugging-tip
+      - title: "Data Flow Options"
+        url: /http-routes/data-flow-options
+      - title: "Wrap Up"
+        url: /http-routes/wrap-up
