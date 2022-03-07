@@ -70,3 +70,14 @@ sidebar-route-integrity:
         url: /route-integrity/route-integrity-demonstration
       - title: "Checking the SAN"
         url: /route-integrity/checking-the-san
+
+sidebar-iptables:
+  - children:
+      - title: "Primer"
+        url: /iptables/primer
+      - title: "Write Your Own Drop Rule"
+        url: /iptables/write-your-own-drop-rule
+      - title: "Watch Some Videos"
+        url: /iptables/watch-some-videos
+      - title: "Write a Firewall"
+        url: /iptables/write-a-firewall
