@@ -7,9 +7,6 @@ sidebar:
   nav: sidebar-iptables
 ---
 
-## Assumptions
-- None!
-
 ## What
 If you haven't watched these videos yet, now is a great time. In the last story
 you had a chance to poke around with iptables.  Now hopefully when you watch
