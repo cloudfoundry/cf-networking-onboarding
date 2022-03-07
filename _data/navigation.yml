@@ -61,3 +61,12 @@ sidebar-getting-started:
         url: /get-started/meet-proxy
       - title: "Directional Networking Terms"
         url: /get-started/directional-networking-terms
+
+sidebar-route-integrity:
+  - children:
+      - title: "Stale Routes Reenactment"
+        url: /route-integrity/stale-routes-reenactment
+      - title: "Route Integrity Demonstration"
+        url: /route-integrity/route-integrity-demonstration
+      - title: "Checking the SAN"
+        url: /route-integrity/checking-the-san
