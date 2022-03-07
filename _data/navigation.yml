@@ -1,7 +1,5 @@
 # main links
 main:
-  - title: "Get Started"
-    url: /get-started/
   - title: "About"
     url: /about/
   - title: "Curriculum"
@@ -50,3 +48,16 @@ sidebar-http-routes:
         url: /http-routes/data-flow-options
       - title: "Wrap Up"
         url: /http-routes/wrap-up
+
+sidebar-getting-started:
+  - children:
+      - title: "Introduction"
+        url: /get-started/introduction
+      - title: "Reading Onboarding Stories"
+        url: /get-started/reading-onboarding-stories
+      - title: "Get an Environment"
+        url: /get-started/get-an-environment
+      - title: "Meet Proxy"
+        url: /get-started/meet-proxy
+      - title: "Directional Networking Terms"
+        url: /get-started/directional-networking-terms
