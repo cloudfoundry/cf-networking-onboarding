@@ -145,3 +145,16 @@ sidebar-asgs:
         url: /asgs/iptables-primer
       - title: "ASGs and Iptables"
         url: /asgs/asgs-and-iptables
+
+sidebar-route-registrar:
+  - children:
+      - title: "Introduction"
+        url: /route-registrar/intro
+      - title: "Life Without Route Registrar"
+        url: /route-registrar/life-without-rr
+      - title: "User Workflow"
+        url: /route-registrar/user-workflow
+      - title: "Find Those Routes"
+        url: /route-registrar/find-those-routes
+      - title: "Instance Specific Routes"
+        url: /route-registrar/instance-specific-routes

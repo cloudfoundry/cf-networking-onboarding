@@ -13,3 +13,4 @@ Welcome to curriculum.
 * [Container-to-container (c2c) Networking](../c2c/user-workflow)
 * [C2C Service Discovery](../service-discovery/user-workflow-internal-routes)
 * [ASGs](../asgs/user-workflow)
+* [Route Registrar](../route-registrar/intro)
