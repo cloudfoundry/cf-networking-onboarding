@@ -128,7 +128,6 @@ sidebar-c2c:
       - title: "'bypass' c2c policies"
         url: /c2c/bypass
 
-
 sidebar-service-discovery:
   - children:
       - title: "User Workflow - Internal Routes"
@@ -137,3 +136,12 @@ sidebar-service-discovery:
         url: /service-discovery/user-workflow-internal-domains
       - title: "Break Things"
         url: /service-discovery/break-things
+
+sidebar-asgs:
+  - children:
+      - title: "User Workflow"
+        url: /asgs/user-workflow
+      - title: "Iptables Primer"
+        url: /asgs/iptables-primer
+      - title: "ASGs and Iptables"
+        url: /asgs/asgs-and-iptables
