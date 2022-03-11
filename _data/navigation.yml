@@ -129,7 +129,11 @@ sidebar-c2c:
         url: /c2c/bypass
 
 
-
-
-
-
+sidebar-service-discovery:
+  - children:
+      - title: "User Workflow - Internal Routes"
+        url: /service-discovery/user-workflow-internal-routes
+      - title: "User Workflow - Internal Domains"
+        url: /service-discovery/user-workflow-internal-domains
+      - title: "Break Things"
+        url: /service-discovery/break-things

@@ -11,3 +11,4 @@ Welcome to curriculum.
 * [Route Integrity](../route-integrity/stale-routes-reenactment)
 * [Iptables Primer](../iptables/primer)
 * [Container-to-container (c2c) Networking](../c2c/user-workflow)
+* [C2C Service Discovery](../service-discovery/user-workflow-internal-routes)
