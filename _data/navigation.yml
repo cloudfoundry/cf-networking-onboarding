@@ -158,3 +158,20 @@ sidebar-route-registrar:
         url: /route-registrar/find-those-routes
       - title: "Instance Specific Routes"
         url: /route-registrar/instance-specific-routes
+
+sidebar-bosh-dns:
+  - children:
+      - title: "Introduction"
+        url: /bosh-dns/intro
+      - title: "Background Reading"
+        url: /bosh-dns/reading
+      - title: "Request an External URL"
+        url: /bosh-dns/external
+      - title: "Add a Custom Bosh Alias"
+        url: /bosh-dns/custom-alias
+      - title: "Records Table"
+        url: /bosh-dns/records-table
+      - title: "Request a Bosh DNS Alias"
+        url: /bosh-dns/request-alias
+      - title: "Can CF Apps Use Bosh DNS?"
+        url: /bosh-dns/cf-apps

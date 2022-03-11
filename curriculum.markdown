@@ -14,3 +14,4 @@ Welcome to curriculum.
 * [C2C Service Discovery](../service-discovery/user-workflow-internal-routes)
 * [ASGs](../asgs/user-workflow)
 * [Route Registrar](../route-registrar/intro)
+* [Bosh DNS](../bosh-dns/intro)
