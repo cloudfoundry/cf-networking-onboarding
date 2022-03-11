@@ -81,3 +81,55 @@ sidebar-iptables:
         url: /iptables/watch-some-videos
       - title: "Write a Firewall"
         url: /iptables/write-a-firewall
+
+sidebar-c2c:
+  - title: Start Here
+    children:
+      - title: "User Workflow"
+        url: /c2c/user-workflow
+      - title: "Julia Evans' Overview"
+        url: /c2c/julia-evans-overview
+      - title: "Overlay vs Underlay"
+        url: /c2c/overlay-vs-underlay
+      - title: "Iptables Primer"
+        url: /c2c/iptables-primer
+  - title: Dataflow
+    children:
+      - title: "Part 0 - Overview"
+        url: /c2c/dataflow-pt-0
+      - title: "Part 1 - Network Namespaces"
+        url: /c2c/dataflow-pt-1
+      - title: "Part 2 - Network Interfaces"
+        url: /c2c/dataflow-pt-2
+      - title: "Part 3 - Marks"
+        url: /c2c/dataflow-pt-3
+      - title: "Extra Credit - What _is_ a mark?"
+        url: /c2c/dataflow-extra-credit-marks
+      - title: "Part 4 - The Linux Routes Table"
+        url: /c2c/dataflow-pt-4
+      - title: "Part 5 - Diego Cell Routes Table"
+        url: /c2c/dataflow-pt-5
+      - title: "Part 6 - VLAN VXLAN VTEP V-What?"
+        url: /c2c/dataflow-pt-6
+      - title: "Part 7 - Overlay Leases and ARP"
+        url: /c2c/dataflow-pt-7
+      - title: "Extra Credit - How are only some packets decapsulated?"
+        url: /c2c/dataflow-extra-credit-decapsulation
+      - title: "Part 8 - Enforcing Policy "
+        url: /c2c/dataflow-pt-8
+      - title: "Part 9 - Same Cell vs Different Cell"
+        url: /c2c/dataflow-pt-9
+  - title: Finish Here
+    children:
+      - title: "Logging"
+        url: /c2c/logging
+      - title: "Using tcpdump"
+        url: /c2c/tcpdump
+      - title: "'bypass' c2c policies"
+        url: /c2c/bypass
+
+
+
+
+
+

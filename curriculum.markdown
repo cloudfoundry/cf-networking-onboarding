@@ -10,3 +10,4 @@ Welcome to curriculum.
 * [HTTP Routes](../http-routes/)
 * [Route Integrity](../route-integrity/stale-routes-reenactment)
 * [Iptables Primer](../iptables/primer)
+* [Container-to-container (c2c) Networking](../c2c/user-workflow)
