@@ -15,3 +15,4 @@ Welcome to curriculum.
 * [ASGs](../asgs/user-workflow)
 * [Route Registrar](../route-registrar/intro)
 * [Bosh DNS](../bosh-dns/intro)
+* [TCP Routes](../tcp-routes/intro)

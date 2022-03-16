@@ -175,3 +175,22 @@ sidebar-bosh-dns:
         url: /bosh-dns/request-alias
       - title: "Can CF Apps Use Bosh DNS?"
         url: /bosh-dns/cf-apps
+
+sidebar-tcp-routes:
+  - children:
+      - title: "Introduction"
+        url: /tcp-routes/intro
+      - title: "OSI Networking Primer"
+        url: /tcp-routes/osi
+      - title: "Using TCP Routes"
+        url: /tcp-routes/user-workflow
+      - title: "Digging Routes"
+        url: /tcp-routes/dig
+      - title: "Route Ports, Backend Ports, App Ports, oh my!"
+        url: /tcp-routes/ports
+      - title: "TCP Routes vs HTTP Routes"
+        url: /tcp-routes/tcp-vs-http
+      - title: "TCP Routes Table"
+        url: /tcp-routes/routes-table
+      - title: "Finish"
+        url: /tcp-routes/finish
