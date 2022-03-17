@@ -4,8 +4,21 @@ main:
     url: /about/
   - title: "Curriculum"
     url: /curriculum/
-  # - title: "Sitemap"
-  #   url: /sitemap/
+
+sidebar-getting-started:
+  - children:
+      - title: "Introduction"
+        url: /get-started/introduction
+      - title: "Reading Onboarding Stories"
+        url: /get-started/reading-onboarding-stories
+      - title: "Get an Environment"
+        url: /get-started/get-an-environment
+      - title: "Meet Proxy"
+        url: /get-started/meet-proxy
+      - title: "Directional Networking Terms"
+        url: /get-started/directional-networking-terms
+      - title: "Wrap Up"
+        url: /get-started/wrap-up
 
 sidebar-http-routes:
   - title: "Start Here"
@@ -49,19 +62,6 @@ sidebar-http-routes:
       - title: "Wrap Up"
         url: /http-routes/wrap-up
 
-sidebar-getting-started:
-  - children:
-      - title: "Introduction"
-        url: /get-started/introduction
-      - title: "Reading Onboarding Stories"
-        url: /get-started/reading-onboarding-stories
-      - title: "Get an Environment"
-        url: /get-started/get-an-environment
-      - title: "Meet Proxy"
-        url: /get-started/meet-proxy
-      - title: "Directional Networking Terms"
-        url: /get-started/directional-networking-terms
-
 sidebar-route-integrity:
   - children:
       - title: "Stale Routes Reenactment"
@@ -70,6 +70,8 @@ sidebar-route-integrity:
         url: /route-integrity/route-integrity-demonstration
       - title: "Checking the SAN"
         url: /route-integrity/checking-the-san
+      - title: "Wrap Up"
+        url: /route-integrity/wrap-up
 
 sidebar-iptables:
   - children:
@@ -81,6 +83,8 @@ sidebar-iptables:
         url: /iptables/watch-some-videos
       - title: "Write a Firewall"
         url: /iptables/write-a-firewall
+      - title: "Wrap Up"
+        url: /iptables/wrap-up
 
 sidebar-c2c:
   - title: Start Here
@@ -127,6 +131,8 @@ sidebar-c2c:
         url: /c2c/tcpdump
       - title: "'bypass' c2c policies"
         url: /c2c/bypass
+      - title: "Wrap Up"
+        url: /c2c/wrap-up
 
 sidebar-service-discovery:
   - children:
@@ -136,6 +142,8 @@ sidebar-service-discovery:
         url: /service-discovery/user-workflow-internal-domains
       - title: "Break Things"
         url: /service-discovery/break-things
+      - title: "Wrap Up"
+        url: /service-discovery/wrap-up
 
 sidebar-asgs:
   - children:
@@ -145,6 +153,8 @@ sidebar-asgs:
         url: /asgs/iptables-primer
       - title: "ASGs and Iptables"
         url: /asgs/asgs-and-iptables
+      - title: "Wrap Up"
+        url: /asgs/wrap-up
 
 sidebar-route-registrar:
   - children:
@@ -158,6 +168,8 @@ sidebar-route-registrar:
         url: /route-registrar/find-those-routes
       - title: "Instance Specific Routes"
         url: /route-registrar/instance-specific-routes
+      - title: "Wrap Up"
+        url: /route-registrar/wrap-up
 
 sidebar-bosh-dns:
   - children:
@@ -175,6 +187,8 @@ sidebar-bosh-dns:
         url: /bosh-dns/request-alias
       - title: "Can CF Apps Use Bosh DNS?"
         url: /bosh-dns/cf-apps
+      - title: "Wrap Up"
+        url: /bosh-dns/wrap-up
 
 sidebar-tcp-routes:
   - children:
@@ -192,8 +206,8 @@ sidebar-tcp-routes:
         url: /tcp-routes/tcp-vs-http
       - title: "TCP Routes Table"
         url: /tcp-routes/routes-table
-      - title: "Finish"
-        url: /tcp-routes/finish
+      - title: "Wrap Up"
+        url: /tcp-routes/wrap-up
 
 sidebar-route-services:
   - children:
@@ -217,4 +231,4 @@ sidebar-interrupts:
       - title: "How to limit traffic"
         url: /interrupts/limit-traffic
       - title: "Wrap Up"
-        url: /interrupts/wrapup
+        url: /interrupts/wrap-up

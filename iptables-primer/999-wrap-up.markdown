@@ -1,18 +1,18 @@
 ---
 layout: single
 title: Wrap Up
-permalink: /tcp-routes/wrap-up
+permalink: /iptables/wrap-up
 sidebar:
-  title: "TCP Routes"
-  nav: sidebar-tcp-routes
+  title: "Iptables"
+  nav: sidebar-iptables
 ---
 
 ## 🎉 Congratulations!
 
-You just completed the TCP Routes onboarding module!
+You just completed the Iptables Primer onboarding module!
 
-Now go back to the [curriculum page](../curriculum) and pick another module. I
-recommend the [Route Services module](../service-discovery/intro) next.
+Now go back to the [curriculum page](../curriculum) and pick another module or
+head back to the module that sent you here.
 
 
 ## 👀 Does someting need fixing?

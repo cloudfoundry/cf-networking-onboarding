@@ -1,19 +1,17 @@
 ---
 layout: single
 title: Wrap Up
-permalink: /tcp-routes/wrap-up
+permalink: /get-started/wrap-up
 sidebar:
-  title: "TCP Routes"
-  nav: sidebar-tcp-routes
+  title: "Getting Started"
+  nav: sidebar-getting-started
 ---
 
 ## 🎉 Congratulations!
 
-You just completed the TCP Routes onboarding module!
+You just completed your very first onboarding module!
 
-Now go back to the [curriculum page](../curriculum) and pick another module. I
-recommend the [Route Services module](../service-discovery/intro) next.
-
+Now go back to the [curriculum page](../curriculum) and pick another module.
 
 ## 👀 Does someting need fixing?
 

@@ -1,18 +1,18 @@
 ---
 layout: single
 title: Wrap Up
-permalink: /tcp-routes/wrap-up
+permalink: /route-integrity/wrap-up
 sidebar:
-  title: "TCP Routes"
-  nav: sidebar-tcp-routes
+  title: "Route Integrity"
+  nav: sidebar-route-integrity
 ---
 
 ## 🎉 Congratulations!
 
-You just completed the TCP Routes onboarding module!
+You just completed the Route Integrity onboarding module!
 
 Now go back to the [curriculum page](../curriculum) and pick another module. I
-recommend the [Route Services module](../service-discovery/intro) next.
+recommend the [Iptables Primer module](../iptables-primer/intro) next.
 
 
 ## 👀 Does someting need fixing?

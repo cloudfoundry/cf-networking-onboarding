@@ -1,18 +1,18 @@
 ---
 layout: single
 title: Wrap Up
-permalink: /tcp-routes/wrap-up
+permalink: /service-discovery/wrap-up
 sidebar:
-  title: "TCP Routes"
-  nav: sidebar-tcp-routes
+  title: "C2C Service Discovery"
+  nav: sidebar-service-discovery
 ---
 
 ## 🎉 Congratulations!
 
-You just completed the TCP Routes onboarding module!
+You just completed the Container-to-Container Networking Service Discovyer onboarding module!
 
 Now go back to the [curriculum page](../curriculum) and pick another module. I
-recommend the [Route Services module](../service-discovery/intro) next.
+recommend the [ASGs module](../asgs/intro) next.
 
 
 ## 👀 Does someting need fixing?

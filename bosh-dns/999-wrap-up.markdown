@@ -1,18 +1,18 @@
 ---
 layout: single
 title: Wrap Up
-permalink: /tcp-routes/wrap-up
+permalink: /bosh-dns/wrap-up
 sidebar:
-  title: "TCP Routes"
-  nav: sidebar-tcp-routes
+  title: "Bosh DNS"
+  nav: sidebar-bosh-dns
 ---
 
 ## 🎉 Congratulations!
 
-You just completed the TCP Routes onboarding module!
+You just completed the Bosh DNS onboarding module!
 
 Now go back to the [curriculum page](../curriculum) and pick another module. I
-recommend the [Route Services module](../service-discovery/intro) next.
+recommend the [TCP Routes module](../tcp-routes/intro) next.
 
 
 ## 👀 Does someting need fixing?

@@ -1,18 +1,18 @@
 ---
 layout: single
 title: Wrap Up
-permalink: /tcp-routes/wrap-up
+permalink: /route-registrar/wrap-up
 sidebar:
-  title: "TCP Routes"
-  nav: sidebar-tcp-routes
+  title: "Route Registrar"
+  nav: sidebar-route-registrar
 ---
 
 ## 🎉 Congratulations!
 
-You just completed the TCP Routes onboarding module!
+You just completed the Route Registrar onboarding module!
 
 Now go back to the [curriculum page](../curriculum) and pick another module. I
-recommend the [Route Services module](../service-discovery/intro) next.
+recommend the [Bosh DNS module](../bosh-dns/intro) next.
 
 
 ## 👀 Does someting need fixing?
