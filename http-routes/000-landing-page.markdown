@@ -1,10 +1,10 @@
 ---
 layout: single
-title: http routes PAGE
-permalink: /http-routes/
+title: HTTP Routes Introduction
+permalink: /http-routes/intro
 sidebar:
   title: "HTTP Routes"
   nav: sidebar-http-routes
 ---
 
-http routes PAGE
+...

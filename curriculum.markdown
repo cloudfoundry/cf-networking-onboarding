@@ -6,13 +6,13 @@ permalink: /curriculum/
 
 Welcome to curriculum.
 
-* [Get Started](../get-started/introduction)
-* [HTTP Routes](../http-routes/)
-* [Route Integrity](../route-integrity/stale-routes-reenactment)
-* [Iptables Primer](../iptables/primer)
-* [Container-to-container (c2c) Networking](../c2c/user-workflow)
-* [C2C Service Discovery](../service-discovery/user-workflow-internal-routes)
-* [ASGs](../asgs/user-workflow)
+* [Get Started](../get-started/intro)
+* [HTTP Routes](../http-routes/intro)
+* [Route Integrity](../route-integrity/intro)
+* [Iptables Primer](../iptables/intro)
+* [Container-to-container (c2c) Networking](../c2c/intro)
+* [C2C Service Discovery](../service-discovery/intro)
+* [ASGs](../asgs/intro)
 * [Route Registrar](../route-registrar/intro)
 * [Bosh DNS](../bosh-dns/intro)
 * [TCP Routes](../tcp-routes/intro)

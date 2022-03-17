@@ -1,7 +1,7 @@
 ---
 layout: single
 title: Introduction to CF Networking Onboarding
-permalink: /get-started/introduction
+permalink: /get-started/intro
 sidebar:
   title: "Getting Started"
   nav: sidebar-getting-started

@@ -8,7 +8,7 @@ main:
 sidebar-getting-started:
   - children:
       - title: "Introduction"
-        url: /get-started/introduction
+        url: /get-started/intro
       - title: "Reading Onboarding Stories"
         url: /get-started/reading-onboarding-stories
       - title: "Get an Environment"
@@ -23,8 +23,8 @@ sidebar-getting-started:
 sidebar-http-routes:
   - title: "Start Here"
     children:
-      - title: "Intro"
-        url: /http-routes/
+      - title: "Introduction"
+        url: /http-routes/intro
       - title: "User Workflow"
         url: /http-routes/user-workflow
   - title: "Route Propagation"
@@ -64,6 +64,8 @@ sidebar-http-routes:
 
 sidebar-route-integrity:
   - children:
+      - title: "Introduction"
+        url: /route-integrity/intro
       - title: "Stale Routes Reenactment"
         url: /route-integrity/stale-routes-reenactment
       - title: "Route Integrity Demonstration"
@@ -75,6 +77,8 @@ sidebar-route-integrity:
 
 sidebar-iptables:
   - children:
+      - title: "Introduction"
+        url: /iptables/intro
       - title: "Primer"
         url: /iptables/primer
       - title: "Write Your Own Drop Rule"
@@ -89,6 +93,8 @@ sidebar-iptables:
 sidebar-c2c:
   - title: Start Here
     children:
+      - title: "Introduction"
+        url: /c2c/intro
       - title: "User Workflow"
         url: /c2c/user-workflow
       - title: "Julia Evans' Overview"
@@ -136,6 +142,8 @@ sidebar-c2c:
 
 sidebar-service-discovery:
   - children:
+      - title: "Introduction"
+        url: /service-discovery/intro
       - title: "User Workflow - Internal Routes"
         url: /service-discovery/user-workflow-internal-routes
       - title: "User Workflow - Internal Domains"
@@ -147,6 +155,8 @@ sidebar-service-discovery:
 
 sidebar-asgs:
   - children:
+      - title: "Introduction"
+        url: /asgs/intro
       - title: "User Workflow"
         url: /asgs/user-workflow
       - title: "Iptables Primer"

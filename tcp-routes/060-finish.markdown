@@ -12,7 +12,7 @@ sidebar:
 You just completed the TCP Routes onboarding module!
 
 Now go back to the [curriculum page](../curriculum) and pick another module. I
-recommend the [Route Services module](../service-discovery/intro) next.
+recommend the [Route Services module](../route-services/intro) next.
 
 
 ## 👀 Does someting need fixing?

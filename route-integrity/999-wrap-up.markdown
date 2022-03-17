@@ -12,8 +12,7 @@ sidebar:
 You just completed the Route Integrity onboarding module!
 
 Now go back to the [curriculum page](../curriculum) and pick another module. I
-recommend the [Iptables Primer module](../iptables-primer/intro) next.
-
+recommend the [Iptables Primer module](../iptables/intro) next.
 
 ## 👀 Does someting need fixing?
 
