@@ -16,3 +16,4 @@ Welcome to curriculum.
 * [Route Registrar](../route-registrar/intro)
 * [Bosh DNS](../bosh-dns/intro)
 * [TCP Routes](../tcp-routes/intro)
+* [Route Services](../route-services/intro)

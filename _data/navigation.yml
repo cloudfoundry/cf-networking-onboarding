@@ -194,3 +194,14 @@ sidebar-tcp-routes:
         url: /tcp-routes/routes-table
       - title: "Finish"
         url: /tcp-routes/finish
+
+sidebar-route-services:
+  - children:
+      - title: "Introduction"
+        url: /route-services/intro
+      - title: "Using Route Services"
+        url: /route-services/user-workflow
+      - title: "Exploiting Route Services"
+        url: /route-services/exploit
+      - title: "Wrap Up"
+        url: /route-services/wrap-up
