@@ -205,3 +205,16 @@ sidebar-route-services:
         url: /route-services/exploit
       - title: "Wrap Up"
         url: /route-services/wrap-up
+
+sidebar-interrupts:
+  - children:
+      - title: "Introduction"
+        url: /interrupts/intro
+      - title: "Why don't ASGs work for C2C?"
+        url: /interrupts/asgs-and-c2c
+      - title: "Silk Limitations"
+        url: /interrupts/silk-limitations
+      - title: "How to limit traffic"
+        url: /interrupts/limit-traffic
+      - title: "Wrap Up"
+        url: /interrupts/wrapup
