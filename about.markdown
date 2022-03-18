@@ -18,8 +18,3 @@ gone through these stories as a week long class.
 
 These stories have now been converted to this website to make the content
 available to anyone.
-
-🙏 _If any story needs to be updated: please, please, PLEASE submit a PR.
-Amelia will be eternally grateful. How? Open [this file in
-GitHub](https://github.com/cloudfoundry/cf-networking-onboarding/tree/gh-pages).
-Search for the phrase you want to edit. Make the fix!_
