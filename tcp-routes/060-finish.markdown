@@ -14,7 +14,6 @@ You just completed the TCP Routes onboarding module!
 Now go back to the [curriculum page](../curriculum) and pick another module. I
 recommend the [Route Services module](../route-services/intro) next.
 
-
 ## 👀 Does someting need fixing?
 
 If any story needs to be updated: please, please, PLEASE submit a PR. Amelia

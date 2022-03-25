@@ -170,6 +170,8 @@ sidebar-route-registrar:
   - children:
       - title: "Introduction"
         url: /route-registrar/intro
+      - title: "Vocab"
+        url: /route-registrar/vocab
       - title: "Life Without Route Registrar"
         url: /route-registrar/life-without-rr
       - title: "User Workflow"
@@ -185,6 +187,8 @@ sidebar-bosh-dns:
   - children:
       - title: "Introduction"
         url: /bosh-dns/intro
+      - title: "Vocab"
+        url: /bosh-dns/vocab
       - title: "Background Reading"
         url: /bosh-dns/reading
       - title: "Request an External URL"
