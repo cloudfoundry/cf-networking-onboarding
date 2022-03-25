@@ -19,7 +19,7 @@ locale                   : "en-US"
 title                    : "CF Networking Onboarding"
 title_separator          : "-"
 subtitle                 : # site tagline that appears below site title in masthead
-name                     : "Your Name"
+name                     : ""
 description              : "An amazing website."
 url                      : # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
@@ -58,7 +58,7 @@ reCaptcha:
   secret                 :
 atom_feed:
   path                   : # blank (default) uses feed.xml
-  hide                   : # true, false (default)
+  hide                   : true
 search                   : # true, false (default)
 search_full_content      : # true, false (default)
 search_provider          : # lunr (default), algolia, google
@@ -288,18 +288,3 @@ defaults:
       comments: # true
       share: false
       related: false
-  # - scope:
-  #     path: "http-routes"
-  #   values:
-  #     author_profile: false
-  #     read_time: false
-  #     comments: # true
-  #     share: false
-  #     related: false
-  #     sidebar:
-  #       - title: "HTTP Routes Curriculum"
-  #         subfolderitems:
-  #           - page: "Intro"
-  #             url: "/http-routes/"
-  #           - page: "User Workflow"
-  #             url: "/http-routes/1-user-workflow"
