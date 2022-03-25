@@ -48,5 +48,4 @@ above, these stories are made to be done in order.
 🎉  Congrats, you finished your first story!
 
 Now go to the left-hand sidebar and go to the next story: "Reading Onboarding
-Stories the stories in the "Getting Started" module, you can click on
-"Curriculum" in the main menu bar and pick your next module.
+Stories".
