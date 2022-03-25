@@ -8,8 +8,10 @@ sidebar:
 ---
 
 ## Assumptions
-- You have a OSS CF deployed
-- You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and called appA
+- You have a CF deployed
+- You have one
+  [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy)
+  app pushed and called appA
 - You have one route mapped to appA called APP_A_ROUTE
 - You have completed the previous stories in this track
 
@@ -27,14 +29,18 @@ OVERLAY_IP=<value>
 
 ## What
 
-There is one Route Emitter per Diego Cell and its job is to... emit routes. According to the ever helpful
-[Diego Design Notes](https://github.com/cloudfoundry/diego-design-notes) the Route Emitter "monitors DesiredLRP state
-and ActualLRP state via the BBS. When a change is detected, the Route Emitter emits route registration and unregistration
-messages to the GoRouter via the NATS message bus." Even when no change is detected, the Route Emitter will periodically
-emit the entire routing table as a kind of heartbeat.
+There is one Route Emitter per Diego Cell and its job is to... emit routes.
+According to the ever helpful [Diego Design
+Notes](https://github.com/cloudfoundry/diego-design-notes) the Route Emitter
+"monitors DesiredLRP state and ActualLRP state via the BBS. When a change is
+detected, the Route Emitter emits route registration and unregistration
+messages to the GoRouter via the NATS message bus." Even when no change is
+detected, the Route Emitter will periodically emit the entire routing table as
+a kind of heartbeat.
 
-For this story, let's look at the messages that the Route Emitter is publishing via NATS. Subscribing to these NATs messages
-can be a helpful debugging technique.
+For this story, let's look at the messages that the Route Emitter is publishing
+via NATS. Subscribing to these NATs messages can be a helpful debugging
+technique.
 
 ## How
 
@@ -55,7 +61,9 @@ mv nats-0.0.25-linux-amd64/nats /usr/bin
 0. Use the nats cli to connect to nats: `nats sub "*.*" -s nats://NATS_USERNAME:NATS_PASSWORD@NATS_ADDRESS`. The `"*.*"` means that you are subscribing to all NATs messages.
     The Route Emitter registers routes every 20 seconds (by default) so that the GoRouter (which subscribes to these messages) has the most up-to-date information about which IPs map to which apps and routes. Depending on how many routes there are, this might be a lot of information.
 
-0. When you successfully connect to nats, plus a few seconds of waiting, you should see a message that contains information about the route you created. It will look something like this and contain APP_A_ROUTE:
+0. When you successfully connect to nats, plus a few seconds of waiting, you
+   should see a message that contains information about the route you created.
+   It will look something like this and contain APP_A_ROUTE:
  ```
    [#32] Received on [router.register] :
 {
@@ -75,18 +83,14 @@ mv nats-0.0.25-linux-amd64/nats /usr/bin
 }
  ```
 
-❓Do the values in the NATS message match the values you recorded previously from BBS? Which ones are present? Which ones aren't there?
-❓How does it compare to the information in Cloud Controller?
+## ❓ Questions
+* Do the values in the NATS message match the values you recorded previously
+  from BBS? Which ones are present? Which ones aren't there?
+* How does it compare to the information in Cloud Controller?
 
-### Expected Result
+## Expected Result
 Inspect NATs messages. Look at what route information is sent to the GoRouter.
 
 ## Resources
-[NATS message bus repo](https://github.com/nats-io/gnatsd)
-[NATS ruby gem repo](https://github.com/nats-io/ruby-nats)
-
-
-🙏 _If this story needs to be updated: please, please, PLEASE submit a PR.
-Amelia will be eternally grateful. How? Open [this file in
-GitHub](https://github.com/cloudfoundry/cf-networking-onboarding). Search for
-the phrase you want to edit. Make the fix!_
+* [NATS message bus repo](https://github.com/nats-io/gnatsd)
+* [NATS ruby gem repo](https://github.com/nats-io/ruby-nats)

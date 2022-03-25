@@ -8,8 +8,10 @@ sidebar:
 ---
 
 ## Assumptions
-- You have a OSS CF deployed
-- You have one [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) app pushed and called appA
+- You have a CF deployed
+- You have one
+  [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy)
+  app pushed and called appA
 - You have one route mapped to appA called APP_A_ROUTE
 - You have completed the previous stories in this track
 
@@ -26,11 +28,16 @@ OVERLAY_IP=<value>
 ```
 
 ## What
-In the previous stories you followed the path of a request from a client to an app deployed on Cloud Foundry.
+In the previous stories you followed the path of a request from a client to an
+app deployed on Cloud Foundry.
 
-For every successful* response that Gorouter returns to a client it logs an access log. Here successful means "that there was a response from the app with any status code". 
+For every successful* response that Gorouter returns to a client it logs an
+access log. Here successful means "that there was a response from the app with
+any status code". 
 
-These access logs can be very helpful for debugging. One common situation is that a customer sees via metrics that they are getting lots of 502s. But what apps are returning 502s? Let's look at the access logs to find out!
+These access logs can be very helpful for debugging. One common situation is
+that a customer sees via metrics that they are getting lots of 502s. But what
+apps are returning 502s? Let's look at the access logs to find out!
 
 ## How
 
@@ -47,20 +54,18 @@ APP_A_ROUTE - [2021-02-18T21:22:32.355501523Z] "GET / HTTP/1.1" 200 0 62 "-" "cu
 * ❓Can you find the status code in the access log?
 * ❓Can you find the x-cf-routererror in the access log?
 
-1. 📚Read about the [X-CF-RouterError here](https://docs.cloudfoundry.org/adminguide/troubleshooting-router-error-responses.html#gorouter-specific-response-headers) and learn how it can be used for debugging. 
+📚 **Read about the X-CF-RouterError**
+1. Read about the [X-CF-RouterError here](https://docs.cloudfoundry.org/adminguide/troubleshooting-router-error-responses.html#gorouter-specific-response-headers) and learn how it can be used for debugging. 
 
-1. Look at the app logs for APP_A.
+🤔 **Look at the app logs for APP_A**.
+1. Use `cf logs` to look at the app logs for `APP_A`.
  * ❓Can you find a log line that looks like the access log line?
  * ❓What additional information does the app log contain?
 
-### Expected Result
-You have found the access log from your curl in the log file on the router VM and in the app logs.
+## Expected Result
+You have found the access log from your curl in the log file on the router VM
+and in the app logs.
 
 ## Resources
-* [X-CF-RouterError docs](https://docs.cloudfoundry.org/adminguide/troubleshooting-router-error-responses.html#gorouter-specific-response-headers)
-
----
-🙏 _If this story needs to be updated: please, please, PLEASE submit a PR.
-Amelia will be eternally grateful. How? Open [this file in
-GitHub](https://github.com/cloudfoundry/cf-networking-onboarding). Search for
-the phrase you want to edit. Make the fix!_
+* [X-CF-RouterError
+  docs](https://docs.cloudfoundry.org/adminguide/troubleshooting-router-error-responses.html#gorouter-specific-response-headers)

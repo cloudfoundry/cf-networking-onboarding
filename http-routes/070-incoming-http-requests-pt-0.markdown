@@ -16,20 +16,30 @@ Each step marked with a ✨ will be explained in more detail in a story in this 
 1. The user visits your route in the browser or curls it via the command line.
 1. The traffic first hits a load balancer in front of the CF Foundation.
 1. The load balancer sends it to one of the GoRouters.
-1. ✨ The GoRouter consults the route table and sends it to the listed IP and port. If Route Integrity is enabled, it sends this traffic via TLS. (This was explored in the previous story!)
-1. ✨ The traffic makes its way to the correct Diego Cell, where it hits iptables DNAT rules that reroutes the traffic to the sidecar envoy for the app.
-1. ✨ The Envoy terminates the TLS from the GoRouter and then sends the traffic on to the app.
+1. ✨ The GoRouter consults the route table and sends it to the listed IP and
+   port. If Route Integrity is enabled, it sends this traffic via TLS. (This
+   was explored in the previous story!)
+1. ✨ The traffic makes its way to the correct Diego Cell, where it hits
+   iptables DNAT rules that reroutes the traffic to the sidecar envoy for the
+   app.
+1. ✨ The Envoy terminates the TLS from the GoRouter and then sends the traffic
+   on to the app.
 
 ## How
-The following stories will look at how many components (Cloud Controller, Diego BBS, Route Emitter, Nats, GoRouter, DNAT Rules, Envoy) work together to make routes work.
+The following stories will look at how many components (Cloud Controller, Diego
+BBS, Route Emitter, Nats, GoRouter, DNAT Rules, Envoy) work together to make
+routes work.
 
-0. 🤔 Step through steps above and follow along on [the HTTP Routing section of this diagram](https://realtimeboard.com/app/board/o9J_kyWPVPM=/)
+0. 🤔 Step through steps above and follow along on [the HTTP Routing section of
+   this diagram](https://realtimeboard.com/app/board/o9J_kyWPVPM=/)
 
-### Expected Result
+## Expected Result
 You can talk about HTTP network traffic flow with fellow CF engineers.
 
 ## Logistics
-In the next few stories, you are going to need to remember values from one story to another, there will be a space provided at the bottom of each story for your to record these values so you can store them.
+In the next few stories, you are going to need to remember values from one
+story to another, there will be a space provided at the bottom of each story
+for your to record these values so you can store them.
 
 ## Resources for the entire route propagation track
 **Cloud Controller**
@@ -51,17 +61,9 @@ In the next few stories, you are going to need to remember values from one story
 
 **Iptables**
 * [iptables man page](http://ipset.netfilter.org/iptables.man.html)
-* [Aidan's iptables in CF ppt](https://docs.google.com/presentation/d/1qLkNu633yLHP5_S_OqOIIBETJpW3erk2QuGSVo71_oY/edit#slide=id.p)
 
 **Route Integrity**
 * [Route Integrity/Misrouting Docs](https://docs.cloudfoundry.org/concepts/http-routing.html#-preventing-misrouting)
 
 **Envoy**
 * [What is Envoy?](https://www.envoyproxy.io/docs/envoy/latest/intro/what_is_envoy)
-
-
----
-🙏 _If this story needs to be updated: please, please, PLEASE submit a PR.
-Amelia will be eternally grateful. How? Open [this file in
-GitHub](https://github.com/cloudfoundry/cf-networking-onboarding). Search for
-the phrase you want to edit. Make the fix!_

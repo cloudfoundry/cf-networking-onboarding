@@ -9,16 +9,19 @@ sidebar:
 
 ## Assumptions
 - You have a CF deployed
-- You have two [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) apps pushed, named appA and appB
+- You have two
+  [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy)
+  apps pushed, named appA and appB
 
-## What?
+## What
 
 **Routes** are the URLs that can be used to access CF apps.
 
-**Route Mappings** are the join table between routes (URLs) and the apps they send traffic to. Apps can have many routes.
-And routes can send traffic to many apps. So Route Mappings is a many-to-many mapping.
+**Route Mappings** are the join table between routes (URLs) and the apps they
+send traffic to. Apps can have many routes.  And routes can send traffic to
+many apps. So Route Mappings is a many-to-many mapping.
 
-## How?
+## How
 
 📝 **Create a route that maps to two apps**
 0. By default `cf push` creates a route. Look at all of the routes for all of your apps.
@@ -34,10 +37,7 @@ And routes can send traffic to many apps. So Route Mappings is a many-to-many ma
 0. Create your own route (`cf map-route --help`) and map it to both appA **AND** appB.
 0. Curl your new route over and over again `watch "curl -sS MY-NEW-ROUTE`".
 
-### Expected Result
-You have a route that maps to both appA and appB. See that the overlay IP changes, showing that you are routed evenly(ish) between all the apps mapped to the routes.
-
-🙏 _If this story needs to be updated: please, please, PLEASE submit a PR.
-Amelia will be eternally grateful. How? Open [this file in
-GitHub](https://github.com/cloudfoundry/cf-networking-onboarding). Search for
-the phrase you want to edit. Make the fix!_
+## Expected Result
+You have a route that maps to both appA and appB. See that the overlay IP
+changes, showing that you are routed evenly(ish) between all the apps mapped to
+the routes.
