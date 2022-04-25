@@ -44,7 +44,8 @@ Let's take a look at that route table.
  ```
 0. Get the routes table
  ```
- curl "http://USERNAME:PASSWORD@localhost:8080/routes" | jq .
+ curl -s "http://USERNAME:PASSWORD@localhost:8080/routes" | jq -re '[ to_entries[] | select(.value[].tags.app_name == "appA") ] | from_entries' # return just appA
+ curl -s "http://USERNAME:PASSWORD@localhost:8080/routes" | jq -re 'to_entries[].key' # return list of routes by key (name)
  ```
 0. Scroll through and look at the routes.
   ❓How does this differ from the route information you saw in Cloud Controller?

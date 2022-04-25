@@ -59,7 +59,7 @@ to.
    actualLRPs. Cfdot is a helpful CLI for using the BBS API.  It's a great tool
    for debugging on the Diego Cell.
  ```
- cfdot actual-lrps | jq .
+ cfdot actual-lrps | jq -re .
  ```
 0. Search through the actual LRPs for APP_A_GUID. It should match the beginning
    of a process guid. You'll find an entry for each instance of appA that is
