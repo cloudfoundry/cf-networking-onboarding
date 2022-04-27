@@ -58,7 +58,7 @@ mv nats-0.0.32-linux-amd64/nats /usr/bin
     ```
     jq . /var/vcap/jobs/route_emitter/config/route_emitter.json | grep nats
     ```
-0. Use the nats cli to connect to nats: `nats sub "router.register" -s nats://NATS_USERNAME:NATS_PASSWORD@NATS_ADDRESS/ --tlscert <cert file from json> --tlskey <key file from json> --tlsca <ca file from json>`. Using `"*.*"` means that you are subscribing to all NATs messages.
+0. Use the nats cli to connect to nats: `nats sub "*.*" -s nats://NATS_USERNAME:NATS_PASSWORD@NATS_ADDRESS/ --tlscert <cert file from json> --tlskey <key file from json> --tlsca <ca file from json>`. The `"*.*"` means that you are subscribing to all NATs messages.
     The Route Emitter registers routes every 20 seconds (by default) so that the GoRouter (which subscribes to these messages) has the most up-to-date information about which IPs map to which apps and routes. Depending on how many routes there are, this might be a lot of information.
 
 0. When you successfully connect to nats, plus a few seconds of waiting, you
@@ -82,6 +82,7 @@ mv nats-0.0.32-linux-amd64/nats /usr/bin
      }
 }
  ```
+   Nats is used by multiple services, and the `router.register` messages are intermixed with other messages.  Modify the sub filter from `"*.*"` to `"router.register"` to view only router messages.
 
 ## ❓ Questions
 * Do the values in the NATS message match the values you recorded previously
