@@ -162,8 +162,8 @@ The data about the tag for the source app from the internal policy server API sh
 ## Look at the Code
 In the vxlan policy agent (vpa), there is a component called the planner. The planner gets information from the internal policy server API about all of the c2c policies. The planner turns this policy information into proposed iptables rules.
 
-[Here](https://github.com/cloudfoundry/silk-release/blob/develop/src/vxlan-policy-agent/planner/planner_linux.go#L297-L304)
+[Here](https://github.com/cloudfoundry/silk-release/blob/0150c154a47770ed98d39453ca75fc1495848fe2/src/code.cloudfoundry.org/vxlan-policy-agent/planner/planner_linux.go#L399-L404)
 the VPA goes through all of the source apps and creates mark rules for them
 
-[Here](https://github.com/cloudfoundry/silk-release/blob/develop/src/lib/rules/rules.go#L100-L105)
+[Here](https://github.com/cloudfoundry/silk-release/blob/0150c154a47770ed98d39453ca75fc1495848fe2/src/code.cloudfoundry.org/lib/rules/rules.go#L108-L113)
 is the implementation of *NewMarkSetRule*
