@@ -40,7 +40,8 @@ listening at on the Diego Cell and specifically at
 1. Ssh onto the Diego Cell where appA is deployed and become root.
 1. Use netstat to look at open ports
  ```
- netstat -tulp
+ netstat -ntulp
+ # -n  <---- show raw ip addresses and socket numbers
  # -t  <---- show tcp sockets
  # -u  <---- show udp sockets
  # -l  <---- display listening sockets
