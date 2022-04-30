@@ -134,21 +134,24 @@ use.
    rule.
 ```
 {
-"total_policies": 1,
-"policies": [
-{
-"source": {
-"id": "90ff1b89-a69d-4c77-b1bd-415ae09833ed",  <------- AppA guid
-"tag": "0004"                                  <------- AppA mark, should match what you saw in the iptables rule above
-},
-"destination": {
-"id": "0babce4f-6739-4fc8-8f74-01f11179bfe5",  <------- AppB guid
-"tag": "0005",                                 <------- AppB mark
-"protocol": "tcp",
-"ports": { "start": 8080, "end": 8080 }
-}
-}
-]
+  "total_policies": 1,
+  "policies": [
+    {
+      "source": {
+        "id": "90ff1b89-a69d-4c77-b1bd-415ae09833ed",  <------- AppA guid
+        "tag": "0004"                                  <------- AppA mark, should match what you saw in the iptables rule above
+      },
+      "destination": {
+        "id": "0babce4f-6739-4fc8-8f74-01f11179bfe5",  <------- AppB guid
+        "tag": "0005",                                 <------- AppB mark
+        "protocol": "tcp",
+        "ports": {
+          "start": 8080,
+          "end": 8080
+        }
+      }
+    }
+  ]
 }
 ```
 

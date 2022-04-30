@@ -21,27 +21,32 @@ Route Registrar is needed.
 
 ```
 instance_groups:
-- name: my-http-server
-  azs:
+- azs:
   - z1
-    instances: 2       # <------------ Make sure you have two instances for load balancing
-    jobs:
-    - name: route_registrar
-      properties:
-        route_registrar:
-          routes: []   # <------------ No routes to start with
-      release: routing
-      networks:
-      - name: default
-        stemcell: default
-        update:
-          serial: true
-          vm_type: minimal
+  instances: 2       # <------------ Make sure you have two instances for load balancing
+  jobs:
+  - name: route_registrar
+    properties:
+      nats:
+        tls:
+          client_cert: ((nats_client_cert.certificate))
+          client_key: ((nats_client_cert.private_key))
+          enabled: true
+      route_registrar:
+        routes: []   # <------------ No routes to start with
+    release: routing
+  name: my-http-server
+  networks:
+  - name: default
+  stemcell: default
+  update:
+    serial: true
+  vm_type: minimal
 ```
 
 📝 **Run an HTTP server on your new VMs**
-0. Copy the http server code from [this
-   gist](https://gist.github.com/ameowlia/2768de0c1d857a9981ed2df9809de6a9)
+0. Copy the http server code from
+   [this gist](https://gist.github.com/ameowlia/2768de0c1d857a9981ed2df9809de6a9)
    onto your local machine.
 0. Look at the file. It is a small go program that starts an HTTP server on
    port 9994 that responds to any request with a friendly hello and the mac

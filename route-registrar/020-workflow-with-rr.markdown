@@ -33,13 +33,17 @@ route registrar load balances requests.
 
 ```
 instance_groups:
-- name: my-http-server
-  azs:
+- azs:
   - z1
   instances: 2
   jobs:
   - name: route_registrar
     properties:
+      nats:
+        tls:
+          client_cert: ((nats_client_cert.certificate))
+          client_key: ((nats_client_cert.private_key))
+          enabled: true
       route_registrar:
         routes:
         - name: meow-route               # <<< Add this new stuff to routes
@@ -48,12 +52,13 @@ instance_groups:
           uris:                          # <<<
           - meow.SYSTEM_DOMAIN           # <<< Make sure to replace SYSTEM_DOMAIN. You can also replace meow if you want. But why would you?
     release: routing
+  name: my-http-server
   networks:
   - name: default
-    stemcell: default
-    update:
-      serial: true
-      vm_type: minimal
+  stemcell: default
+  update:
+    serial: true
+  vm_type: minimal
 ```
 
 🤔 **Run the HTTP server on both instances of my-http-server**

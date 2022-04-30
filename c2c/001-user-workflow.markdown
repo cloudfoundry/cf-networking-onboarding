@@ -78,13 +78,13 @@ cf ssh appB -c "env | grep CF_INSTANCE_INTERNAL_IP"
 1. Get onto the container for appA and curl the appB internal IP and app port.
 ```
 cf ssh appA
-watch  "curl CF_INSTANCE_INTERNAL_IP:8080"
+watch  "curl -Ssk <value of CF_INSTANCE_INTERNAL_IP>:8080"
 ```
 You should get a `Connection refused` error because there is no network policy yet.
 
 1.  In another terminal, add a network policy from appA to appB, with protocol tcp, on port 8080.
 ```
-cf add-network-policy appA --destination-app appB --protocol tcp --port 8080
+cf add-network-policy appA appB --protocol tcp --port 8080
 ```
 
 ## Expected Result

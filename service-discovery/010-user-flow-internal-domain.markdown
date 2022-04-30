@@ -21,7 +21,7 @@ internal domain (may I suggest meow.meow.meow)?
 
 1. Start off where you left off from the previous story "User Flow Container to
    Container Networking"). You should have appA talking to appB via an overlay
-   IP using `watch  "curl appB.apps.internal:8080"` inside of the appA
+   IP using `watch  "curl -sS appB.apps.internal:8080"` inside of the appA
    container in one terminal.
 
 1. In another terminal, create a new internal domain `cf create-shared-domain

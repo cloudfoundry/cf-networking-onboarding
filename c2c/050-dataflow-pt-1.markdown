@@ -126,8 +126,8 @@ interfaces.  In the next story you'll explore network interfaces. You'll learn
 why the meow namespace needs one in order for you to curl google.com.
 
 ## Resources
-* [iptables netns man page](http://man7.org/linux/man-pages/man8/ip-netns.8.html)
-* [linux network namespaces/veth/route table blog](https://devinpractice.com/2016/09/29/linux-network-namespace/)
+* [ip netns man page](http://man7.org/linux/man-pages/man8/ip-netns.8.html)
+* [linux network namespaces/veth/route table blog](https://tanzu.vmware.com/developer/blog/a-container-is-a-linux-namespace-and-networking-basics/)  #replaced a dead link
 * [network namespaces blog](https://blogs.igalia.com/dpino/2016/04/10/network-namespaces/)
 * [interface explanations](https://www.computerhope.com/unix/uifconfi.htm)
 * [linux namespaces overview](https://medium.com/@teddyking/linux-namespaces-850489d3ccf)

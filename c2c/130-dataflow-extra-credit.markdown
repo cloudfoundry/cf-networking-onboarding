@@ -36,7 +36,11 @@ container.
 1. In terminal 2, ssh onto Diego Cell 2, where appB is running.
 1. The underlay packet is from Diego Cell 1 to Diego Cell 2, so use tcpdump to look at all traffic from Diego Cell 1.
 ```
+# all traffic originating from DIEGO_CELL_1_IP (There will be traffic unrelatead to the exercise visible in the output)
 tcpdump -n src DIEGO_CELL_1_IP -v
+
+# all traffic originating from DIEGO_CELL_1_IP that is destined for DIEGO_CELL_IP_2 (A more focused capture)
+tcpdump -n src DIEGO_CELL_1_IP and DIEGO_CELL_2_IP -v
 ```
 
 ## ❓ Questions

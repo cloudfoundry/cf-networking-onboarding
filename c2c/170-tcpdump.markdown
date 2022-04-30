@@ -31,7 +31,7 @@ Then we'll watch the packets being sent in response!
 1. Get the overlay IPs of appA and appB
 1. Continually try to curl appB from appA
 ```
-watch -n 15 curl APP_A_ROUTE/proxy/APP_B_OVERLAY_IP:8080
+watch -n 15 curl -sS APP_A_ROUTE/proxy/APP_B_OVERLAY_IP:8080
 ```
 
 📝 **Look at those packets**
