@@ -50,6 +50,8 @@ Skim through [proxy's
 README](https://github.com/cloudfoundry/cf-networking-release/blob/develop/src/example-apps/proxy/README.md)
 and look at all the endpoints that it has.
 
+NOTE: you may need to use the -k option for these curl commands, if you get a certificate error.
+
 1. Use the `/dig/URL_TO_DIG` endpoint to do DNS resolution for google.com.
 1. Use the `/digudp/URL_TO_DIG` endpoint to do a DNS resolution  for google.com over udp. Dig usually uses tcp. This is a great way to test if udp traffic is working. (What are tcp and udp? Check out the resource below!)
 1. Use the `/proxy/URL` endpoint to send traffic to neopets.com.

@@ -8,7 +8,7 @@ sidebar:
 ---
 
 ## What
-Recap from [HTTP Routes module](/../http-routes/user-workflow): the GoRouter
+Recap from [HTTP Routes module](../http-routes/user-workflow): the GoRouter
 redirects traffic for a particular CF HTTP route to a Diego Cell IP and port.
 However, when one app is deleted, another app may later use the same Diego Cell
 IP and port.
@@ -61,7 +61,7 @@ routes stale.
 bosh manifest > /tmp/env-with-route-integrity.yml
  ```
 
-1. Redeploy your CF with Route Integrity turned off, using [this opsfile](https://github.com/cloudfoundry/cf-deployment/pull/745).
+1. Redeploy your CF with Route Integrity turned off, using [this opsfile](../opsfiles/disable-routing-integrity.yml).
 
 1. Push one instance of [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy) and call it appA.
 
