@@ -26,7 +26,6 @@ available to anyone.
 3. Submit a PR!
 
 ## Run locally
-{% include codeHeader.html %}
 ```
 git clone git@github.com:cloudfoundry/cf-networking-onboarding.git
 cd cf-networking-onboarding
