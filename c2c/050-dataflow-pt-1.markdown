@@ -74,21 +74,17 @@ even make a network namespace for yourself.
 📝 **Look at a container**
 1. Ssh onto a Diego Cell and become root.
 1. Look at the network interfaces (again, we'll go deeper in the next story).
-   {% include codeHeader.html %}
    ```bash
    ifconfig
    ```
 1. Inspect the directories that the root user has access to. For example, look at all the log files.
-   {% include codeHeader.html %}
    ```bash
    ls /var/vcap/sys/log
    ```
 1. Get into the BPM container for the vxlan-policy-agent.
-   {% include codeHeader.html %}
    ```bash
    bpm list
    ```
-   {% include codeHeader.html %}
    ```bash
    bpm shell vxlan-policy-agent
    ```
@@ -104,12 +100,10 @@ even make a network namespace for yourself.
 📝 **Make your own network namespace**
 
 1. Still on a Diego Cell as root, create your own network namespace called meow.
-   {% include codeHeader.html %}
    ```bash
    ip netns add meow
    ```
 1. List all of the networking namespaces
-   {% include codeHeader.html %}
    ```bash
    ip netns
    ```
@@ -121,7 +115,6 @@ namespace one day, I promise.
 1. Curl google.com from the Diego Cell. See that it works!
 
 1. Curl google.com from inside of your networking namespace
-   {% include codeHeader.html %}
    ```bash
    ip netns exec meow curl google.com
    ```

@@ -39,7 +39,6 @@ port. Because of this, all TCP routes must have unique route ports.
 ## How
 📝 **Inspect HTTP headers**
 1. Curl the networking api and look at the request headers
-   {% include codeHeader.html %}
    ```bash
    cf curl /networking/v1/external/policies -v
    ```

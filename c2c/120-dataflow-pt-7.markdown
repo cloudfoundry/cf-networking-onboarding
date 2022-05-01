@@ -87,7 +87,6 @@ at the ARP table.
    these values in credhub. This will differ based on your deployment.
 1. Bosh ssh onto the database VM and become root.
 1. Login to your database. For a pxc-mysql deployment, it looks like this
-   {% include codeHeader.html %}
    ```bash
    /var/vcap/packages/pxc/bin/mysql -u network_connectivity -p -h sql-db.service.cf.internal -D DATABASE_NAME
    ```
@@ -109,13 +108,11 @@ at the ARP table.
 
 1. Ssh onto the Diego Cell with DIEGO_CELL_0_IP as the underlay IP and become root.
 1. Find the mac address of the silk-vtep interface
-   {% include codeHeader.html %}
    ```bash
    ip link show silk-vtep # <---- Should match DIEGO_CELL_0_VTEP_MAC_ADDRESS
    ```
 
 1. Look at the ARP table. This is how the VXLAN VTEP knows where each Diego Cell is located.
-   {% include codeHeader.html %}
    ```bash
    arp
    ```

@@ -36,7 +36,6 @@ at the logs, and (3) how this feature is implemented (hint: iptables).
 1. In one terminal, Ssh onto the Diego Cell where appB is running and become
    root.
 1. Watch the kern.logs (kern stands for kernel, as in the linux kernel).
-   {% include codeHeader.html %}
    ```bash
    tail -f kern.log
    ```

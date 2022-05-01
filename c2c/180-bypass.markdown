@@ -62,13 +62,11 @@ hint: you can ssh onto a specific instance of an app, by passing the `-i` flag (
 📝 **Bypass c2c rules and route integrity**
 1. Ssh onto appA
 1. See if you can access appB
-   {% include codeHeader.html %}
    ```bash
    curl DIEGO_CELL_1_IP:APP_B_1_BACKEND_PORT
    ```
 
 1. See if you can access appB
-   {% include codeHeader.html %}
    ```bash
    curl DIEGO_CELL_2_IP:APP_B_2_BACKEND_PORT
    ```

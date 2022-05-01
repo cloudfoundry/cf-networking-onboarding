@@ -25,7 +25,6 @@ In this story you are going to look at what happens under the hood when you do a
 1. Bosh ssh onto any Cloud Foundry VM
 1. Use dig to do a DNS request for your alias.
 
-   {% include codeHeader.html %}
    ```bash
    dig HTTP_SERVER_ALIAS
    ```
@@ -54,7 +53,6 @@ In this story you are going to look at what happens under the hood when you do a
 
 1. Look at the bosh-dns logs on the machine you did the dig on in the steps above
 
-   {% include codeHeader.html %}
    ```bash
    tail -f /var/vcap/sys/log/bosh-dns/bosh_dns*
    ```

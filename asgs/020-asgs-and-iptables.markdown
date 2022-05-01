@@ -41,7 +41,6 @@ Let's investigate what iptables rules are created for the public_networks ASG.
 
 📝 **Find the iptables rule for the public_networks ASG**
 1. Look at the ASG public_networks
-   {% include codeHeader.html %}
    ```bash
    cf security-group public_networks
    ```
@@ -49,12 +48,10 @@ Let's investigate what iptables rules are created for the public_networks ASG.
   future reference.
 
 1. Ssh onto the Diego Cell where appA is running and become root.
-   {% include codeHeader.html %}
    ```bash
    # First determine the IP of the Diego Cell
    cf ssh appA  -c "env | grep CF_INSTANCE_IP"
    ```
-   {% include codeHeader.html %}
    ```bash
    # Look at bosh output to see which Diego Cell has that IP
    bosh instances
@@ -65,24 +62,25 @@ Let's investigate what iptables rules are created for the public_networks ASG.
    ```
 
 1. List all of the iptables rules on the filter table on the Diego Cell
-   {% include codeHeader.html %}
    ```bash
    iptables -t filter -S
    ```
 
-  Yep. It's a lot. Take a deep breath. Read it line by line. I promise it will
-  start to become comprehensible.
+   Yep. It's a lot.
+   Take a deep breath.
+   Read it line by line.
+   I promise it will start to become comprehensible.
 
-  Remember those IP ranges that are in the public_networks security group?  If
-  you search for one of them (ie. `0.0.0.0-9.255.255.255`) you should be able
-  to find an iptables rule that looks something like this:
+   Remember those IP ranges that are in the public_networks security group?  If
+   you search for one of them (ie. `0.0.0.0-9.255.255.255`) you should be able
+   to find an iptables rule that looks something like this:
 
-  ```
-  # If you have logging enabled
-  -A netout--772fbbd5-862a-4b3d-7 -m iprange --dst-range 0.0.0.0-9.255.255.255 -g netout--772fbbd5-862a-4--log
-  # If you don't have logging enabled
-  -A netout--772fbbd5-862a-4b3d-7 -m iprange --dst-range 0.0.0.0-9.255.255.255 -j ACCEPT
-  ```
+   ```
+   # If you have logging enabled
+   -A netout--772fbbd5-862a-4b3d-7 -m iprange --dst-range 0.0.0.0-9.255.255.255 -g netout--772fbbd5-862a-4--log
+   # If you don't have logging enabled
+   -A netout--772fbbd5-862a-4b3d-7 -m iprange --dst-range 0.0.0.0-9.255.255.255 -j ACCEPT
+   ```
 
 Copy the iptables rule that you found on the Diego Cell that looks like the
 line above. It will be necessary to reference it soon.

@@ -65,31 +65,26 @@ Let's ignore the technical implementation for now and go through the user workfl
    [proxy](https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/example-apps/proxy)
    app named appB. Use the `--no-route` so that no HTTP route is created for
    appB.
-   {% include codeHeader.html %}
    ```bash
    cf push appB --no-route
    ```
 1. Get the overlay IP for appB.  (An explanation of what "overlay" means awaits
    in future stories! For now just know that each app instance has a unique
    overlay IP that c2c uses.)
-   {% include codeHeader.html %}
    ```bash
    cf ssh appB -c "env | grep CF_INSTANCE_INTERNAL_IP"
    ```
 
 1. Get onto the container for appA and curl the appB internal IP and app port.
-   {% include codeHeader.html %}
    ```bash
    cf ssh appA
    ```
-   {% include codeHeader.html %}
    ```bash
    watch  "curl -Ssk <value of CF_INSTANCE_INTERNAL_IP>:8080"
    ```
 You should get a `Connection refused` error because there is no network policy yet.
 
 1.  In another terminal, add a network policy from appA to appB, with protocol tcp, on port 8080.
-   {% include codeHeader.html %}
    ```bash
    cf add-network-policy appA appB --protocol tcp --port 8080
    ```

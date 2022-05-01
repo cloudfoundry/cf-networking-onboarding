@@ -30,7 +30,6 @@ Then we'll watch the packets being sent in response!
 📝 **Curl appB from appA**
 1. Get the overlay IPs of appA and appB
 1. Continually try to curl appB from appA
-   {% include codeHeader.html %}
    ```bash
    watch -n 15 curl -sS APP_A_ROUTE/proxy/APP_B_OVERLAY_IP:8080
    ```
@@ -42,40 +41,36 @@ Then we'll watch the packets being sent in response!
    Cell there are many packets being sent around, and tcpdump gives information
    about ALL OF THEM. We need to figure out a way to filter this overwhelming
    stream of information.
-1.  Filter by packets where the source IP is APP_A_OVERLAY_IP and where the
-    destination IP is APP_B_OVERLAY_IP.
-   {% include codeHeader.html %}
-    ```bash
-    tcpdump -n src APP_A_OVERLAY_IP and dst APP_B_OVERLAY_IP
-    ```
+1. Filter by packets where the source IP is APP_A_OVERLAY_IP and where the destination IP is APP_B_OVERLAY_IP.
+   ```bash
+   tcpdump -n src APP_A_OVERLAY_IP and dst APP_B_OVERLAY_IP
+   ```
 
-    You should see something like:
-    ```
-    $ tcpdump -n src 10.255.77.3 and dst 10.255.77.4
-    tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-    listening on eth0, link-type EN10MB (Ethernet), capture size 262144 bytes
-    ```
+   You should see something like:
+   ```
+   $ tcpdump -n src 10.255.77.3 and dst 10.255.77.4
+   tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+   listening on eth0, link-type EN10MB (Ethernet), capture size 262144 bytes
+   ```
 
-    ...and nothing else. Where are those packets?
-    Notice that tcpdump is looking for packets listening on the eth0 interface. That's not where overlay packets go!
+   ...and nothing else. Where are those packets?
+   Notice that tcpdump is looking for packets listening on the eth0 interface.
+   That's not where overlay packets go!
 
 1. Look for packets on any interface
-   {% include codeHeader.html %}
-    ```bash
-    tcpdump -n src APP_A_OVERLAY_IP and dst APP_B_OVERLAY_IP -i any
-    ```
-    Hey! Those are packets!
+   ```bash
+   tcpdump -n src APP_A_OVERLAY_IP and dst APP_B_OVERLAY_IP -i any
+   ```
+   Hey! Those are packets!
 
-    Record the packets you see here from one curl.
+   Record the packets you see here from one curl.
 
-    If appB was successfully responding, then you should also see packets being
-    sent in the opposite direction.
+   If appB was successfully responding, then you should also see packets being sent in the opposite direction.
 
 1. See that no packets are being sent from AppB to AppA
-   {% include codeHeader.html %}
-    ```bash
-    tcpdump -n src APP_B_OVERLAY_IP and dst APP_A_OVERLAY_IP -i any
-    ```
+   ```bash
+   tcpdump -n src APP_B_OVERLAY_IP and dst APP_A_OVERLAY_IP -i any
+   ```
 
 🤔 **Add c2c policy**
 1. Add c2c policy to allow traffic from appA to appB (`cf add-network-policy --help`)
@@ -83,7 +78,6 @@ Then we'll watch the packets being sent in response!
 
 📝 **Look at those packets**
 1. Look for packets from appA to appB
-   {% include codeHeader.html %}
    ```bash
    tcpdump -n src APP_A_OVERLAY_IP and dst APP_B_OVERLAY_IP -i any
    ```
@@ -91,7 +85,6 @@ Then we'll watch the packets being sent in response!
    * ❓How are these packets different from before?
 
 1. Look for packets from appB to appA
-   {% include codeHeader.html %}
    ```bash
    tcpdump -n src APP_B_OVERLAY_IP and dst APP_A_OVERLAY_IP -i any
    ```

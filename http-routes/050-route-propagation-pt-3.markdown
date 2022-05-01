@@ -47,21 +47,23 @@ technique.
 📝 **subscribe to NATs messages**
 1. Bosh ssh onto the Diego Cell where your app is running and become root
 1. Get the NATS cli
-   {% include codeHeader.html %}
-    ```bash
-    wget https://github.com/nats-io/natscli/releases/download/v0.0.32/nats-0.0.32-linux-amd64.zip
-    unzip nats-0.0.32-linux-amd64.zip
-    chmod +x nats-0.0.32-linux-amd64
-    mv nats-0.0.32-linux-amd64/nats /usr/bin
-
-    ```
+   ```bash
+   wget https://github.com/nats-io/natscli/releases/download/v0.0.32/nats-0.0.32-linux-amd64.zip
+   unzip nats-0.0.32-linux-amd64.zip
+   chmod +x nats-0.0.32-linux-amd64
+   mv nats-0.0.32-linux-amd64/nats /usr/bin
+   ```
 1. Get NATS username, password, and server address
-   {% include codeHeader.html %}
-    ```bash
-    jq . /var/vcap/jobs/route_emitter/config/route_emitter.json | grep nats
-    ```
-1. Use the nats cli to connect to nats: `nats sub "*.*" -s nats://NATS_USERNAME:NATS_PASSWORD@NATS_ADDRESS/ --tlscert <cert file from json> --tlskey <key file from json> --tlsca <ca file from json>`. The `"*.*"` means that you are subscribing to all NATs messages.
-    The Route Emitter registers routes every 20 seconds (by default) so that the GoRouter (which subscribes to these messages) has the most up-to-date information about which IPs map to which apps and routes. Depending on how many routes there are, this might be a lot of information.
+   ```bash
+   jq . /var/vcap/jobs/route_emitter/config/route_emitter.json | grep nats
+   ```
+1. Use the nats cli to connect to nats:
+   ```bash
+   nats sub "*.*" -s nats://NATS_USERNAME:NATS_PASSWORD@NATS_ADDRESS/ --tlscert <cert file from json> --tlskey <key file from json> --tlsca <ca file from json>
+   ```
+   The `"*.*"` means that you are subscribing to all NATs messages.
+   The Route Emitter registers routes every 20 seconds (by default) so that the GoRouter (which subscribes to these messages) has the most up-to-date information about which IPs map to which apps and routes.
+   Depending on how many routes there are, this might be a lot of information.
 
 1. When you successfully connect to nats, plus a few seconds of waiting, you
    should see a message that contains information about the route you created.
@@ -69,19 +71,19 @@ technique.
    ```
    [#32] Received on [router.register] :
    {
-       "host": "10.0.1.12",
-       "port": 61012,
-       "tls_port": 61014,
-       "uris": [
-           "proxy.meow.cloche.c2c.cf-app.com"     <--- This should match APP_A_ROUTE
-         ],
-       "app": "6856799f-aebf-4e2b-81a5-28c74dfb6162",
-        "private_instance_id": "a0d2b217-fa7d-4ac1-65a2-7b19",
-        "private_instance_index": "0",
-       "server_cert_domain_san": "a0d2b217-fa7d-4ac1-65a2-7b19",
-       "tags": {
-            "component": "route-emitter"
-        }
+     "host": "10.0.1.12",
+     "port": 61012,
+     "tls_port": 61014,
+     "uris": [
+       "proxy.meow.cloche.c2c.cf-app.com"     <--- This should match APP_A_ROUTE
+     ],
+     "app": "6856799f-aebf-4e2b-81a5-28c74dfb6162",
+     "private_instance_id": "a0d2b217-fa7d-4ac1-65a2-7b19",
+     "private_instance_index": "0",
+     "server_cert_domain_san": "a0d2b217-fa7d-4ac1-65a2-7b19",
+     "tags": {
+       "component": "route-emitter"
+     }
    }
    ```
    Nats is used by multiple services, and the `router.register` messages are intermixed with other messages.  Modify the sub filter from `"*.*"` to `"router.register"` to view only router messages.

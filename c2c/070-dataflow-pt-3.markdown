@@ -85,7 +85,6 @@ and we're going to find out where that mark value comes from.
 1. Delete all network policies. This time you are going to use the networking
    API because former policies from deleted apps can linger in the database,
    but not show up in the CLI.
-   {% include codeHeader.html %}
    ```bash
    cf curl /networking/v1/external/policies > /tmp/policies.json
    cf curl -X POST /networking/v1/external/policies/delete -d @/tmp/policies.json
@@ -95,7 +94,6 @@ and we're going to find out where that mark value comes from.
 
 1. Ssh onto the Diego Cell where appA is located and become root.
 1. Look for the iptables rules that set marks.
-   {% include codeHeader.html %}
    ```bash
    iptables -S | grep set-xmark
    ```
@@ -104,7 +102,6 @@ app when that app is used in a container to container (c2c) networking policy.
 
 1. In a different terminal, add a c2c policy from appA to appB  (`cf add-network-policy --help`)
 1. Back on the Diego Cell, look again for iptables rules that set marks
-   {% include codeHeader.html %}
    ```bash
    iptables -S | grep set-xmark
    ```

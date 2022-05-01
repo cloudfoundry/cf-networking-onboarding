@@ -54,7 +54,6 @@ limit traffic going to appA.
 
 📝 **Take control measurements**
 1. Download boom, a benchmarking tool.
-   {% include codeHeader.html %}
    ```bash
    go get github.com/rakyll/boom
    ```
@@ -62,7 +61,6 @@ limit traffic going to appA.
 2. Use boom to see what percentage of requests to APP_A_ROUTE return status 200.
 
    This command sends 100 requests, 10 concurrently with 10 QPS (queries per second)
-   {% include codeHeader.html %}
    ```bash
    boom -n 100 -c 10 -q 10 http://APP_A_ROUTE
    ```
@@ -77,7 +75,6 @@ limit traffic going to appA.
 1. Set
    [this](https://github.com/cloudfoundry/routing-release/blob/2e1cc8b89df0b569102489f7eda159107094fc9f/jobs/gorouter/spec#L145-L147)
    gorouter bosh property and redeploy:
-   {% include codeHeader.html %}
    ```yaml
    router.ssl_skip_validation: true
    ```

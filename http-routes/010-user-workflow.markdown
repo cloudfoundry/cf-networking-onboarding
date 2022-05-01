@@ -25,12 +25,10 @@ many apps. So Route Mappings is a many-to-many mapping.
 
 📝 **Create a route that maps to two apps**
 1. By default `cf push` creates a route. Look at all of the routes for all of your apps.
-   {% include codeHeader.html %}
    ```bash
    cf apps
    ```
 1. Use curl to hit appA.
-   {% include codeHeader.html %}
    ```bash
    curl APP_A_URL
    ```

@@ -25,7 +25,6 @@ story we are going to exploit this.
 
 1. From your terminal, use appA's `/proxy` endpoint to send traffic from appA
    to neopets.com
-   {% include codeHeader.html %}
    ```bash
    watch "curl -sS APPA_ROUTE/proxy/neopets.com"
    ```
@@ -84,7 +83,6 @@ new config file, but you also need to restart the Bosh DNS process, so it can
 get these new values from the Bosh DNS Adapter.
 
 1. Restart Bosh DNS
-   {% include codeHeader.html %}
    ```bash
    monit restart bosh-dns
    ```

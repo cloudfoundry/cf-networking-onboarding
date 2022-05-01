@@ -26,27 +26,26 @@ In this story you are going to add your own fun alias for your go HTTP server.
 
 1. Update your manifest to include a Bosh DNS alias (copy lines with `# < ---` and remove the `# < --- .*`). This alias could be added
    for any job on the instance group.
-   {% include codeHeader.html %}
-    ```
-    instance_groups:
-    - azs:
-      - z1
-    instances: 2
-    jobs:
-    - name: route_registrar
-      properties: { redacted for brevity }
-    release: routing
-    provides:                             # < ------------ Add this block to add a Bosh DNS alias
-      my_custom_link:                     # < ------------
-        aliases:                          # < ------------
-        - domain: "meow.meow"             # < ------------ Make the domain anything you want :D
-          health_filter: "healthy"        # < ------------ Record the domain you choose as HTTP_SERVER_ALIAS
-    custom_provider_definitions:          # < ------------
-    - name: my_custom_link                # < ------------
-      type: my_custom_link_type           # < ------------
-    name: my-http-server
-    # remaining yaml redacted for brevity
-    ```
+   ```
+   instance_groups:
+   - azs:
+     - z1
+   instances: 2
+   jobs:
+   - name: route_registrar
+     properties: { redacted for brevity }
+   release: routing
+   provides:                             # < ------------ Add this block to add a Bosh DNS alias
+     my_custom_link:                     # < ------------
+       aliases:                          # < ------------
+       - domain: "meow.meow"             # < ------------ Make the domain anything you want :D
+         health_filter: "healthy"        # < ------------ Record the domain you choose as HTTP_SERVER_ALIAS
+   custom_provider_definitions:          # < ------------
+   - name: my_custom_link                # < ------------
+     type: my_custom_link_type           # < ------------
+   name: my-http-server
+   # remaining yaml redacted for brevity
+   ```
 
 1. Redeploy
 
@@ -60,19 +59,19 @@ In this story you are going to add your own fun alias for your go HTTP server.
 
 1. Try to access your new URL! Success!
 
-    ```bash
-    $ curl HTTP_SERVER_ALIAS:9994
+   ```bash
+   $ curl HTTP_SERVER_ALIAS:9994
 
-    Hello from machine with mac address 42:01:0a:00:01:16
-    ```
+   Hello from machine with mac address 42:01:0a:00:01:16
+   ```
 
 1. Try to access your new URL from your local machine.
 
-    ```bash
-    $ curl HTTP_SERVER_ALIAS:9994
+   ```bash
+   $ curl HTTP_SERVER_ALIAS:9994
 
-    curl: (6) Could not resolve host: meow.meow
-    ```
+   curl: (6) Could not resolve host: meow.meow
+   ```
 
 ## Expected Results
 

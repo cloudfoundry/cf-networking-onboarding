@@ -66,41 +66,35 @@ with ingress traffic, which is represented by the orange line.
 
 3. Ssh onto the Diego Cell where your app is running and become root.
 4. Run
-   {% include codeHeader.html %}
    ```
    iptables -S -t nat`
    ```
-    You should see some custom chains attached to the PREROUTING chain. There
-    will be one custom chain per app running on this Diego Cell.  They will
-    look something like this.
-    ```
-    -A PREROUTING -j netin--a0d2b217-fa7d-4ac1-65
-    -A PREROUTING -j netin--317736ed-70ac-4087-74
-    ...
-    ```
-5. You should also see 4 rules that contain the `OVERLAY_IP` for appA. If you
-   look closely you'll see that the ports in the iptables rules match the ports
-   we saw when inspecting the actual LRPs.
-    Which port represents what?
-    ```
-    -A netin--a0d2b217-fa7d-4ac1-65 -d 10.0.1.12/32 -p tcp -m tcp --dport 61012 -j DNAT --to-destination 10.255.116.6:8080
-    -A netin--a0d2b217-fa7d-4ac1-65 -d 10.0.1.12/32 -p tcp -m tcp --dport 61013 -j DNAT --to-destination 10.255.116.6:2222
-    -A netin--a0d2b217-fa7d-4ac1-65 -d 10.0.1.12/32 -p tcp -m tcp --dport 61014 -j DNAT --to-destination 10.255.116.6:61001
-    -A netin--a0d2b217-fa7d-4ac1-65 -d 10.0.1.12/32 -p tcp -m tcp --dport 61015 -j DNAT --to-destination 10.255.116.6:61002
-    ```
+   You should see some custom chains attached to the PREROUTING chain.
+   There will be one custom chain per app running on this Diego Cell.
+   They will look something like this.
+   ```
+   -A PREROUTING -j netin--a0d2b217-fa7d-4ac1-65
+   -A PREROUTING -j netin--317736ed-70ac-4087-74
+   ...
+   ```
+5. You should also see 4 rules that contain the `OVERLAY_IP` for appA.
+   If you look closely you'll see that the ports in the iptables rules match the ports we saw when inspecting the actual LRPs.
+   Which port represents what?
+   ```
+   -A netin--a0d2b217-fa7d-4ac1-65 -d 10.0.1.12/32 -p tcp -m tcp --dport 61012 -j DNAT --to-destination 10.255.116.6:8080
+   -A netin--a0d2b217-fa7d-4ac1-65 -d 10.0.1.12/32 -p tcp -m tcp --dport 61013 -j DNAT --to-destination 10.255.116.6:2222
+   -A netin--a0d2b217-fa7d-4ac1-65 -d 10.0.1.12/32 -p tcp -m tcp --dport 61014 -j DNAT --to-destination 10.255.116.6:61001
+   -A netin--a0d2b217-fa7d-4ac1-65 -d 10.0.1.12/32 -p tcp -m tcp --dport 61015 -j DNAT --to-destination 10.255.116.6:61002
+   ```
 
-6. For appA, find the rule that will match with the traffic the GoRouter sends
-   to `DIEGO_CELL_IP:DIEGO_CELL_ENVOY_PORT`. It should look something like
-   this...
-    ![example DNAT rule with
-    explanation](https://storage.googleapis.com/cf-networking-onboarding-images/example-DNAT-rule-with-explanation.png)
+6. For appA, find the rule that will match with the traffic the GoRouter sends to `DIEGO_CELL_IP:DIEGO_CELL_ENVOY_PORT`.
+   It should look something like this...
+   ![example DNAT rule with explanation](https://storage.googleapis.com/cf-networking-onboarding-images/example-DNAT-rule-with-explanation.png)
 
-    In summary, when the GoRouter sends network traffic to 10.0.1.12:61014
-    (`DIEGO_CELL_IP:DIEGO_CELL_ENVOY_PORT`) it gets redirected to
-    10.255.116.6:61001 (`OVERLAY_IP:CONTAINER_ENVOY_PORT`).  But, looking at the
-    information we learned about the actual LRP, the app isn't even listening
-    on 10.255.116.6:61001, envoy is.  When will the traffic finally reach the
-    app!?!?
+   In summary, when the GoRouter sends network traffic to 10.0.1.12:61014 (`DIEGO_CELL_IP:DIEGO_CELL_ENVOY_PORT`) 
+   it gets redirected to 10.255.116.6:61001 (`OVERLAY_IP:CONTAINER_ENVOY_PORT`).
+   But, looking at the information we learned about the actual LRP, the app isn't even listening on 10.255.116.6:61001, envoy is.
+   When will the traffic finally reach the app!?!?
 
 ## Expected Result
 Inspect the iptables rules that DNAT the traffic from the GoRouter and send it

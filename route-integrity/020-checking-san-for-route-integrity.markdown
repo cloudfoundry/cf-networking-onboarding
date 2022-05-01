@@ -66,22 +66,18 @@ sure it is routing correctly.
 📝  **Look at the SAN in the certificate**
 
 1. Get into the app container
-   {% include codeHeader.html %}
    ```bash
    cf ssh appA
    ```
 1. get the location of the certificate
-   {% include codeHeader.html %}
    ```bash
    env | grep CF_INSTANCE_CERT
    ```
 1. Look at the certificate
-   {% include codeHeader.html %}
    ```bash
    cat $CF_INSTANCE_CERT
    ```
 1. Use openssl to read the certificate
-   {% include codeHeader.html %}
    ```bash
    openssl x509 -text -in  $CF_INSTANCE_CERT
    ```

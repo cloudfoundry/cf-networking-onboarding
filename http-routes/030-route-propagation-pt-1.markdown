@@ -34,7 +34,6 @@ Let's look at what information Cloud Controller *does* keep track of.
 
 1. 🤔 Look at the domains, routes, destinations (route mappings), and apps via
    the Cloud Controller's API.  To look at all the domains you can curl using
-   {% include codeHeader.html %}
    ```bash
    cf curl /v3/domains
    ```

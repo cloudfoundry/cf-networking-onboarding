@@ -28,7 +28,6 @@ analogous route table for the TCP Router.
 
 📝 **Try to list tcp routes**
 1. List tcp routes via the routing api.
-   {% include codeHeader.html %}
    ```bash
    cf curl /routing/v1/tcp_routes
    ```
@@ -46,7 +45,6 @@ There is probably already a client deployed with the correct permissions. Find
 out the name and password for this user from the bosh manifest.
 
 1. Download your manifest
-   {% include codeHeader.html %}
    ```bash
    bosh manifest > /tmp/my-env.yml
    ```
@@ -69,40 +67,35 @@ out the name and password for this user from the bosh manifest.
 1. Run `uaac` to see if you have the uaa CLI installed.
 
 1. If you don't have it installed, install it.
-   {% include codeHeader.html %}
    ```bash
    gem install cf-uaac
    ```
 
 1. Target your uaa. (To determine this url you can run `cf api` and replace api with uaa.)
-   {% include codeHeader.html %}
    ```bash
    uaac target uaa.<YOUR-DOMAIN>
    ```
 
 1. Get the client information for the routing_api_client. It will prompt you for a password.
-   {% include codeHeader.html %}
    ```bash
    uaac token client get routing_api_client
    ```
 
 1. Get the bearer token
-   {% include codeHeader.html %}
    ```bash
    uaac context
    ```
- You will see something like this (this one is truncated):
- ```
-client_id: routing_api_client
-access_token: eyJhbGciOiJ <------- This is the BEARER_TOKEN that you will need. Yours will be longer.
-token_type: bearer
-expires_in: 43199
-scope: routing.router_groups.read routing.routes.write routing.routes.read
- ```
+   You will see something like this (this one is truncated):
+   ```
+   client_id: routing_api_client
+   access_token: eyJhbGciOiJ <------- This is the BEARER_TOKEN that you will need. Yours will be longer.
+   token_type: bearer
+   expires_in: 43199
+   scope: routing.router_groups.read routing.routes.write routing.routes.read
+   ```
 
 📝 **Get tcp routes**
 1. This time when you curl, pass in the bearer token as a header.
-   {% include codeHeader.html %}
    ```bash
    cf curl /routing/v1/tcp_routes -H "Authorization: bearer BEARER_TOKEN" | jq .
    ```
@@ -120,9 +113,8 @@ You should see one TCP route that looks like the one below (this one is edited f
 }
 ```
 ## ❓ Questions
-* Go back to the story _Route Propagation - Part 4 - GoRouter_  and look at the
-  example HTTP route table entry. What differences do you see between the TCP
-  routes and the HTTP routes?
+* Go back to the story _Route Propagation - Part 4 - GoRouter_  and look at the example HTTP route table entry.
+  What differences do you see between the TCP routes and the HTTP routes?
 * How does this difference match with what you understand about TCP and HTTP?
 
 ## Resource

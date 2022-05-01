@@ -30,17 +30,14 @@ Let's check out proxy's power.
 📝 **Push a proxy app**
 
 1. Clone the [cf-networking-release repo](https://github.com/cloudfoundry/cf-networking-release)
-   {% include codeHeader.html %}
    ```bash
    git clone https://github.com/cloudfoundry/cf-networking-release
    ```
 1. Go to the proxy app
-   {% include codeHeader.html %}
    ```bash
    cd ~/workspace/cf-networking-release/src/example-apps/proxy
    ```
 1. Push the app and name it appA
-   {% include codeHeader.html %}
    ```bash
    cf push appA
    ```

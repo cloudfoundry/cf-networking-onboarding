@@ -16,8 +16,7 @@ sidebar:
 - You have completed the previous stories in this track
 
 ## What
-In this story we are going to learn how to remove the LB (load balancer) from
-the data flow.
+In this story we are going to learn how to remove the LB (load balancer) from the data flow.
 
 Here is simplified diagram of the data flow of an http route:
 ```
@@ -27,20 +26,17 @@ Here is simplified diagram of the data flow of an http route:
 ```
 
 When to do this:
-* when you are having problems connecting to an app and you want to start
-  picking off items on by one that are _not_ the problem.
-* when one particular gorouter is having problems and you want to send traffic
-  to just that gorouter.
-* when you are debugging and want to point your traffic at a particular
-  gorouter so you can find the logs easier.
+* when you are having problems connecting to an app and you want to start picking off items on by one that are _not_ the problem.
+* when one particular gorouter is having problems and you want to send traffic to just that gorouter.
+* when you are debugging and want to point your traffic at a particular gorouter so you can find the logs easier.
 
 ## How
 
 📝**Send HTTP traffic using LB**
 1. Curl the route for your app!
-  ```
-  curl APP_A_ROUTE -v
-  ```
+   ```bash
+   curl APP_A_ROUTE -v
+   ```
 1. Save this output.
 
 ❓Do you see a host header on the request? How did that get there?
@@ -48,9 +44,9 @@ When to do this:
 📝**Send HTTP traffic without using LB**
 1. Get the IP for your router VM.
 1. Send the traffic to the Gorouter IP and set the route in the host header:
-  ```
-  curl GOROUTER_IP -H "Host: APP_A_ROUTE" -v
-  ```
+   ```bash
+   curl GOROUTER_IP -H "Host: APP_A_ROUTE" -v
+   ```
 1. Huh. That timed out and failed.
 1. Ssh onto any bosh VM and try again.
 

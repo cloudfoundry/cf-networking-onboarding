@@ -30,7 +30,6 @@ By default Bosh DNS is on every VM in a OSS Cloud Foundry deployment.
 1. Look at the /etc/resolv.conf file. This file contains the IPs for the DNS
    servers used for all DNS lookups.
 
-   {% include codeHeader.html %}
    ```bash
    cat /etc/resolv.conf
    ```
@@ -50,7 +49,6 @@ So you have a value for BOSH_DNS_IP, but who do you _know_ this is the Bosh DNS 
 
 1. Use netstat to see what IP the Bosh DNS process is bound to.
 
-   {% include codeHeader.html %}
    ```bash
    netstat -tulpn
    ```
@@ -70,7 +68,6 @@ So you have a value for BOSH_DNS_IP, but who do you _know_ this is the Bosh DNS 
 
 1. Use dig to do a DNS request for any non-CF url.
 
-   {% include codeHeader.html %}
    ```bash
    dig neopets.com
    ```
@@ -110,7 +107,6 @@ Do you recognize that server IP? That's the BOSH_DNS_IP that you recorded earlie
 
 1. Look at the bosh DNS logs. You should see something like...
 
-   {% include codeHeader.html %}
    ```bash
    tail -f /var/vcap/sys/log/bosh-dns/bosh_dns*
    ```
