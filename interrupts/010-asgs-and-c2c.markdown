@@ -16,13 +16,13 @@ diego-cells directly? I'm looking at the default ASG and it's not explicitly
 omitting my 10.0.x.y deployment network, yet i cannot curl from a cf-ssh
 session in an AI to another Diego cell?_
 
-```
+```yaml
 name: default_security_group
-         rules:
-         - destination: 0.0.0.0-169.253.255.255
-           protocol: all
-         - destination: 169.255.0.0-255.255.255.255
-           protocol: all
+  rules:
+  - destination: 0.0.0.0-169.253.255.255
+    protocol: all
+  - destination: 169.255.0.0-255.255.255.255
+    protocol: all
 ```
 
 _Note: I'm *very* pleased to see this restriction is in place but I thought we

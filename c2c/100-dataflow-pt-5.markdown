@@ -61,7 +61,7 @@ story is going to use `route -n` because headers are good.
 📝 **Look at routes table**
 1. Ssh onto the Diego Cell where appA is running and become root.
 1. Look at the routes table
-{% include codeHeader.html %}
+   {% include codeHeader.html %}
    ```bash
     route -n
    ```

@@ -25,7 +25,7 @@ story we are going to exploit this.
 
 1. From your terminal, use appA's `/proxy` endpoint to send traffic from appA
    to neopets.com
-{% include codeHeader.html %}
+   {% include codeHeader.html %}
    ```bash
    watch "curl -sS APPA_ROUTE/proxy/neopets.com"
    ```
@@ -84,7 +84,7 @@ new config file, but you also need to restart the Bosh DNS process, so it can
 get these new values from the Bosh DNS Adapter.
 
 1. Restart Bosh DNS
-{% include codeHeader.html %}
+   {% include codeHeader.html %}
    ```bash
    monit restart bosh-dns
    ```
@@ -92,8 +92,10 @@ get these new values from the Bosh DNS Adapter.
 😇 **Back to pretending you are innocent user1**
 1. From your terminal, use appA's `/proxy` endpoint to send traffic from appA
    to neopets.com
-  `watch "curl -sS APPA_ROUTE/proxy/neopets.com"`
-  Where did neopets go???
+   ```bash
+   watch "curl -sS APPA_ROUTE/proxy/neopets.com"
+   ```
+   Where did neopets go???
 
 ## Expected Result
 AppA should no longer be able to access neopets. :(

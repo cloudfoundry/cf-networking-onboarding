@@ -45,28 +45,30 @@ to.
 ## How
 
 📝 **Look at actualLRPS**
-0. Grab the guid for appA. You'll need it in a moment. Let's call it
+
+1. Grab the guid for appA. You'll need it in a moment. Let's call it
    APP_A_GUID.
    {% include codeHeader.html %}
    ```bash
    cf app appA --guid
    ```
-0. Ssh onto the Diego Cell vm where appA is running and become root. You can
+1. Ssh onto the Diego Cell vm where appA is running and become root. You can
    find where appA is running by running the following command:
+   {% include codeHeader.html %}
    ```bash
    cf curl /v2/apps/<app-guid>/stats
    ```
-0. Use the [cfdot CLI](https://github.com/cloudfoundry/cfdot) to query BBS for
+1. Use the [cfdot CLI](https://github.com/cloudfoundry/cfdot) to query BBS for
    actualLRPs. Cfdot is a helpful CLI for using the BBS API.  It's a great tool
    for debugging on the Diego Cell.
-{% include codeHeader.html %}
+   {% include codeHeader.html %}
    ```bash
    cfdot actual-lrps | jq .
    ```
-0. Search through the actual LRPs for APP_A_GUID. It should match the beginning
+1. Search through the actual LRPs for APP_A_GUID. It should match the beginning
    of a process guid. You'll find an entry for each instance of appA that is
    running.
-0. Let's dissect and store the most important information (for us) about appA:
+1. Let's dissect and store the most important information (for us) about appA:
    ```
    {
      "process_guid": "ab2bd185-9d9a-4628-9cd8-626649ec5432-cb50adac-6861-4f03-92e4-9fcc1a204a1e",
@@ -92,7 +94,7 @@ to.
       ...
    }
    ```
-0. Let's define all of these values.
+1. Let's define all of these values.
   * 👇 These are important for this module 👇
     * **DIEGO_CELL_IP** - The cell's IP address where this app instance is
       running, also sometimes called the host IP.
@@ -121,7 +123,7 @@ to.
       the overlay address and the ssh container_tls_proxy_port.
     * **OVERLAY_IP** - The overlay IP address of this app instance.
 
-0. Use the cfdot CLI to query BBS for desiredLRPs.
+1. Use the cfdot CLI to query BBS for desiredLRPs.
 
 ## ❓ Questions
 * What information is provided for desiredLRPs, but not for actualLRPs?

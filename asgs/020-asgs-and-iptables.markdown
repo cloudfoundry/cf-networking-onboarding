@@ -41,7 +41,7 @@ Let's investigate what iptables rules are created for the public_networks ASG.
 
 📝 **Find the iptables rule for the public_networks ASG**
 1. Look at the ASG public_networks
-{% include codeHeader.html %}
+   {% include codeHeader.html %}
    ```bash
    cf security-group public_networks
    ```
@@ -49,12 +49,12 @@ Let's investigate what iptables rules are created for the public_networks ASG.
   future reference.
 
 1. Ssh onto the Diego Cell where appA is running and become root.
-{% include codeHeader.html %}
+   {% include codeHeader.html %}
    ```bash
    # First determine the IP of the Diego Cell
    cf ssh appA  -c "env | grep CF_INSTANCE_IP"
    ```
-{% include codeHeader.html %}
+   {% include codeHeader.html %}
    ```bash
    # Look at bosh output to see which Diego Cell has that IP
    bosh instances
@@ -65,7 +65,7 @@ Let's investigate what iptables rules are created for the public_networks ASG.
    ```
 
 1. List all of the iptables rules on the filter table on the Diego Cell
-{% include codeHeader.html %}
+   {% include codeHeader.html %}
    ```bash
    iptables -t filter -S
    ```

@@ -62,7 +62,7 @@ Diego Cell
 📝**Look at iptables rules**
 1. Ssh onto the Digeo Cell where appB is running and become root.
 1. Look at the iptables rules on the filter table
-{% include codeHeader.html %}
+   {% include codeHeader.html %}
    ```bash
    iptables -S
    ```
@@ -74,7 +74,7 @@ Diego Cell
    Any rules related to enforcing c2c policies will be on a custom chain that starts with "vpa".
 
 1. Look at the rules on the vpa chain.
-{% include codeHeader.html %}
+   {% include codeHeader.html %}
    ```
    iptables -S VPA_CHAIN_NAME
    ```
@@ -83,7 +83,7 @@ Diego Cell
 🤔 **Create c2c policy and look at iptables rules**
 1. Create a c2c network policy from appA to appB (`cf add-network-policy --help`). The diagram in the review section shows apps on two different Diego Cell. The same iptables rules will be created and enforced regardless of whether appA and appB are on the same Diego Cell or not. A future story will go into more detail about this. But for this story, just know that it doesn't matter what Diego Cell your apps are running on.
 1. On the Diego Cell, look at the rules on the vpa chain again.
-{% include codeHeader.html %}
+   {% include codeHeader.html %}
    ```
    iptables -S VPA_CHAIN_NAME
    ```

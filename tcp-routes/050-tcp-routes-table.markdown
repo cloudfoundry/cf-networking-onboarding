@@ -18,11 +18,9 @@ The TCP traffic flow is nearly identical to the HTTP traffic flow. The big
 difference is that instead of an HTTP load balancer there is a TCP load
 balancer and instead of GoRouter there is a TCP Router.
 
-Go back to [this story in the http routes
-module](../http-routes/incoming-http-requests-pt-0) to review this flow.
+Go back to [this story in the http routes module](../http-routes/incoming-http-requests-pt-0) to review this flow.
 
-In [this story in the http routes
-module](../http-routes/route-propagation-pt-4) you learned how to look at the
+In [this story in the http routes module](../http-routes/route-propagation-pt-4) you learned how to look at the
 route table for the GoRouter. In this story you are going to look at the
 analogous route table for the TCP Router.
 
@@ -30,7 +28,7 @@ analogous route table for the TCP Router.
 
 📝 **Try to list tcp routes**
 1. List tcp routes via the routing api.
-{% include codeHeader.html %}
+   {% include codeHeader.html %}
    ```bash
    cf curl /routing/v1/tcp_routes
    ```
@@ -41,15 +39,14 @@ analogous route table for the TCP Router.
 
 🤔 **Get correct permissions**
 
-Based on the [routing api
-docs](https://github.com/cloudfoundry/routing-api/blob/master/docs/api_docs.md#list-tcp-routes),
+Based on the [routing api docs](https://github.com/cloudfoundry/routing-api/blob/master/docs/api_docs.md#list-tcp-routes),
 you need to have a client with routing.routes.read permissions.
 
 There is probably already a client deployed with the correct permissions. Find
 out the name and password for this user from the bosh manifest.
 
 1. Download your manifest
-{% include codeHeader.html %}
+   {% include codeHeader.html %}
    ```bash
    bosh manifest > /tmp/my-env.yml
    ```
@@ -72,25 +69,25 @@ out the name and password for this user from the bosh manifest.
 1. Run `uaac` to see if you have the uaa CLI installed.
 
 1. If you don't have it installed, install it.
-{% include codeHeader.html %}
+   {% include codeHeader.html %}
    ```bash
    gem install cf-uaac
    ```
 
 1. Target your uaa. (To determine this url you can run `cf api` and replace api with uaa.)
-{% include codeHeader.html %}
+   {% include codeHeader.html %}
    ```bash
    uaac target uaa.<YOUR-DOMAIN>
    ```
 
 1. Get the client information for the routing_api_client. It will prompt you for a password.
-{% include codeHeader.html %}
+   {% include codeHeader.html %}
    ```bash
    uaac token client get routing_api_client
    ```
 
 1. Get the bearer token
-{% include codeHeader.html %}
+   {% include codeHeader.html %}
    ```bash
    uaac context
    ```
@@ -105,7 +102,7 @@ scope: routing.router_groups.read routing.routes.write routing.routes.read
 
 📝 **Get tcp routes**
 1. This time when you curl, pass in the bearer token as a header.
-{% include codeHeader.html %}
+   {% include codeHeader.html %}
    ```bash
    cf curl /routing/v1/tcp_routes -H "Authorization: bearer BEARER_TOKEN" | jq .
    ```

@@ -17,36 +17,36 @@ docker container.
 ## How
 
 📝 **Get your docker container setup**
-0. Run an ubuntu docker container and attach to it:
-{% include codeHeader.html %}
-  ```bash
-  docker run --privileged -it ubuntu bin/bash
-  ```
-0. Set up the docker container
-{% include codeHeader.html %}
-  ```bash
-  apt-get update
-  apt-get install iptables
-  apt-get install curl
-  ```
+1. Run an ubuntu docker container and attach to it:
+   {% include codeHeader.html %}
+   ```bash
+   docker run --privileged -it ubuntu bin/bash
+   ```
+1. Set up the docker container
+   {% include codeHeader.html %}
+   ```bash
+   apt-get update
+   apt-get install iptables
+   apt-get install curl
+   ```
 
 📝 **What's the current state of the world?**
-0. Look at the default iptables rules
-{% include codeHeader.html %}
-  ```bash
-  iptables -S
-  ```
-It should look like this:
-  ```
-  -P INPUT ACCEPT
-  -P FORWARD ACCEPT
-  -P OUTPUT ACCEPT
-  ```
+1. Look at the default iptables rules
+   {% include codeHeader.html %}
+   ```bash
+   iptables -S
+   ```
+   It should look like this:
+   ```
+   -P INPUT ACCEPT
+   -P FORWARD ACCEPT
+   -P OUTPUT ACCEPT
+   ```
 Input, forward, and output are all names of chains. Currently there are no
 rules attached to these chains. What beautiful empty chains! This means that
 traffic is not being altered by iptables.
 
-0. See that traffic is not being restricted by running `curl google.com`.  It
+1. See that traffic is not being restricted by running `curl google.com`.  It
    works!
 
 📝 **Make your own DROP rule**
@@ -54,22 +54,22 @@ traffic is not being altered by iptables.
 Let's make a rule to DROP all traffic from the container so that the curl will
 fail.
 
-0. Make your own custom chain.
-{% include codeHeader.html %}
+1. Make your own custom chain.
+   {% include codeHeader.html %}
    ```bash
    iptables -N drop-everything
    ```
-0. Append a rule to your chain.
-{% include codeHeader.html %}
+1. Append a rule to your chain.
+   {% include codeHeader.html %}
    ```bash
    iptables -A drop-everything -j DROP
    ```
-0. View your handiwork. Oooooh. Ahhhhhhh.
-{% include codeHeader.html %}
+1. View your handiwork. Oooooh. Ahhhhhhh.
+   {% include codeHeader.html %}
    ```bash
    iptables -S
    ```
-0. See if you can still `curl google.com`. What! The curl still works!
+1. See if you can still `curl google.com`. What! The curl still works!
 That's because currently nothing is hitting your rule. You need to attach your custom chain to the INPUT, FORWARD, and/or OUTPUT chain in order for traffic to hit it.
 
 The INPUT, FORWARD, and OUTPUT chains are hit in different situations. (See diagram below)
@@ -79,22 +79,22 @@ The INPUT, FORWARD, and OUTPUT chains are hit in different situations. (See diag
 
 ![iptables chains and tables diagram](https://storage.googleapis.com/cf-networking-onboarding-images/iptables-tables-and-chains-diagram.png)
 
-0. The request to google is egress traffic, so we want to attach out custom chain to the OUTPUT chain.
-{% include codeHeader.html %}
+1. The request to google is egress traffic, so we want to attach out custom chain to the OUTPUT chain.
+   {% include codeHeader.html %}
    ```bash
    iptables -A OUTPUT -j drop-everything
    ```
 
-0. See if you can still `curl google.com`. You should see the error `Could not resolve host: google.com`.
-0. Delete all of the rules and the chain that you created.
+1. See if you can still `curl google.com`. You should see the error `Could not resolve host: google.com`.
+1. Delete all of the rules and the chain that you created.
 Before you can delete the chain itself, you need to delete the rules attached to it using the `-D` flag.
-{% include codeHeader.html %}
+   {% include codeHeader.html %}
    ```bash
    iptables -D EITHER-INPUT-FORWARD-OR-OUTPUT -j drop-everything
    iptables -D drop-everything -j DROP
    ```
-Then you can delete the chain itself using the `-X` flag
-{% include codeHeader.html %}
+   Then you can delete the chain itself using the `-X` flag
+   {% include codeHeader.html %}
    ```bash
    iptables -X drop-everything
    ```

@@ -25,11 +25,11 @@ In this story you are going to look at what happens under the hood when you do a
 1. Bosh ssh onto any Cloud Foundry VM
 1. Use dig to do a DNS request for your alias.
 
-{% include codeHeader.html %}
+   {% include codeHeader.html %}
    ```bash
    dig HTTP_SERVER_ALIAS
    ```
-
+   Returns:
    ```
    ; <<>> DiG 9.10.3-P4-Ubuntu <<>> meow.meow
    ;; global options: +cmd
@@ -54,11 +54,11 @@ In this story you are going to look at what happens under the hood when you do a
 
 1. Look at the bosh-dns logs on the machine you did the dig on in the steps above
 
-{% include codeHeader.html %}
+   {% include codeHeader.html %}
    ```bash
    tail -f /var/vcap/sys/log/bosh-dns/bosh_dns*
    ```
-
+   Returns:
    ```
    [RequestLoggerHandler] 2019/10/03 20:49:43
    INFO - handlers.DiscoveryHandler Request [1]
@@ -87,11 +87,11 @@ this, the non-Bosh DNS server will not be able to resolve HTTP_SERVER_ALIAS.
 ## Helpful Command
 
 **Do a DNS lookup**
-```
-dig URL [@SERVER_IP]
+   ```bash
+   dig URL [@SERVER_IP]
 
-# for example
-dig neopets.com
-# OR
-dig neopets.com @169.254.4.4
-```
+   # for example
+   dig neopets.com
+   # OR
+   dig neopets.com @169.254.4.4
+   ```

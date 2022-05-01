@@ -14,14 +14,14 @@ Make a super basic firewall for your docker container. This (extremely practical
 ## How
 
 🤔 **Make your own rule**
-0. Make your own chain.
-0. Attach rule to that chain that accepts traffic if it is sent to ip 23.96.35.235 (neopets!) port 80 using tcp.
-0. Attach a rule to that chain that drops all other traffic.
-0. Add a jump rule to either the OUTPUT, FORWARD, or INPUT chains so that the traffic exiting the docker container will hit your custom chain.
-0. Curl google.com. Does it fail?
-0. Curl 23.96.35.235:80. Does it succeed?
-0. Curl http://neopets.com. Does it fail or succeed? Why?
-0. Practice deleting chains and rules: delete all of the rules and chains that you created.
+1. Make your own chain.
+1. Attach rule to that chain that accepts traffic if it is sent to ip 23.96.35.235 (neopets!) port 80 using tcp.
+1. Attach a rule to that chain that drops all other traffic.
+1. Add a jump rule to either the OUTPUT, FORWARD, or INPUT chains so that the traffic exiting the docker container will hit your custom chain.
+1. Curl google.com. Does it fail?
+1. Curl 23.96.35.235:80. Does it succeed?
+1. Curl http://neopets.com. Does it fail or succeed? Why?
+1. Practice deleting chains and rules: delete all of the rules and chains that you created.
 
 ## ❓ Question
 Why didn't curling http://neopets.com work?

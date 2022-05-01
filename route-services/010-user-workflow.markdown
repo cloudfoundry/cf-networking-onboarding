@@ -54,14 +54,15 @@ limit traffic going to appA.
 
 📝 **Take control measurements**
 1. Download boom, a benchmarking tool.
-{% include codeHeader.html %}
+   {% include codeHeader.html %}
    ```bash
    go get github.com/rakyll/boom
    ```
 
-1. Use boom to see what percentage of requests to APP_A_ROUTE return status 200.
- This command sends 100 requests, 10 concurrently with 10 QPS (queries per second)
-{% include codeHeader.html %}
+2. Use boom to see what percentage of requests to APP_A_ROUTE return status 200.
+
+   This command sends 100 requests, 10 concurrently with 10 QPS (queries per second)
+   {% include codeHeader.html %}
    ```bash
    boom -n 100 -c 10 -q 10 http://APP_A_ROUTE
    ```
@@ -73,14 +74,14 @@ limit traffic going to appA.
    ```
 
 📝 **Use a Route Service**
-0. Set
+1. Set
    [this](https://github.com/cloudfoundry/routing-release/blob/2e1cc8b89df0b569102489f7eda159107094fc9f/jobs/gorouter/spec#L145-L147)
    gorouter bosh property and redeploy:
-{% include codeHeader.html %}
+   {% include codeHeader.html %}
    ```yaml
    router.ssl_skip_validation: true
    ```
-0. Follow [these
+1. Follow [these
    instructions](https://github.com/cloudfoundry-samples/ratelimit-service) to
    deploy a rate limiting Route Service and bind it to appA.  This example
    Route Service is old and you may get errors that it is running on an old go
@@ -97,11 +98,11 @@ limit traffic going to appA.
   responses should have status code 200.
 * See that with the Route Service there is rate limiting to appA. Some
   responses should have status code 200 and the rest should have code 429.
-```
-Status code distribution:
-  [200]	2 responses
-  [429]	98 responses
-```
+   ```
+   Status code distribution:
+     [200]	2 responses
+     [429]	98 responses
+   ```
 
 Delete the rate limiter app and unbind the route service before the next story.
 

@@ -44,11 +44,11 @@ Let's look at the interfaces on the Diego cell and in our meow network namespace
 📝 **Look at network interfaces**
 
 1. List all of the network interfaces in the Diego Cell (this output is edited for brevity and clarity)
-{% include codeHeader.html %}
+   {% include codeHeader.html %}
    ```bash
    ip link
    ```
-   returns
+   Returns:
    ```
    1: lo                 <------------- The loopback network interface that lets the system communicate with itself over localhost.
    2: eth0               <------------- A ethernet interface. Traffic goes here to leave the Diego Cell.
@@ -58,7 +58,7 @@ Let's look at the interfaces on the Diego cell and in our meow network namespace
    ```
 
 2. Now list all of the networking interfaces in the meow networking namespace
-{% include codeHeader.html %}
+   {% include codeHeader.html %}
    ```bash
    ip netns exec meow ip link
    ```

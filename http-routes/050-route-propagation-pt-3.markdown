@@ -45,9 +45,9 @@ technique.
 ## How
 
 📝 **subscribe to NATs messages**
-0. Bosh ssh onto the Diego Cell where your app is running and become root
-0. Get the NATS cli
-{% include codeHeader.html %}
+1. Bosh ssh onto the Diego Cell where your app is running and become root
+1. Get the NATS cli
+   {% include codeHeader.html %}
     ```bash
     wget https://github.com/nats-io/natscli/releases/download/v0.0.32/nats-0.0.32-linux-amd64.zip
     unzip nats-0.0.32-linux-amd64.zip
@@ -55,15 +55,15 @@ technique.
     mv nats-0.0.32-linux-amd64/nats /usr/bin
 
     ```
-0. Get NATS username, password, and server address
-{% include codeHeader.html %}
+1. Get NATS username, password, and server address
+   {% include codeHeader.html %}
     ```bash
     jq . /var/vcap/jobs/route_emitter/config/route_emitter.json | grep nats
     ```
-0. Use the nats cli to connect to nats: `nats sub "*.*" -s nats://NATS_USERNAME:NATS_PASSWORD@NATS_ADDRESS/ --tlscert <cert file from json> --tlskey <key file from json> --tlsca <ca file from json>`. The `"*.*"` means that you are subscribing to all NATs messages.
+1. Use the nats cli to connect to nats: `nats sub "*.*" -s nats://NATS_USERNAME:NATS_PASSWORD@NATS_ADDRESS/ --tlscert <cert file from json> --tlskey <key file from json> --tlsca <ca file from json>`. The `"*.*"` means that you are subscribing to all NATs messages.
     The Route Emitter registers routes every 20 seconds (by default) so that the GoRouter (which subscribes to these messages) has the most up-to-date information about which IPs map to which apps and routes. Depending on how many routes there are, this might be a lot of information.
 
-0. When you successfully connect to nats, plus a few seconds of waiting, you
+1. When you successfully connect to nats, plus a few seconds of waiting, you
    should see a message that contains information about the route you created.
    It will look something like this and contain APP_A_ROUTE:
    ```

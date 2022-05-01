@@ -37,22 +37,22 @@ Let's take a look at that route table.
 ## How
 
 📝 **look at route table**
-0. Bosh ssh onto the router vm and become root.
-0. Get the username and password for the routing api
-{% include codeHeader.html %}
+1. Bosh ssh onto the router vm and become root.
+1. Get the username and password for the routing api
+   {% include codeHeader.html %}
    ```bash
    head /var/vcap/jobs/gorouter/config/gorouter.yml
    ```
-0. Get the routes table
-{% include codeHeader.html %}
+1. Get the routes table
+   {% include codeHeader.html %}
    ```bash
    curl -s -S "http://USERNAME:PASSWORD@localhost:8080/routes" | jq .
    ```
-0. Scroll through and look at the routes.
+1. Scroll through and look at the routes.
   ❓How does this differ from the route information you saw in Cloud Controller?
    For example, you should see routes for CF components, like UAA and doppler.
    This because the GoRouter is in charge of routing traffic to CF apps *AND* to CF components.
-0. Find `APP_A_ROUTE` in the list of routes. Let's dissect the most important bits.
+1. Find `APP_A_ROUTE` in the list of routes. Let's dissect the most important bits.
     ```
     "proxy.meow.cloche.c2c.cf-app.com": [   <------ The name of the route!
                                                     This should match APP_A_ROUTE

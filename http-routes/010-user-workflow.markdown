@@ -24,12 +24,13 @@ many apps. So Route Mappings is a many-to-many mapping.
 ## How
 
 📝 **Create a route that maps to two apps**
-0. By default `cf push` creates a route. Look at all of the routes for all of your apps.
-{% include codeHeader.html %}
+1. By default `cf push` creates a route. Look at all of the routes for all of your apps.
+   {% include codeHeader.html %}
    ```bash
    cf apps
    ```
-0. Use curl to hit appA.
+1. Use curl to hit appA.
+   {% include codeHeader.html %}
    ```bash
    curl APP_A_URL
    ```
@@ -38,8 +39,8 @@ many apps. So Route Mappings is a many-to-many mapping.
    {"ListenAddresses":["127.0.0.1","10.255.116.44"],"Port":8080}
    ```
    We'll get into the listen addresses later, but for now the most important thing to know is that the 10.255.X.X address is the overlay IP address. This IP is unique per app instance.
-0. Create your own route (`cf map-route --help`) and map it to both appA **AND** appB.
-0. Curl your new route over and over again `watch "curl -sS MY-NEW-ROUTE`".
+1. Create your own route (`cf map-route --help`) and map it to both appA **AND** appB.
+1. Curl your new route over and over again `watch "curl -sS MY-NEW-ROUTE`".
 
 ## Expected Result
 You have a route that maps to both appA and appB. See that the overlay IP

@@ -25,17 +25,17 @@ In this story you are going to create instance specific component routes.
 
 🤔 **Make and use instance specific routes**
 
-0. Update the [prepend_instance_index property](https://github.com/cloudfoundry/routing-release/blob/develop/jobs/route_registrar/spec#L95-L96) in your bosh manifest to turn on instance specific routing.
+1. Update the [prepend_instance_index property](https://github.com/cloudfoundry/routing-release/blob/develop/jobs/route_registrar/spec#L95-L96) in your bosh manifest to turn on instance specific routing.
 
-0. Redeploy
+1. Redeploy
 
-0. Use the new routes!
+1. Use the new routes!
 
-0. Prove that you are hitting only one instance and that you can choose which instance you are hitting.
+1. Prove that you are hitting only one instance and that you can choose which instance you are hitting.
 
 🤔 **Check the gorouter routing table**
 
-0. Look at the gorouter routes table and find your instance component routes.
+1. Look at the gorouter routes table and find your instance component routes.
 
 ## ❓ Question
 How do these routes differ from the route you saw in the `Life With Route

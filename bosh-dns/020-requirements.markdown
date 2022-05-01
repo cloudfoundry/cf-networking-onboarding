@@ -30,12 +30,12 @@ By default Bosh DNS is on every VM in a OSS Cloud Foundry deployment.
 1. Look at the /etc/resolv.conf file. This file contains the IPs for the DNS
    servers used for all DNS lookups.
 
-   The file should look something like this.
-{% include codeHeader.html %}
+   {% include codeHeader.html %}
    ```bash
    cat /etc/resolv.conf
    ```
 
+The file should look something like this.
    ```
    # This file was automatically updated by bosh-dns
    nameserver 169.254.0.2          <-------------- record this value as BOSH_DNS_IP
@@ -50,7 +50,7 @@ So you have a value for BOSH_DNS_IP, but who do you _know_ this is the Bosh DNS 
 
 1. Use netstat to see what IP the Bosh DNS process is bound to.
 
-{% include codeHeader.html %}
+   {% include codeHeader.html %}
    ```bash
    netstat -tulpn
    ```
@@ -70,7 +70,7 @@ So you have a value for BOSH_DNS_IP, but who do you _know_ this is the Bosh DNS 
 
 1. Use dig to do a DNS request for any non-CF url.
 
-{% include codeHeader.html %}
+   {% include codeHeader.html %}
    ```bash
    dig neopets.com
    ```
@@ -110,7 +110,7 @@ Do you recognize that server IP? That's the BOSH_DNS_IP that you recorded earlie
 
 1. Look at the bosh DNS logs. You should see something like...
 
-{% include codeHeader.html %}
+   {% include codeHeader.html %}
    ```bash
    tail -f /var/vcap/sys/log/bosh-dns/bosh_dns*
    ```
@@ -140,9 +140,9 @@ and the non-Bosh DNS server can (with recursion) resolve the external URL.
 ## Helpful Commands
 
 **Do a DNS lookup**
-```
-dig URL [@SERVER_IP]
+   ```bash
+   dig URL [@SERVER_IP]
 
-# for example
-dig neopets.com @169.254.4.4
-```
+   # for example
+   dig neopets.com @169.254.4.4
+   ```

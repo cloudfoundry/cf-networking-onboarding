@@ -45,7 +45,7 @@ In this story you are going to add your own fun alias for your go HTTP server.
     - name: my_custom_link                # < ------------
       type: my_custom_link_type           # < ------------
     name: my-http-server
-    # redacted for brevity
+    # remaining yaml redacted for brevity
     ```
 
 1. Redeploy
@@ -60,7 +60,7 @@ In this story you are going to add your own fun alias for your go HTTP server.
 
 1. Try to access your new URL! Success!
 
-    ```
+    ```bash
     $ curl HTTP_SERVER_ALIAS:9994
 
     Hello from machine with mac address 42:01:0a:00:01:16
@@ -68,7 +68,7 @@ In this story you are going to add your own fun alias for your go HTTP server.
 
 1. Try to access your new URL from your local machine.
 
-    ```
+    ```bash
     $ curl HTTP_SERVER_ALIAS:9994
 
     curl: (6) Could not resolve host: meow.meow

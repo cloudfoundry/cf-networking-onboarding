@@ -26,7 +26,7 @@ So how does Bosh DNS work? How does it figure out what IP to send traffic to?
 
 1. Bosh ssh onto any VM in your CF deployment.
 1. Look at the Bosh DNS records table. (You might need to install jq)
-{% include codeHeader.html %}
+   {% include codeHeader.html %}
    ```bash
    cat /var/vcap/instance/dns/records.json | jq .
    ```

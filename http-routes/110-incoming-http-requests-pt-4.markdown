@@ -52,12 +52,12 @@ Let's look at how the Envoy sidecar is configured to proxy traffic to the app.
 ## How
 
 📝 **Look at envoy config**
-0. Ssh onto AppA
-0. Hit the Envoy `help` endpoint: `curl localhost:61003/help` These are all of
+1. Ssh onto AppA
+1. Hit the Envoy `help` endpoint: `curl localhost:61003/help` These are all of
    the endpoints you can hit. Try `/clusters` what do you see?
-0. Run `curl localhost:61003/config_dump`. This gives you all of the
+1. Run `curl localhost:61003/config_dump`. This gives you all of the
    information about how the Envoy is configured.
-0. Search for the `CONTAINER_ENVOY_PORT`, in the example it is 61001. This is
+1. Search for the `CONTAINER_ENVOY_PORT`, in the example it is 61001. This is
    where the DNAT rules forwarded the traffic to, as we saw in the last story.
    Find a listener called `listener-8080` that looks similar to the following: 
     ```
@@ -93,7 +93,7 @@ Let's look at how the Envoy sidecar is configured to proxy traffic to the app.
     }
 
     ```
-0. In the same config_dump output, find the cluster, `CLUSTER-NAME`, that is
+1. In the same config_dump output, find the cluster, `CLUSTER-NAME`, that is
    referenced above. It should look something like this:
     ```
     {

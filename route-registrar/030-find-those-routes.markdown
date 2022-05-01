@@ -26,7 +26,7 @@ happens with component routes. But instead of the Route Emitter emitting routes
 
 🤔 **Look at NATS**
 
-0. Subscribe to the the NATS messages for your component route from the
+1. Subscribe to the the NATS messages for your component route from the
 my-http-server VM.
 * You can find the NATS username, password, and host on the my-http-server VM
   at `/var/vcap/jobs/route_registrar/config/registrar_settings.json`
@@ -35,8 +35,8 @@ my-http-server VM.
 * ❓ How do the component route NATS messages compare to the app route NATS messages?
 
 🤔 **Look at the routes table**
-0. Bosh ssh onto the router VM.
-0. Look at the GoRouter routes table and find your component route.
+1. Bosh ssh onto the router VM.
+1. Look at the GoRouter routes table and find your component route.
 * See the story [Route Propagation - Part 4 -
   GoRouter](../http-routes/route-propagation-pt-4) if you need a reminder on
   how to this.
