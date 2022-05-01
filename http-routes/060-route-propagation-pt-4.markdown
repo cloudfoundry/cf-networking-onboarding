@@ -39,13 +39,15 @@ Let's take a look at that route table.
 📝 **look at route table**
 0. Bosh ssh onto the router vm and become root.
 0. Get the username and password for the routing api
- ```
- head /var/vcap/jobs/gorouter/config/gorouter.yml
- ```
+{% include codeHeader.html %}
+   ```bash
+   head /var/vcap/jobs/gorouter/config/gorouter.yml
+   ```
 0. Get the routes table
- ```
- curl -s -S "http://USERNAME:PASSWORD@localhost:8080/routes" | jq .
- ```
+{% include codeHeader.html %}
+   ```bash
+   curl -s -S "http://USERNAME:PASSWORD@localhost:8080/routes" | jq .
+   ```
 0. Scroll through and look at the routes.
   ❓How does this differ from the route information you saw in Cloud Controller?
    For example, you should see routes for CF components, like UAA and doppler.

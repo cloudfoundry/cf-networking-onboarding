@@ -47,7 +47,7 @@ the incorrect app.
 ### Expected Result
 When you curl appA, you should get a 503 status code.
 ```
-$ curl appA.cf-app.com
+$ curl appA.<YOUR DOMAIN>
 503 Service Unavailable
 ```
 

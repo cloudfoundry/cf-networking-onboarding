@@ -36,9 +36,10 @@ at the logs, and (3) how this feature is implemented (hint: iptables).
 1. In one terminal, Ssh onto the Diego Cell where appB is running and become
    root.
 1. Watch the kern.logs (kern stands for kernel, as in the linux kernel).
-```
-tail -f kern.log
-```
+{% include codeHeader.html %}
+   ```bash
+   tail -f kern.log
+   ```
 1. In another terminal, curl appB from appA. You should see log line similar to the one below.
   ```
   2019-04-18T18:01:05.306552+00:00 localhost kernel: [22246.987902]

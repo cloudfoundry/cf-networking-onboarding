@@ -24,22 +24,28 @@ In this story you are going to add your own fun alias for your go HTTP server.
 
 📝 **Add your own alias**
 
-1. Update your manifest to include a Bosh DNS alias. This alias could be added
+1. Update your manifest to include a Bosh DNS alias (copy lines with `# < ---` and remove the `# < --- .*`). This alias could be added
    for any job on the instance group.
-
+   {% include codeHeader.html %}
     ```
-    - name: my-http-server
-    # ...
+    instance_groups:
+    - azs:
+      - z1
+    instances: 2
     jobs:
     - name: route_registrar
-      provides:                             # < ------------ Add this block to add a Bosh DNS alias
-        my_custom_link:                     # < ------------
-          aliases:                          # < ------------
-          - domain: "meow.meow"             # < ------------ Make the domain anything you want :D
-            health_filter: "healthy"        # < ------------ Record the domain you choose as HTTP_SERVER_ALIAS
-      custom_provider_definitions:          # < ------------
-      - name: my_custom_link                # < ------------
-        type: my_custom_link_type           # < ------------
+      properties: { redacted for brevity }
+    release: routing
+    provides:                             # < ------------ Add this block to add a Bosh DNS alias
+      my_custom_link:                     # < ------------
+        aliases:                          # < ------------
+        - domain: "meow.meow"             # < ------------ Make the domain anything you want :D
+          health_filter: "healthy"        # < ------------ Record the domain you choose as HTTP_SERVER_ALIAS
+    custom_provider_definitions:          # < ------------
+    - name: my_custom_link                # < ------------
+      type: my_custom_link_type           # < ------------
+    name: my-http-server
+    # redacted for brevity
     ```
 
 1. Redeploy

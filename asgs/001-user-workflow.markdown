@@ -36,18 +36,24 @@ spaces or orgs within a foundation.
 📝 **Look at the defaults**
 1. Look at all the security group CLI commands. The commands can be confusing;
    familiarize yourself with all of the commands available.
-  ```
-  cf help -a | grep security-group
-  ```
-1. As admin view the list of security groups `cf security-groups`
+{% include codeHeader.html %}
+   ```bash
+   cf help -a | grep security-group
+   ```
+1. As admin view the list of security groups
+{% include codeHeader.html %}
+   ```bash
+   cf security-groups
+   ```
 
 In most default OSS deployments there will be two ASGs: `public_networks` and
 `dns`. These default ASGs are bound (aka applied) to the entire foundation.
 
 1. View the rules for the `public_networks` security group.
-  ```
+{% include codeHeader.html %}
+  ```bash
   cf security-group public_networks
-```
+  ```
 
 The public_network ASG allows egress traffic to access the entire public
 internet, via every protocol.

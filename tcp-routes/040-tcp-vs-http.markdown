@@ -41,20 +41,21 @@ routing](https://storage.googleapis.com/cf-networking-onboarding-images/tcp-traf
 ## How
 📝 **Inspect HTTP headers**
 1. Curl the networking api and look at the request headers
- ```
-cf curl /networking/v1/external/policies -v
- ```
- You should get a response that looks like this:
- ```
-REQUEST: [2019-04-24T11:01:49-07:00]
-GET /networking/v1/external/policies <---- this is the header that contains the URL path
-HTTP/1.1
-Host: api.beanie.c2c.cf-app.com      <---- this is the header that contains the URL base
-Accept: application/json
-Authorization: [PRIVATE DATA HIDDEN]
-Content-Type: application/json
-User-Agent: go-cli 6.43.0+815ea2f3d.2019-02-20 / darwin
- ```
+{% include codeHeader.html %}
+   ```bash
+   cf curl /networking/v1/external/policies -v
+   ```
+   You should get a response that looks like this:
+   ```
+   REQUEST: [2019-04-24T11:01:49-07:00]
+   GET /networking/v1/external/policies <---- this is the header that contains the URL path
+   HTTP/1.1
+   Host: api.beanie.c2c.cf-app.com      <---- this is the header that contains the URL base
+   Accept: application/json
+   Authorization: [PRIVATE DATA HIDDEN]
+   Content-Type: application/json
+   User-Agent: go-cli 6.43.0+815ea2f3d.2019-02-20 / darwin
+   ```
 
 ## ❓ Question
 What would happen if two TCP routes had the same route port?

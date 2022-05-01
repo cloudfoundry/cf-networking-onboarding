@@ -74,18 +74,24 @@ even make a network namespace for yourself.
 📝 **Look at a container**
 1. Ssh onto a Diego Cell and become root.
 1. Look at the network interfaces (again, we'll go deeper in the next story).
-```
-ifconfig
-```
+{% include codeHeader.html %}
+   ```bash
+   ifconfig
+   ```
 1. Inspect the directories that the root user has access to. For example, look at all the log files.
-```
-ls /var/vcap/sys/log
-```
+{% include codeHeader.html %}
+   ```bash
+   ls /var/vcap/sys/log
+   ```
 1. Get into the BPM container for the vxlan-policy-agent.
-```
-bpm list
-bpm shell vxlan-policy-agent
-```
+{% include codeHeader.html %}
+   ```bash
+   bpm list
+   ```
+{% include codeHeader.html %}
+   ```bash
+   bpm shell vxlan-policy-agent
+   ```
 1. Look at the network interfaces. How do they compare to the host vm network interfaces?
 1. Look at the log files you can access. How do they compare to the files accessible to root user?
   * ❓Based on this information, does BPM create a [mount
@@ -98,13 +104,15 @@ bpm shell vxlan-policy-agent
 📝 **Make your own network namespace**
 
 1. Still on a Diego Cell as root, create your own network namespace called meow.
-```
-ip netns add meow
-```
+{% include codeHeader.html %}
+   ```bash
+   ip netns add meow
+   ```
 1. List all of the networking namespaces
-```
-ip netns
-```
+{% include codeHeader.html %}
+   ```bash
+   ip netns
+   ```
 You should only see meow. Hmmm. You might think you would see the other
 networking namespaces for all the apps on this cell. (I certainly thought so
 when I first tried this.) You'll learn how to view an app's networking
@@ -113,9 +121,10 @@ namespace one day, I promise.
 1. Curl google.com from the Diego Cell. See that it works!
 
 1. Curl google.com from inside of your networking namespace
-```
-ip netns exec meow curl google.com
-```
+{% include codeHeader.html %}
+   ```bash
+   ip netns exec meow curl google.com
+   ```
 
 What? It doesn't work!? You should see `curl: (6) Could not resolve host: google.com`. Try another URL. They will all fail.
 

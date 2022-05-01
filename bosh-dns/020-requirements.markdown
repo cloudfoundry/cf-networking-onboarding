@@ -30,16 +30,19 @@ By default Bosh DNS is on every VM in a OSS Cloud Foundry deployment.
 1. Look at the /etc/resolv.conf file. This file contains the IPs for the DNS
    servers used for all DNS lookups.
 
-  The file should look something like this.
-  ```
-  $cat /etc/resolv.conf
+   The file should look something like this.
+{% include codeHeader.html %}
+   ```bash
+   cat /etc/resolv.conf
+   ```
 
-  # This file was automatically updated by bosh-dns
-  nameserver 169.254.0.2          <-------------- record this value as BOSH_DNS_IP
+   ```
+   # This file was automatically updated by bosh-dns
+   nameserver 169.254.0.2          <-------------- record this value as BOSH_DNS_IP
 
-  nameserver 169.254.169.254      <-------------- record this value as NON_BOSH_DNS_IP
-  search c.cf-container-networking-gcp.internal google.internal
-  ```
+   nameserver 169.254.169.254      <-------------- record this value as NON_BOSH_DNS_IP
+   search c.cf-container-networking-gcp.internal google.internal
+   ```
 
 📝 **Find Bosh DNS running**
 
@@ -47,45 +50,51 @@ So you have a value for BOSH_DNS_IP, but who do you _know_ this is the Bosh DNS 
 
 1. Use netstat to see what IP the Bosh DNS process is bound to.
 
- ```
-$ netstat -tulpn
+{% include codeHeader.html %}
+   ```bash
+   netstat -tulpn
+   ```
 
-Active Internet connections (only servers)
-Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
-tcp        0      0 169.254.0.2:53          0.0.0.0:*               LISTEN      3227/bosh-dns
-tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      743/sshd
-tcp        0      0 127.0.0.1:53080         0.0.0.0:*               LISTEN      3227/bosh-dns
-tcp        0      0 127.0.0.1:2822          0.0.0.0:*               LISTEN      3300/monit
-tcp        0      0 127.0.0.1:2825          0.0.0.0:*               LISTEN      613/bosh-agent
-udp        0      0 169.254.0.2:53          0.0.0.0:*                           3227/bosh-dns
-```
+   ```
+   Active Internet connections (only servers)
+   Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+   tcp        0      0 169.254.0.2:53          0.0.0.0:*               LISTEN      3227/bosh-dns
+   tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      743/sshd
+   tcp        0      0 127.0.0.1:53080         0.0.0.0:*               LISTEN      3227/bosh-dns
+   tcp        0      0 127.0.0.1:2822          0.0.0.0:*               LISTEN      3300/monit
+   tcp        0      0 127.0.0.1:2825          0.0.0.0:*               LISTEN      613/bosh-agent
+   udp        0      0 169.254.0.2:53          0.0.0.0:*                           3227/bosh-dns
+   ```
 
 📝 **Do a non-Bosh DNS lookup**
 
 1. Use dig to do a DNS request for any non-CF url.
 
-  ```
-  $ dig neopets.com
+{% include codeHeader.html %}
+   ```bash
+   dig neopets.com
+   ```
 
-  ; <<>> DiG 9.10.3-P4-Ubuntu <<>> neopets.com
-  ;; global options: +cmd
-  ;; Got answer:
-  ;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 35487
-  ;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+   ```
+   ; <<>> DiG 9.10.3-P4-Ubuntu <<>> neopets.com
+   ;; global options: +cmd
+   ;; Got answer:
+   ;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 35487
+   ;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
 
-  ;; OPT PSEUDOSECTION:
-  ; EDNS: version: 0, flags:; udp: 512
-  ;; QUESTION SECTION:
-  ;neopets.com.     IN  A
+   ;; OPT PSEUDOSECTION:
+   ; EDNS: version: 0, flags:; udp: 512
+   ;; QUESTION SECTION:
+   ;neopets.com.     IN  A
 
-  ;; ANSWER SECTION:
-  neopets.com.    3599  IN  A 23.96.35.235
+   ;; ANSWER SECTION:
+   neopets.com.    3599  IN  A 23.96.35.235
 
-  ;; Query time: 49 msec
-  ;; SERVER: 169.254.0.2#53(169.254.0.2)
-  ;; WHEN: Thu Oct 03 18:15:20 UTC 2019
-  ;; MSG SIZE  rcvd: 67
-  ```
+   ;; Query time: 49 msec
+   ;; SERVER: 169.254.0.2#53(169.254.0.2)
+   ;; WHEN: Thu Oct 03 18:15:20 UTC 2019
+   ;; MSG SIZE  rcvd: 67
+   ```
 
 1. Let's go through and try to understand this dig request.
 
@@ -101,13 +110,16 @@ Do you recognize that server IP? That's the BOSH_DNS_IP that you recorded earlie
 
 1. Look at the bosh DNS logs. You should see something like...
 
-    ```
-    $ tail -f /var/vcap/sys/log/bosh-dns/bosh_dns*
+{% include codeHeader.html %}
+   ```bash
+   tail -f /var/vcap/sys/log/bosh-dns/bosh_dns*
+   ```
 
-    [ForwardHandler] 2019/10/03 18:15:20
-    INFO - handlers.ForwardHandler Request [1]
-    [neopets.com.] 0 [recursor=169.254.169.254:53] 49064000ns
-    ```
+   ```
+   [ForwardHandler] 2019/10/03 18:15:20
+   INFO - handlers.ForwardHandler Request [1]
+   [neopets.com.] 0 [recursor=169.254.169.254:53] 49064000ns
+   ```
 1. Do you recognize that recursor IP? That's the NON_BOSH_DNS_IP you recorded earlier!
 
 📝 **Tell dig what DNS server to use**

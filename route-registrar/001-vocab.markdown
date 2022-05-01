@@ -16,8 +16,10 @@ outside of Cloud Foundry?
 
 **Route Registrar** makes Cloud Foundry components available outside of Cloud
 Foundry. These routes get registered with the GoRouter, just like app routes.
-Or, if you like analogies:  ```Route Registrar:CF Components::cf map-route:CF
-Apps```
+Or, if you like analogies:
+```
+Route Registrar:CF Components::cf map-route:CF Apps
+```
 
 In this Route Registrar series of stories you are going to create your own
 instance group to run a HTTP server. Then you are going to use route registrar

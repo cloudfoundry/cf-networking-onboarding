@@ -30,13 +30,14 @@ analogous route table for the TCP Router.
 
 📝 **Try to list tcp routes**
 1. List tcp routes via the routing api.
- ```
-cf curl /routing/v1/tcp_routes
- ```
- Most likely you will get the error message:
- ```
-{"name":"UnauthorizedError","message":"Token is expired"}
- ```
+{% include codeHeader.html %}
+   ```bash
+   cf curl /routing/v1/tcp_routes
+   ```
+   Most likely you will get the error message:
+   ```json
+   {"name":"UnauthorizedError","message":"Token is expired"}
+   ```
 
 🤔 **Get correct permissions**
 
@@ -48,18 +49,19 @@ There is probably already a client deployed with the correct permissions. Find
 out the name and password for this user from the bosh manifest.
 
 1. Download your manifest
- ```
-bosh manifest > /tmp/my-env.yml
- ```
+{% include codeHeader.html %}
+   ```bash
+   bosh manifest > /tmp/my-env.yml
+   ```
 
 1. Search for `routing.routes.read`. You should find uaa client properties that
    look like this:
-  ```
-  routing_api_client:
-          authorities: routing.routes.write,routing.routes.read,routing.router_groups.read
-          authorized-grant-types: client_credentials
-          secret: ((uaa_clients_routing_api_client_secret))
-  ```
+    ```yaml
+    routing_api_client:
+      authorities: routing.routes.write,routing.routes.read,routing.router_groups.read
+      authorized-grant-types: client_credentials
+      secret: ((uaa_clients_routing_api_client_secret))
+    ```
   The name of the client is: routing_api_client. The password is in credhub under
   the key uaa_clients_routing_api_client_secret.
 
@@ -70,28 +72,32 @@ bosh manifest > /tmp/my-env.yml
 1. Run `uaac` to see if you have the uaa CLI installed.
 
 1. If you don't have it installed, install it.
- ```
-gem install cf-uaac
- ```
+{% include codeHeader.html %}
+   ```bash
+   gem install cf-uaac
+   ```
 
 1. Target your uaa. (To determine this url you can run `cf api` and replace api with uaa.)
- ```
-uaac target uaa.<YOUR-ENV>.com
- ```
+{% include codeHeader.html %}
+   ```bash
+   uaac target uaa.<YOUR-DOMAIN>
+   ```
 
 1. Get the client information for the routing_api_client. It will prompt you for a password.
- ```
-uaac token client get routing_api_client
- ```
+{% include codeHeader.html %}
+   ```bash
+   uaac token client get routing_api_client
+   ```
 
 1. Get the bearer token
- ```
-uaac context
- ```
+{% include codeHeader.html %}
+   ```bash
+   uaac context
+   ```
  You will see something like this (this one is truncated):
  ```
 client_id: routing_api_client
-access_token: eyJhbGciOiJ <------- This is the bearer token that you will need. Yours will be longer.
+access_token: eyJhbGciOiJ <------- This is the BEARER_TOKEN that you will need. Yours will be longer.
 token_type: bearer
 expires_in: 43199
 scope: routing.router_groups.read routing.routes.write routing.routes.read
@@ -99,9 +105,10 @@ scope: routing.router_groups.read routing.routes.write routing.routes.read
 
 📝 **Get tcp routes**
 1. This time when you curl, pass in the bearer token as a header.
- ```
-cf curl /routing/v1/tcp_routes -H "Authorization: bearer BEARER_TOKEN" | jq .
- ```
+{% include codeHeader.html %}
+   ```bash
+   cf curl /routing/v1/tcp_routes -H "Authorization: bearer BEARER_TOKEN" | jq .
+   ```
 
 ## Expected Outcome
 

@@ -57,9 +57,10 @@ routes stale.
 1. Route Integrity is turned on by default with CF Deployment. Let's turn it
    off and see what happened before Route Integrity. But first, let's save the
    current manifest for the next story.
- ```
-bosh manifest > /tmp/env-with-route-integrity.yml
- ```
+{% include codeHeader.html %}
+   ```bash
+   bosh manifest > /tmp/env-with-route-integrity.yml
+   ```
 
 1. Redeploy your CF with Route Integrity turned off, using [this opsfile](../opsfiles/disable-routing-integrity.yml).
 

@@ -43,7 +43,12 @@ apps are returning 502s? Let's look at the access logs to find out!
 
 📝 **Look at access logs**
 1. Ssh onto the Router VM and become root
-1. Tail the access log `/var/vcap/sys/log/gorouter/access.log`
+1. Tail the access log
+{% include codeHeader.html %}
+   ```bash
+   tail /var/vcap/sys/log/gorouter/access.log
+   ```
+
 1. In another terminal curl APP_A_ROUTE.
 
 You should see something that looks like this:
