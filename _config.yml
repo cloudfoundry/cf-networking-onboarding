@@ -290,3 +290,4 @@ defaults:
       related: false
 
 theme: jekyll-theme-midnight
+baseurl: /cf-networking-onboarding-1
