@@ -288,6 +288,3 @@ defaults:
       comments: # true
       share: false
       related: false
-
-theme: jekyll-theme-midnight
-baseurl: /cf-networking-onboarding-1
