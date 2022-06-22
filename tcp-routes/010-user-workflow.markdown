@@ -28,17 +28,15 @@ There is a parallel system for TCP routes similar to HTTP routes:
 - TCP client connects to a TCP route on a TCP domain, through a TCP load
   balancer, which sends traffic to TCP Routers.
 
-```
-                                                   +-----------+
- +-----------+         +------------------+        |HTTP Router|        +------+
- |HTTP Client| ----->  |HTTP Load Balancer| -----> |(GoRouter) | -----> |      |
- +-----------+         +------------------+        +-----------+        |      |
-                                                                        | App  |
- +-----------+         +------------------+        +-----------+        |      |
- |TCP Client | ----->  |TCP Load Balancer | -----> |TCP Router | -----> |      |
- +-----------+         +------------------+        +-----------+        +------+
-
-```
+   ```
+    +-----------+         +------------------+        |HTTP Router|        +------+
+    |HTTP Client| ----->  |HTTP Load Balancer| -----> |(GoRouter) | -----> |      |
+    +-----------+         +------------------+        +-----------+        |      |
+                                                                           | App  |
+    +-----------+         +------------------+        +-----------+        |      |
+    |TCP Client | ----->  |TCP Load Balancer | -----> |TCP Router | -----> |      |
+    +-----------+         +------------------+        +-----------+        +------+
+   ```
 
 Let's create a TCP Route and send traffic to it!
 
@@ -48,49 +46,47 @@ Let's create a TCP Route and send traffic to it!
 1. Make sure that you have DNS set up properly for the TCP Router.  In Google
    Cloud Console, go to the Zone Details for your env (Network Services -->
    Cloud DNS --> <your-env>-zone)
-1. You should find a domain that starts with `tcp`, let's call this TCP_DOMAIN.
+2. You should find a domain that starts with `tcp`, let's call this TCP_DOMAIN.
    This domain should have an IP next to it, let's call this
-   TCP_LOAD_BALANCER_IP.  ![example TCP domain DNS on
-   GCP](https://storage.googleapis.com/cf-networking-onboarding-images/example-tcp-domain-dns.png)
+   TCP_LOAD_BALANCER_IP.
 
-1. In Google Cloud Console, find the Load Balancer with the ip
+   ![example TCP domain DNS on GCP](https://storage.googleapis.com/cf-networking-onboarding-images/example-tcp-domain-dns.png)
+
+3. In Google Cloud Console, find the Load Balancer with the ip
    TCP_LOAD_BALANCER_IP. (Network Services --> Load balancing) Here you will be
    able to see all of the VMs that the load balancer ...balances load between.
    In the example below, and most likely in your case, there is only one TCP
    Router deployed, so there will only be one VM listed.
 
-    ![example TCP load balancer on
-    GCP](https://storage.googleapis.com/cf-networking-onboarding-images/example-tcp-load-balancer.png)
+   ![example TCP load balancer on GCP](https://storage.googleapis.com/cf-networking-onboarding-images/example-tcp-load-balancer.png)
 
-1. Click the VM instance that the TCP load balancer sends traffic to. Find the
-   VM's internal IP. Let's call this TCP_ROUTER_IP.  ![example TCP router vm on
-   GCP](https://storage.googleapis.com/cf-networking-onboarding-images/example-tcp-router-details.png)
-1. In the terminal, check that the TCP_ROUTER_IP matches the IP that bosh
+4. Click the VM instance that the TCP load balancer sends traffic to. Find the
+   VM's internal IP. Let's call this TCP_ROUTER_IP.  ![example TCP router vm on GCP](https://storage.googleapis.com/cf-networking-onboarding-images/example-tcp-router-details.png)
+5. In the terminal, check that the TCP_ROUTER_IP matches the IP that bosh
    reports for the TCP Router. It comes full circle!
 
 📝 **Push a TCP server app**
-1. Push [this tcp listener
-   app](https://github.com/cloudfoundry/cf-acceptance-tests/tree/master/assets/tcp-listener)
+1. Push [this tcp listener app](https://github.com/cloudfoundry/cf-acceptance-tests/tree/master/assets/tcp-listener)
    with no HTTP route.  This app is listening for TCP traffic on port 8080 and
    it logs all of the messages sent to it.
- ```
- cf push tcp-app --no-route
- ```
+   ```bash
+   cf push tcp-app --no-route
+   ```
 
 📝 **Create a TCP Route**
 1. See that you have a default-tcp router group. Router Groups are used to reserve ports for tcp routes.
- ```
- cf router-groups
- ```
+   ```bash
+   cf router-groups
+   ```
 1. Create a shared TCP domain
- ```
-cf create-shared-domain TCP_DOMAIN --router-group default-tcp
- ```
+   ```bash
+   cf create-shared-domain TCP_DOMAIN --router-group default-tcp
+   ```
 1. See that `cf map-route --help` has different usage instructions for TCP routes and HTTP routes.
 1. Create a route with the TCP domain and map it to tcp-app, let's call this TCP_ROUTE:TCP_PORT.
- ```
- cf map-route tcp-app TCP_DOMAIN --random-port
- ```
+   ```bash
+   cf map-route tcp-app TCP_DOMAIN --random-port
+   ```
 
 📝 **Test with curl**
 
@@ -106,11 +102,11 @@ Netcat is a helpful utility for reading and writing traffic over TCP or UDP.
 You will use netcat to send tcp traffic.
 1. In one terminal, run `cf logs tcp-app`
 1. In another terminal, run a docker container and get some helpful tools
-    ```
-docker run --privileged -it ubuntu bin/bash
-apt-get update -y
-apt-get install netcat -y
-    ```
+   ```
+   docker run --privileged -it ubuntu bin/bash
+   apt-get update -y
+   apt-get install netcat -y
+   ```
 1. Use `nc -h` to look at the help text and figure out how to connect to TCP_ROUTE:TCP_PORT.
 1. If you successfully open a connection, it will hold it open so you can type anything. Mash some keys and press enter.
 1. See your key mashes in the app logs. You sent that via TCP!

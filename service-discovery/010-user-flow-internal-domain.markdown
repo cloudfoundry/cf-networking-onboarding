@@ -21,17 +21,17 @@ internal domain (may I suggest meow.meow.meow)?
 
 1. Start off where you left off from the previous story "User Flow Container to
    Container Networking"). You should have appA talking to appB via an overlay
-   IP using `watch  "curl appB.apps.internal:8080"` inside of the appA
+   IP using `watch  "curl -sS appB.apps.internal:8080"` inside of the appA
    container in one terminal.
 
 1. In another terminal, create a new internal domain `cf create-shared-domain
    meow.meow.meow --internal` Check that it worked
-  ```
-  $ cf domains
-  Getting domains in org o as admin...
-  name                         status   type   details
-  meow.meow.meow               shared          internal
-  ```
+   ```bash
+   $ cf domains
+   Getting domains in org o as admin...
+   name                         status   type   details
+   meow.meow.meow               shared          internal
+   ```
 
 1. Using `cf map-route`, create and map a route for appB that uses our new
    internal domain "meow.meow.meow". May I suggest the route,
@@ -45,10 +45,10 @@ internal domain (may I suggest meow.meow.meow)?
 
 1. Download the manifest for your CF. Look at the property `internal_domains`
    on the `bosh_dns_adapter` job. It probably looks like this:
-  ```
-  internal_domains:
-  - apps.internal.
-  ```
+   ```yaml
+   internal_domains:
+   - apps.internal.
+   ```
 
 So unfortunately, there is a deploy time dependency for internal domains. I
 know, this makes me sad too. Let's dig in why this is.
@@ -72,10 +72,15 @@ routes table in the GoRouter.
 🤔 **Make your internal domain work**
 1. Add our internal domain meow.meow.meow to the bosh manifest.
 
-1. Redeploy your environment.
+2. Redeploy your environment.
 
-1. In the terminal that is in the container for appA, use this new internal
-   route to curl appB `watch "curl -sS appB.meow.meow.meow:8080"`
+3. In the terminal that is in the container for appA, use this new internal
+   route to curl appB
+   ```bash
+   watch "curl -sS appB.meow.meow.meow:8080"
+   ```
+
+4. 
 
 ## Expected Result
 

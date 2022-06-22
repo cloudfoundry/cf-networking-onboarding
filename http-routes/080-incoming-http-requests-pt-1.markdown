@@ -38,15 +38,15 @@ listening at on the Diego Cell and specifically at
 ## How
 📝 **Look at open ports on a Diego Cell**
 1. Ssh onto the Diego Cell where appA is deployed and become root.
-1. Use netstat to look at open ports
- ```
- netstat -ntulp
- # -n  <---- show raw ip addresses and socket numbers
- # -t  <---- show tcp sockets
- # -u  <---- show udp sockets
- # -l  <---- display listening sockets
- # -p  <---- display PID/program name for sockets
- ```
+2. Use netstat to look at open ports
+   ```
+   netstat -ntulp
+   # -n  <---- show raw ip addresses and socket numbers
+   # -t  <---- show tcp sockets
+   # -u  <---- show udp sockets
+   # -l  <---- display listening sockets
+   # -p  <---- display PID/program name for sockets
+   ```
   You should recognize the program names in the far right column. Most of them
   are the long running cf component processes.
 

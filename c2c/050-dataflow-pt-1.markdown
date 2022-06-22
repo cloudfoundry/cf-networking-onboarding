@@ -74,18 +74,20 @@ even make a network namespace for yourself.
 📝 **Look at a container**
 1. Ssh onto a Diego Cell and become root.
 1. Look at the network interfaces (again, we'll go deeper in the next story).
-```
-ifconfig
-```
+   ```bash
+   ifconfig
+   ```
 1. Inspect the directories that the root user has access to. For example, look at all the log files.
-```
-ls /var/vcap/sys/log
-```
+   ```bash
+   ls /var/vcap/sys/log
+   ```
 1. Get into the BPM container for the vxlan-policy-agent.
-```
-bpm list
-bpm shell vxlan-policy-agent
-```
+   ```bash
+   bpm list
+   ```
+   ```bash
+   bpm shell vxlan-policy-agent
+   ```
 1. Look at the network interfaces. How do they compare to the host vm network interfaces?
 1. Look at the log files you can access. How do they compare to the files accessible to root user?
   * ❓Based on this information, does BPM create a [mount
@@ -98,13 +100,13 @@ bpm shell vxlan-policy-agent
 📝 **Make your own network namespace**
 
 1. Still on a Diego Cell as root, create your own network namespace called meow.
-```
-ip netns add meow
-```
+   ```bash
+   ip netns add meow
+   ```
 1. List all of the networking namespaces
-```
-ip netns
-```
+   ```bash
+   ip netns
+   ```
 You should only see meow. Hmmm. You might think you would see the other
 networking namespaces for all the apps on this cell. (I certainly thought so
 when I first tried this.) You'll learn how to view an app's networking
@@ -113,9 +115,9 @@ namespace one day, I promise.
 1. Curl google.com from the Diego Cell. See that it works!
 
 1. Curl google.com from inside of your networking namespace
-```
-ip netns exec meow curl google.com
-```
+   ```bash
+   ip netns exec meow curl google.com
+   ```
 
 What? It doesn't work!? You should see `curl: (6) Could not resolve host: google.com`. Try another URL. They will all fail.
 
@@ -126,8 +128,8 @@ interfaces.  In the next story you'll explore network interfaces. You'll learn
 why the meow namespace needs one in order for you to curl google.com.
 
 ## Resources
-* [iptables netns man page](http://man7.org/linux/man-pages/man8/ip-netns.8.html)
-* [linux network namespaces/veth/route table blog](https://devinpractice.com/2016/09/29/linux-network-namespace/)
+* [ip netns man page](http://man7.org/linux/man-pages/man8/ip-netns.8.html)
+* [linux network namespaces/veth/route table blog](https://tanzu.vmware.com/developer/blog/a-container-is-a-linux-namespace-and-networking-basics/)  #replaced a dead link
 * [network namespaces blog](https://blogs.igalia.com/dpino/2016/04/10/network-namespaces/)
 * [interface explanations](https://www.computerhope.com/unix/uifconfi.htm)
 * [linux namespaces overview](https://medium.com/@teddyking/linux-namespaces-850489d3ccf)

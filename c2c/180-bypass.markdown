@@ -35,10 +35,10 @@ why.
 ## How
 🤔 **Get Diego Cell IPs**
 1. Get and record the following variables:
-```
-DIEGO_CELL_1_IP = ...
-DIEGO_CELL_2_IP = ...
-```
+   ```
+   DIEGO_CELL_1_IP = ...
+   DIEGO_CELL_2_IP = ...
+   ```
 
 🤔 **Create a wide open ASG**
 1. Create an ASG that allows traffic to DIEGO_CELL_1_IP and DIEGO_CELL_2_IP
@@ -53,23 +53,23 @@ DIEGO_CELL_2_IP = ...
 
 🤔 **Get environment variables**
 1. Get and record the following variables:
-```
-APP_B_1_BACKEND_PORT = ...
-APP_B_2_BACKEND_PORT = ...
-```
+   ```
+   APP_B_1_BACKEND_PORT = ...
+   APP_B_2_BACKEND_PORT = ...
+   ```
 hint: you can ssh onto a specific instance of an app, by passing the `-i` flag (`cf ssh --help`).
 
 📝 **Bypass c2c rules and route integrity**
 1. Ssh onto appA
 1. See if you can access appB
-```
-curl DIEGO_CELL_1_IP:APP_B_1_BACKEND_PORT
-```
+   ```bash
+   curl DIEGO_CELL_1_IP:APP_B_1_BACKEND_PORT
+   ```
 
 1. See if you can access appB
-```
-curl DIEGO_CELL_2_IP:APP_B_2_BACKEND_PORT
-```
+   ```bash
+   curl DIEGO_CELL_2_IP:APP_B_2_BACKEND_PORT
+   ```
 
 ## Expected Result
 AppA should not be able to access appB_1. AppA should be able to access appB_2.

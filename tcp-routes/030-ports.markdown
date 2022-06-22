@@ -29,11 +29,9 @@ container. In CF this defaults to 8080.
 
 Let's look at a diagram of these ports.
 
-![ports for TCP
-traffic](https://storage.googleapis.com/cf-networking-onboarding-images/tcp-trafficflow-ports.png)
+![ports for TCP traffic](https://storage.googleapis.com/cf-networking-onboarding-images/tcp-trafficflow-ports.png)
 
-![ports for HTTP
-traffic](https://storage.googleapis.com/cf-networking-onboarding-images/http-traffic-flow-ports.png)
+![ports for HTTP traffic](https://storage.googleapis.com/cf-networking-onboarding-images/http-traffic-flow-ports.png)
 
 ## ❓ Questions
 * Look at the help text for mapping a route (`cf map-route --help`). What are the different flags allowed for HTTP routes vs TCP routes?

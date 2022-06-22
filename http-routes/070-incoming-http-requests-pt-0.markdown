@@ -30,7 +30,7 @@ The following stories will look at how many components (Cloud Controller, Diego
 BBS, Route Emitter, Nats, GoRouter, DNAT Rules, Envoy) work together to make
 routes work.
 
-0. 🤔 Step through steps above and follow along on [the HTTP Routing section of
+1. 🤔 Step through steps above and follow along on [the HTTP Routing section of
    this diagram](https://realtimeboard.com/app/board/o9J_kyWPVPM=/)
 
 ## Expected Result

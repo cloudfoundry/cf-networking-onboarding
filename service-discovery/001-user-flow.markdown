@@ -33,8 +33,9 @@ clients outside of CF.
 
 ## How
 
-1. You should have appA talking to appB via an overlay IP using `watch  "curl
-   CF_INSTANCE_INTERNAL_IP:8080"` inside of the appA container in one terminal.
+1. You should have appA talking to appB via an overlay IP using 
+   `watch  "curl -sS CF_INSTANCE_INTERNAL_IP:8080"`
+   inside of the appA container in one terminal.
 
 1. In another terminal, run `cf restart appB` Predictably, the curl from appA
    to appB fails when appB is stopped. But it should come back when appB starts
@@ -57,8 +58,8 @@ clients outside of CF.
 1. Using `cf map-route`, create and map a route for appB that uses the domain
    "apps.internal". May I suggest the route, appB.apps.internal?
 
-1. In the terminal that is in the container for appA, run `watch  "curl
-   appB.apps.internal:8080"`.
+1. In the terminal that is in the container for appA, run
+   `watch  "curl -sS appB.apps.internal:8080"`.
 
 1. Restart appB.
 

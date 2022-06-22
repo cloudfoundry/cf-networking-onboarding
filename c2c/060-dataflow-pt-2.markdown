@@ -44,21 +44,27 @@ Let's look at the interfaces on the Diego cell and in our meow network namespace
 📝 **Look at network interfaces**
 
 1. List all of the network interfaces in the Diego Cell (this output is edited for brevity and clarity)
-```
-$ ip link
-1: lo                 <------------- The loopback network interface that lets the system communicate with itself over localhost.
-2: eth0               <------------- A ethernet interface. Traffic goes here to leave the Diego Cell.
-1555: silk-vtep       <------------- A VXLAN overlay network interface. Overlay packets go here to be encapsulated in an  underlay packet before exiting the Diego Cell.
-1559: s-010255096003@if1558: link-netnsid 0   <-------------  The interface that links to the network namespace with id 0. The name is `s-CONTAINER-IP`. This is the veth interface.
-There will be one of these network interfaces per app on the Diego Cell.
-```
+   ```bash
+   ip link
+   ```
+   Returns:
+   ```
+   1: lo                 <------------- The loopback network interface that lets the system communicate with itself over localhost.
+   2: eth0               <------------- A ethernet interface. Traffic goes here to leave the Diego Cell.
+   1555: silk-vtep       <------------- A VXLAN overlay network interface. Overlay packets go here to be encapsulated in an  underlay packet before exiting the Diego Cell.
+   1559: s-010255096003@if1558: link-netnsid 0   <-------------  The interface that links to the network namespace with id 0. The name is `s-CONTAINER-IP`. This is the veth interface.
+   There will be one of these network interfaces per app on the Diego Cell.
+   ```
 
 2. Now list all of the networking interfaces in the meow networking namespace
-```
-$ ip netns exec meow ip link
-1: lo: <LOOPBACK> mtu 65536 qdisc noop state DOWN mode DEFAULT group default qlen 1000
-link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-```
+   ```bash
+   ip netns exec meow ip link
+   ```
+   returns
+   ```
+   1: lo: <LOOPBACK> mtu 65536 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+   link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+   ```
 
 There is only the loopback interface. The loopback interface is a special
 virtual network interface that a computer uses to communicate with itself. The

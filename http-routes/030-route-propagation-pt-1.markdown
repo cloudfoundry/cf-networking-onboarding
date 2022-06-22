@@ -29,14 +29,16 @@ Let's look at what information Cloud Controller *does* keep track of.
 
 ## How
 
-0. 🤔 Map a route to appA. Let's call this route APP_A_ROUTE. I recommend
+1. 🤔 Map a route to appA. Let's call this route APP_A_ROUTE. I recommend
    _deleting_ all other routes.
 
-0. 🤔 Look at the domains, routes, destinations (route mappings), and apps via
+1. 🤔 Look at the domains, routes, destinations (route mappings), and apps via
    the Cloud Controller's API.  To look at all the domains you can curl using
-   `cf curl /v3/domains`. Use the [API
-   docs](https://v3-apidocs.cloudfoundry.org/) to figure out the endpoints for
-   the other resources.
+   ```bash
+   cf curl /v3/domains
+   ```
+   Use the [API docs](https://v3-apidocs.cloudfoundry.org/) to figure out the 
+   endpoints for the other resources.
 
 This is all of the information that CC contains about routes. Note there are no
 IPs anywhere. Note that all of these routes are for CF apps, none of them are

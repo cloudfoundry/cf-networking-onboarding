@@ -45,26 +45,67 @@ to.
 ## How
 
 📝 **Look at actualLRPS**
-0. Grab the guid for appA. You'll need it in a moment. Let's call it
-   APP_A_GUID.
- ```
- cf app appA --guid
- ```
-0. Ssh onto the Diego Cell vm where appA is running and become root. You can
+
+1. Grab the guid for appA. You'll need it in a moment. Let's call it APP_A_GUID.
+   ```bash
+   cf app appA --guid
+   ```
+1. Ssh onto the Diego Cell vm where appA is running and become root. You can
    find where appA is running by running the following command:
- ```
- cf curl /v2/apps/<app-guid>/stats
- ```
-0. Use the [cfdot CLI](https://github.com/cloudfoundry/cfdot) to query BBS for
+   ```bash
+   cf curl /v2/apps/<app-guid>/stats
+   ```
+1. Use the [cfdot CLI](https://github.com/cloudfoundry/cfdot) to query BBS for
    actualLRPs. Cfdot is a helpful CLI for using the BBS API.  It's a great tool
    for debugging on the Diego Cell.
- ```
- cfdot actual-lrps | jq .
- ```
-0. Search through the actual LRPs for APP_A_GUID. It should match the beginning
+   ```bash
+   cfdot actual-lrps | jq .
+   ```
+   Returns multiple records similar to this example:
+   ```json
+   {
+     "process_guid": "5215a757-4f16-42c2-bbc5-610834372938-6ecb7b0c-e87b-474b-9767-770a7bdf2913",
+     "index": 0,
+     "domain": "cf-apps",
+     "instance_guid": "e85052a7-a8ab-41be-4f9c-2d8b",
+     "cell_id": "93f6b820-ea42-4d88-8fb6-0c9b6349b95f",
+     "address": "10.0.1.12",
+     "ports": [
+       {
+         "container_port": 8080,
+         "host_port": 61005,
+         "container_tls_proxy_port": 61001,
+         "host_tls_proxy_port": 61007
+       },
+       {
+         "container_port": 8080,
+         "host_port": 61005,
+         "container_tls_proxy_port": 61443,
+         "host_tls_proxy_port": 61008
+       },
+       {
+         "container_port": 2222,
+         "host_port": 61006,
+         "container_tls_proxy_port": 61002,
+         "host_tls_proxy_port": 61009
+       }
+     ],
+     "instance_address": "10.255.213.150",
+     "preferred_address": "HOST",
+     "crash_count": 0,
+     "state": "RUNNING",
+     "since": 1651054607341185300,
+     "modification_tag": {
+       "epoch": "cebd47c2-68e8-4d4b-79ce-937ea0017c14",
+       "index": 2
+     },
+     "presence": "ORDINARY"
+   }
+   ```
+1. Search through the actual LRPs for APP_A_GUID. It should match the beginning
    of a process guid. You'll find an entry for each instance of appA that is
    running.
-0. Let's dissect and store the most important information (for us) about appA:
+1. Let's dissect and store the most important information (for us) about appA:
    ```
    {
      "process_guid": "ab2bd185-9d9a-4628-9cd8-626649ec5432-cb50adac-6861-4f03-92e4-9fcc1a204a1e",
@@ -90,7 +131,7 @@ to.
       ...
    }
    ```
-0. Let's define all of these values.
+1. Let's define all of these values.
   * 👇 These are important for this module 👇
     * **DIEGO_CELL_IP** - The cell's IP address where this app instance is
       running, also sometimes called the host IP.
@@ -119,7 +160,7 @@ to.
       the overlay address and the ssh container_tls_proxy_port.
     * **OVERLAY_IP** - The overlay IP address of this app instance.
 
-0. Use the cfdot CLI to query BBS for desiredLRPs.
+1. Use the cfdot CLI to query BBS for desiredLRPs.
 
 ## ❓ Questions
 * What information is provided for desiredLRPs, but not for actualLRPs?

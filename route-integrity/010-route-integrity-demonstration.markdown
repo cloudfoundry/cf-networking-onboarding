@@ -46,14 +46,14 @@ the incorrect app.
 
 ### Expected Result
 When you curl appA, you should get a 503 status code.
-```
-$ curl appA.cf-app.com
+```bash
+$ curl appA.<YOUR DOMAIN>
 503 Service Unavailable
 ```
 
 In the GoRouter bosh logs you should see a line about pruning the bad route.
 
-```
+```json
 {"log_level":3,"timestamp":1554761639.745829,"message":"prune-failed-endpoint","source":"vcap.gorouter.registry","data":{"route-endpoint":{"ApplicationId":"bf1cdd21-ed5b-429b-93ef-f74a4aadc55f","Addr":"10.0.1.13:61010","Tags":{"component":"route-emitter"},"RouteServiceUrl":""}}}
 
 {"log_level":3,"timestamp":1554761639.7473993,"message":"backend-endpoint-failed","source":"vcap.gorouter","data":{"route-endpoint":{"ApplicationId":"bf1cdd21-ed5b-429b-93ef-f74a4aadc55f","Addr":"10.0.1.13:61010","Tags":{"component":"route-emitter"},"RouteServiceUrl":""},"error":"x509: certificate is valid for 0c2ca10a-0c19-4288-68e8-8d1f, not e5fdb45c-1b41-4602-45ac-b49e","attempt":1,"vcap_request_id":"3673ccd9-44ee-4d81-4a45-0ea75a96121c"}}

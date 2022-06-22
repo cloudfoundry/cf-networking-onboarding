@@ -57,9 +57,9 @@ routes stale.
 1. Route Integrity is turned on by default with CF Deployment. Let's turn it
    off and see what happened before Route Integrity. But first, let's save the
    current manifest for the next story.
- ```
-bosh manifest > /tmp/env-with-route-integrity.yml
- ```
+   ```bash
+   bosh manifest > /tmp/env-with-route-integrity.yml
+   ```
 
 1. Redeploy your CF with Route Integrity turned off, using [this opsfile](../opsfiles/disable-routing-integrity.yml).
 
@@ -67,7 +67,7 @@ bosh manifest > /tmp/env-with-route-integrity.yml
 
 1. Ensure that appA has an HTTP route.
 
-1. Push one instance of [dora](https://github.com/cloudfoundry/cf-acceptance-tests/tree/master/assets/dora) and name it appB.
+1. Push one instance of [dora](https://github.com/cloudfoundry/cf-acceptance-tests/tree/develop/assets/dora) and name it appB.
 
 1. Ensure that there is an HTTP Route mapped to appB.
 

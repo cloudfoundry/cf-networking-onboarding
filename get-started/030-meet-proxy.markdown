@@ -30,17 +30,17 @@ Let's check out proxy's power.
 📝 **Push a proxy app**
 
 1. Clone the [cf-networking-release repo](https://github.com/cloudfoundry/cf-networking-release)
-   ```
-git clone https://github.com/cloudfoundry/cf-networking-release
+   ```bash
+   git clone https://github.com/cloudfoundry/cf-networking-release
    ```
 1. Go to the proxy app
-   ```
-cd ~/workspace/cf-networking-release/src/example-apps/proxy
+   ```bash
+   cd ~/workspace/cf-networking-release/src/example-apps/proxy
    ```
 1. Push the app and name it appA
- ```
-cf push appA
- ```
+   ```bash
+   cf push appA
+   ```
 
 When you push an app, an HTTP route is automatically created. Let's call this route PROXY_ROUTE.
 
