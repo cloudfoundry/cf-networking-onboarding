@@ -4,6 +4,11 @@ title: Curriculum
 permalink: /curriculum/
 ---
 
+## Recommended Reading Prior to Starting
+
+Depending on your level of knowledge with networking, you may want to review the
+[recommended reading](../recommended-reading)  about TCP, IP, UDP, DNS, and Containers.
+
 ## Start Here
 
 Everyone should start by completing the stories in the Get Started Module.
