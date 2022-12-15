@@ -26,6 +26,7 @@ In this story you are going to add your own fun alias for your go HTTP server.
 
 1. Update your manifest to include a Bosh DNS alias (copy lines with `# < ---` and remove the `# < --- .*`). This alias could be added
    for any job on the instance group.
+
    ```
    instance_groups:
    - azs:
