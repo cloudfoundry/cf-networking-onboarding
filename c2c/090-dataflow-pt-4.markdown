@@ -18,9 +18,9 @@ sidebar:
 This track of stories is going to go through the steps (listed below) that were
 covered in the dataflow overview.  The steps and diagram will be at the top of
 each story in case you need to orient yourself. Higher quality diagram
-[here](https://storage.googleapis.com/cf-networking-onboarding-images/c2c-data-plane.png).
+[here](https://storage.googleapis.com/cf-networking-onboarding-images-owned-by-ameowlia/c2c-data-plane.png).
 
-![c2c traffic flow](https://storage.googleapis.com/cf-networking-onboarding-images/overlay-underlay-silk-network.png)
+![c2c traffic flow](https://storage.googleapis.com/cf-networking-onboarding-images-owned-by-ameowlia/overlay-underlay-silk-network.png)
 
 1. AppB (on Diego Cell 1) makes a request to AppA's overlay IP address (on Diego Cell 2). This packet is called the overlay packet (aka the c2c packet).
 1. The packet exits the app container through the veth interface.

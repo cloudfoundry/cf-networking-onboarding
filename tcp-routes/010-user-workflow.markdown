@@ -50,7 +50,7 @@ Let's create a TCP Route and send traffic to it!
    This domain should have an IP next to it, let's call this
    TCP_LOAD_BALANCER_IP.
 
-   ![example TCP domain DNS on GCP](https://storage.googleapis.com/cf-networking-onboarding-images/example-tcp-domain-dns.png)
+   ![example TCP domain DNS on GCP](https://storage.googleapis.com/cf-networking-onboarding-images-owned-by-ameowlia/example-tcp-domain-dns.png)
 
 3. In Google Cloud Console, find the Load Balancer with the ip
    TCP_LOAD_BALANCER_IP. (Network Services --> Load balancing) Here you will be
@@ -58,10 +58,10 @@ Let's create a TCP Route and send traffic to it!
    In the example below, and most likely in your case, there is only one TCP
    Router deployed, so there will only be one VM listed.
 
-   ![example TCP load balancer on GCP](https://storage.googleapis.com/cf-networking-onboarding-images/example-tcp-load-balancer.png)
+   ![example TCP load balancer on GCP](https://storage.googleapis.com/cf-networking-onboarding-images-owned-by-ameowlia/example-tcp-load-balancer.png)
 
 4. Click the VM instance that the TCP load balancer sends traffic to. Find the
-   VM's internal IP. Let's call this TCP_ROUTER_IP.  ![example TCP router vm on GCP](https://storage.googleapis.com/cf-networking-onboarding-images/example-tcp-router-details.png)
+   VM's internal IP. Let's call this TCP_ROUTER_IP.  ![example TCP router vm on GCP](https://storage.googleapis.com/cf-networking-onboarding-images-owned-by-ameowlia/example-tcp-router-details.png)
 5. In the terminal, check that the TCP_ROUTER_IP matches the IP that bosh
    reports for the TCP Router. It comes full circle!
 

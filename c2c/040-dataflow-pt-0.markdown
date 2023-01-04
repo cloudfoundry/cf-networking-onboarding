@@ -18,10 +18,10 @@ Each step marked with a ✨ will be explained in more detail in its own story.
 
 ## How
 Follow the steps below on the diagram. (Higher quality diagram
-[here](https://storage.googleapis.com/cf-networking-onboarding-images/c2c-data-plane.png).)
+[here](https://storage.googleapis.com/cf-networking-onboarding-images-owned-by-ameowlia/c2c-data-plane.png).)
 
 ![c2c traffic
-flow](https://storage.googleapis.com/cf-networking-onboarding-images/overlay-underlay-silk-network.png)
+flow](https://storage.googleapis.com/cf-networking-onboarding-images-owned-by-ameowlia/overlay-underlay-silk-network.png)
 
 _Note: There are a lot of new terms below: "veth", "VTEP", "VXLAN", etc. Feel
 free to google if you need to know now, but if not, hang tight. We'll unpack

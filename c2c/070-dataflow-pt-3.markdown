@@ -18,9 +18,9 @@ sidebar:
 This track of stories is going to go through the steps (listed below) that were
 covered in the dataflow overview.  The steps and diagram will be at the top of
 each story in case you need to orient yourself. Higher quality diagram
-[here](https://storage.googleapis.com/cf-networking-onboarding-images/c2c-data-plane.png).
+[here](https://storage.googleapis.com/cf-networking-onboarding-images-owned-by-ameowlia/c2c-data-plane.png).
 
-![c2c traffic flow](https://storage.googleapis.com/cf-networking-onboarding-images/overlay-underlay-silk-network.png)
+![c2c traffic flow](https://storage.googleapis.com/cf-networking-onboarding-images-owned-by-ameowlia/overlay-underlay-silk-network.png)
 
 1. AppB (on Diego Cell 1) makes a request to AppA's overlay IP address (on
    Diego Cell 2). This packet is called the overlay packet (aka the c2c
@@ -59,21 +59,21 @@ iptables rules needed per c2c policy, especially when there are large number of
 app instances.
 
 ![markful networking policy
-diagram](https://storage.googleapis.com/cf-networking-onboarding-images/diagram-of-silk-networking-policies.png)
+diagram](https://storage.googleapis.com/cf-networking-onboarding-images-owned-by-ameowlia/diagram-of-silk-networking-policies.png)
 
 If packets weren't marked we *could* use the overlay IP as a unique identifier.
 However, this would create the need for many more iptables rules, especially
 when there are a large number of app instances.
 
 ![markless networking policy
-diagram](https://storage.googleapis.com/cf-networking-onboarding-images/diagram-of-flannel-networking-policies.png)
+diagram](https://storage.googleapis.com/cf-networking-onboarding-images-owned-by-ameowlia/diagram-of-flannel-networking-policies.png)
 
 You will learn more about how the c2c policies check the mark in later stories
 (hint: it uses iptables). For now, let's focus on how traffic is marked (hint:
 it uses iptables).
 
 Here is an example iptables rule that sets a mark.  ![setmark iptables rule
-example](https://storage.googleapis.com/cf-networking-onboarding-images/set-mark-iptables-rule-example.png)
+example](https://storage.googleapis.com/cf-networking-onboarding-images-owned-by-ameowlia/set-mark-iptables-rule-example.png)
 
 In this story we are going to find the applicable set-xmark rules for our app
 and we're going to find out where that mark value comes from.

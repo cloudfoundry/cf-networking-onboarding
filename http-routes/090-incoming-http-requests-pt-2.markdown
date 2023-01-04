@@ -52,14 +52,14 @@ and which iptables chains they hit in what order.  We are currently concerned
 with ingress traffic, which is represented by the orange line.
 
 1. Look at the diagram. Which chain does the ingress traffic hit first?
-   ![traffic-flow-through-iptables-on-cf-diagram](https://storage.googleapis.com/cf-networking-onboarding-images/traffic-flow-through-iptables-on-cf.png)
+   ![traffic-flow-through-iptables-on-cf-diagram](https://storage.googleapis.com/cf-networking-onboarding-images-owned-by-ameowlia/traffic-flow-through-iptables-on-cf.png)
 
 2. Based on the previous diagram, the ingress traffic hits the prerouting chain
    first. Look at the diagram below and do some research to learn more about
    the raw, conn_tracking, mangle, and nat tables.  Which table should contain
    the rules to redirect our traffic to a new address?  ![iptables tables and
    chains
-   diagram](https://storage.googleapis.com/cf-networking-onboarding-images/iptables-tables-and-chains-diagram.png)
+   diagram](https://storage.googleapis.com/cf-networking-onboarding-images-owned-by-ameowlia/iptables-tables-and-chains-diagram.png)
 
     NAT stands for Network Address Translation. That sounds like what we want.
     So let's look at iptables rules for the nat table on the prerouting chain.
@@ -89,7 +89,7 @@ with ingress traffic, which is represented by the orange line.
 
 6. For appA, find the rule that will match with the traffic the GoRouter sends to `DIEGO_CELL_IP:DIEGO_CELL_ENVOY_PORT`.
    It should look something like this...
-   ![example DNAT rule with explanation](https://storage.googleapis.com/cf-networking-onboarding-images/example-DNAT-rule-with-explanation.png)
+   ![example DNAT rule with explanation](https://storage.googleapis.com/cf-networking-onboarding-images-owned-by-ameowlia/example-DNAT-rule-with-explanation.png)
 
    In summary, when the GoRouter sends network traffic to 10.0.1.12:61014 (`DIEGO_CELL_IP:DIEGO_CELL_ENVOY_PORT`) 
    it gets redirected to 10.255.116.6:61001 (`OVERLAY_IP:CONTAINER_ENVOY_PORT`).

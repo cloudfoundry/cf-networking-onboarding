@@ -71,7 +71,7 @@ The INPUT, FORWARD, and OUTPUT chains are hit in different situations. (See diag
 - The FORWARD chain is hit by East/West traffic (remember... idk for this one).
 - The OUTPUT chain is hit by egress traffic (remember, the traffic is *e*xiting the container and going *out*).
 
-![iptables chains and tables diagram](https://storage.googleapis.com/cf-networking-onboarding-images/iptables-tables-and-chains-diagram.png)
+![iptables chains and tables diagram](https://storage.googleapis.com/cf-networking-onboarding-images-owned-by-ameowlia/iptables-tables-and-chains-diagram.png)
 
 1. The request to google is egress traffic, so we want to attach out custom chain to the OUTPUT chain.
    ```bash

@@ -20,7 +20,7 @@ In this story you are going to learn about the OSI model (Open Systems
 Interconnection model). In the OSI model, there are 7 networking layers and
 each one is built on top of the one below it.
 
-![OSI model](https://storage.googleapis.com/cf-networking-onboarding-images/osi-layers.png)
+![OSI model](https://storage.googleapis.com/cf-networking-onboarding-images-owned-by-ameowlia/osi-layers.png)
 
 ## How
 
