@@ -76,4 +76,4 @@ instances.
 ## Resources
 
 * [internal domain docs](https://github.com/cloudfoundry/cf-networking-release/blob/develop/docs/app-sd.md#internal-domains)
-* [servide discovery docs](https://github.com/cloudfoundry/cf-networking-release/blob/develop/docs/app-sd.md)
+* [service discovery docs](https://github.com/cloudfoundry/cf-networking-release/blob/develop/docs/app-sd.md)
