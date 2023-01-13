@@ -85,7 +85,7 @@ Let's create a TCP Route and send traffic to it!
 1. See that `cf map-route --help` has different usage instructions for TCP routes and HTTP routes.
 1. Create a route with the TCP domain and map it to tcp-app, let's call this TCP_ROUTE:TCP_PORT.
    ```bash
-   cf map-route tcp-app TCP_DOMAIN --random-port
+   cf map-route tcp-app TCP_DOMAIN 
    ```
 
 📝 **Test with curl**
