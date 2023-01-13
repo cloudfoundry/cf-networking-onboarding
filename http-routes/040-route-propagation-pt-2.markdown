@@ -133,32 +133,17 @@ to.
    ```
 1. Let's define all of these values.
   * 👇 These are important for this module 👇
-    * **DIEGO_CELL_IP** - The cell's IP address where this app instance is
-      running, also sometimes called the host IP.
-    * **CONTAINER_APP_PORT** - The port the app is listening on inside of its
-      container. 8080 is the default value.
-    * **DIEGO_CELL_APP_PORT** -  The port on the Diego Cell where traffic to your
-      app is sent to before it is forwarded to the overlay address and the
-      container_port.
-    * **CONTAINER_ENVOY_PORT** - The port inside of the app container that envoy
-      is listening on for HTTPS traffic. This is the default value (currently
-      unchangeable).
-    * **DIEGO_CELL_ENVOY_PORT** - The port on the Diego Cell where traffic to
-      your app's envoy sidecar is sent to before it is forwarded to the overlay
-      address and the container_tls_proxy_port.
-  * 👇 These are NOT important for this module 👇
-    * **CONTAINER_SSH_PORT** - The port exposed on the app container for sshing
-      onto the app container
-    * **DIEGO_CELL_SSH_PORT** - The port on the Diego Cell where ssh traffic to
-      your app container is sent to before it is forwarded to the overlay address
-      and the ssh container_port.
-    * **CONTAINER_ENVOY_SSH_PORT** - The ssh port inside of the app container
-      that envoy is listening on for ssh traffic. This is the default value
-      (currently unchangeable).
-    * **DIEGO_CELL_ENVOY_SSH_PORT** - The port on the Diego Cell where ssh
-      traffic to your app's envoy sidecar is sent to before it is forwarded to
-      the overlay address and the ssh container_tls_proxy_port.
-    * **OVERLAY_IP** - The overlay IP address of this app instance.
+        * **DIEGO_CELL_IP** - The cell's IP address where this app instance is running, also sometimes called the host IP.
+        * **CONTAINER_APP_PORT** - The port the app is listening on inside of its container. 8080 is the default value.
+        * **DIEGO_CELL_APP_PORT** -  The port on the Diego Cell where traffic to your app is sent to before it is forwarded to the overlay address and the container_port.
+        * **CONTAINER_ENVOY_PORT** - The port inside of the app container that envoy is listening on for HTTPS traffic. This is the default value (currently unchangeable).
+        * **DIEGO_CELL_ENVOY_PORT** - The port on the Diego Cell where traffic to your app's envoy sidecar is sent to before it is forwarded to the overlay address and the container_tls_proxy_port. 
+    * 👇 These are NOT important for this module 👇 
+      * **CONTAINER_SSH_PORT** - The port exposed on the app container for sshing onto the app container
+      * **DIEGO_CELL_SSH_PORT** - The port on the Diego Cell where ssh traffic to your app container is sent to before it is forwarded to the overlay address and the ssh container_port.
+      * **CONTAINER_ENVOY_SSH_PORT** - The ssh port inside of the app container that envoy is listening on for ssh traffic. This is the default value (currently unchangeable).
+      * **DIEGO_CELL_ENVOY_SSH_PORT** - The port on the Diego Cell where ssh traffic to your app's envoy sidecar is sent to before it is forwarded to the overlay address and the ssh container_tls_proxy_port.
+      * **OVERLAY_IP** - The overlay IP address of this app instance.
 
 1. Use the cfdot CLI to query BBS for desiredLRPs.
 
