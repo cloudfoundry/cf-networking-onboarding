@@ -11,7 +11,7 @@ sidebar:
 
 In this module you will learn:
 
-* The difference betwen overlay and underlay networks.
+* The difference between overlay and underlay networks.
 * What networking namespaces are and how to make your own.
 * How to use the `ip` CLI to see a host's network interfaces.
 * How packets are marked.
