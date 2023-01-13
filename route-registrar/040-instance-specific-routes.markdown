@@ -25,7 +25,7 @@ In this story you are going to create instance specific component routes.
 
 🤔 **Make and use instance specific routes**
 
-1. Update the [prepend_instance_index property](https://github.com/cloudfoundry/routing-release/blob/develop/jobs/route_registrar/spec#L95-L96) in your bosh manifest to turn on instance specific routing.
+1. Update the [prepend_instance_index property](https://github.com/cloudfoundry/routing-release/blob/develop/jobs/route_registrar/spec#L111-L112) in your bosh manifest to turn on instance specific routing.
 
 1. Redeploy
 
