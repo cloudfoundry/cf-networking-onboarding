@@ -17,7 +17,7 @@ In this module you will learn:
   Emitter, NATS, and Gorouter.
 * How incoming HTTP requests make it from the load balancer to gorouter to the
   app and what iptables rules are hit along the way.
-* How the sidecar envoy is used to termainte TLS.
+* How the sidecar envoy is used to terminate TLS.
 * What access logs are and how they can help with debugging.
 * How to send traffic straight to the Gorouter.
 * And more!
