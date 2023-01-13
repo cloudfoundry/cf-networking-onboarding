@@ -73,7 +73,7 @@ The INPUT, FORWARD, and OUTPUT chains are hit in different situations. (See diag
 
 ![iptables chains and tables diagram](https://storage.googleapis.com/cf-networking-onboarding-images-owned-by-ameowlia/iptables-tables-and-chains-diagram.png)
 
-1. The request to google is egress traffic, so we want to attach out custom chain to the OUTPUT chain.
+1. The request to google is egress traffic, so we want to attach our custom chain to the OUTPUT chain.
    ```bash
    iptables -A OUTPUT -j drop-everything
    ```
