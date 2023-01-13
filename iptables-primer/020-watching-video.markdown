@@ -15,6 +15,6 @@ the concepts.
 
 ## How
 
-🎬 Watch this video ["iptables: Packet Processing" by Dr. Murphy's Lectures](https://www.youtube.com/watch?v=yE82upHCxfU) _length 14:22_
+🎬 Watch this video ["iptables: Packet Processing" by Dr. Murphy's Lectures](https://archive.org/details/iptables-packet-processing) _length 14:22_
 
-🎬 Watch this video ["iptables: Tables and Chains" by Dr. Murphy's Lectures](https://www.youtube.com/watch?v=jgH976ymdoQ) _length 10:34_
+🎬 Watch this video ["iptables: Tables and Chains" by Dr. Murphy's Lectures](https://archive.org/details/iptables-tables-and-chains) _length 10:34_
