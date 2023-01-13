@@ -60,7 +60,7 @@ instance_groups:
 1.  In one terminal, ssh onto `my-http-server/0`, become root, and run the server.
 1.  In a second terminal, ssh onto `my-http-server/1`, become root, and run the server.
 
-📝 **Try to hit the http sever from your local machine**
+📝 **Try to hit the http server from your local machine**
 
 1. In a third terminal from your local machine, run `bosh is` and record the
    IPs for both instances of my-http-server. Let's call these
@@ -71,7 +71,7 @@ instance_groups:
 1. Try to `curl MY_HTTP_SERVER_1_IP:9994`.
 * ❓ What happens? Why can't you reach these endpoints?
 
-📝 **Try to hit the http sever from within the private CF network**
+📝 **Try to hit the http server from within the private CF network**
 
 1. In the third terminal, bosh ssh onto any VM other than my-http-server.
 
