@@ -67,7 +67,7 @@ with ingress traffic, which is represented by the orange line.
 3. Ssh onto the Diego Cell where your app is running and become root.
 4. Run
    ```
-   iptables -S -t nat`
+   iptables -S -t nat
    ```
    You should see some custom chains attached to the PREROUTING chain.
    There will be one custom chain per app running on this Diego Cell.
