@@ -80,8 +80,6 @@ routes table in the GoRouter.
    watch "curl -sS appB.meow.meow.meow:8080"
    ```
 
-4. 
-
 ## Expected Result
 
 appA should be able to successfully reach appB using the internal route with
