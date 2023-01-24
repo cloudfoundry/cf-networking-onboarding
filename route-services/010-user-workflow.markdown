@@ -16,7 +16,7 @@ sidebar:
 
 ## What
 
-In the Route Propagation tack we talked about the flow of network traffic when
+In the Route Propagation track we talked about the flow of network traffic when
 an internet user tries to access your app. A very simplified version of this
 flow looked like this:
 1. The traffic hits a load balancer in front of the CF Foundation
