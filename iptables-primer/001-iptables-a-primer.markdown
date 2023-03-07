@@ -53,12 +53,12 @@ type of person who likes to experiment first, skip these videos and watch them
 after the next story. (Don't worry I'll remind you.)
 
 1. 🎬 Watch this video ["iptables: Packet Processing" by Dr. Murphy's
-   Lectures](https://www.youtube.com/watch?v=yE82upHCxfU) _length 14:22_
+   Lectures](https://archive.org/details/iptables-packet-processing) _length 14:22_
 1. 🎬 Watch this video ["iptables: Tables and Chains" by Dr. Murphy's
-   Lectures](https://www.youtube.com/watch?v=jgH976ymdoQ) _length 10:34_
+   Lectures](https://archive.org/details/iptables-tables-and-chains) _length 10:34_
 
 ## Resources
 * [iptables man page](http://ipset.netfilter.org/iptables.man.html)
 * [Julia Evans iptables basics](https://jvns.ca/blog/2017/06/07/iptables-basics/)
-* ["iptables: Packet Processing" by Dr. Murphy's Lectures](https://www.youtube.com/watch?v=yE82upHCxfU)
-* ["iptables: Tables and Chains" by Dr. Murphy's Lectures](https://www.youtube.com/watch?v=jgH976ymdoQ)
+* ["iptables: Packet Processing" by Dr. Murphy's Lectures](https://archive.org/details/iptables-packet-processing)
+* ["iptables: Tables and Chains" by Dr. Murphy's Lectures](https://archive.org/details/iptables-tables-and-chains)
