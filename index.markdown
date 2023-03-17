@@ -7,5 +7,5 @@ CF Networking Onboarding is a _guided exploration_ of the Cloud Foundry
 Networking components.
 
 👉 Go to the
-[curriculum](/curriculum/)
+[curriculum](https://cloudfoundry.github.io/cf-networking-onboarding/curriculum/)
 and begin your journey today!
