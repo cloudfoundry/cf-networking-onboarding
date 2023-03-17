@@ -54,6 +54,9 @@ $ tree # output edited to show the most important dirs and files.
 ├── get-started # edit the get started stories here
 │   ├── 000-intro.markdown
 │   ├── ...
+├── gorouter #edit the gorouter stories here
+│   ├── 000-intro.markdown
+│   ├── ...
 ├── http-routes # edit the http route stories here
 │   ├── 000-landing-page.markdown
 │   ├── ...

@@ -234,6 +234,31 @@ sidebar-route-services:
       - title: "Wrap Up"
         url: /route-services/wrap-up
 
+sidebar-gorouter:
+  - children:
+    - title: Introduction
+      url: /gorouter/intro
+    - title: What is Gorouter?
+      url: /gorouter/what-is-gorouter
+    - title: What is a Reverse Proxy?
+      url: /gorouter/reverse-proxy
+    - title: http.ReverseProxy in Gorouter
+      url: /gorouter/http-reverseproxy-in-gorouter
+    - title: Gorouter Middleware via Handlers
+      url: /gorouter/middleware-handlers
+    - title: Gorouter is an Onion
+      url: /gorouter/gorouters-have-layers-onions-have-layers
+    - title: A Formal Intro to Handlers 1 - 5
+      url: /gorouter/handlers-part-1
+    - title: A Formal Intro to Handlers 6 - 10
+      url: /gorouter/handlers-part-2
+    - title: A Formal Intro to Handlers 11 - 17
+      url: /gorouter/handlers-part-3
+    - title: The Proxy Round Tripper
+      url: /gorouter/proxy-round-tripper
+    - title: "Wrap Up"
+      url: /gorouter/wrap-up
+
 sidebar-interrupts:
   - children:
       - title: "Introduction"
