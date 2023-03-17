@@ -21,7 +21,7 @@ I am going to hold this onboarding on the date that works best for everyone.
 🧵 See more details about this week in the thread.
 ```
 
-### What is it
+##### What is it (reply to ^^)
 
 ```
 💡 What is it?
@@ -42,6 +42,12 @@ Onboarders work together and often pair. In order for this to work, it helps if 
 
 ### Advertising, once a date is decided
 
+```
+✨ 🌍 A CF Networking Onboarding week will be held: [DATE]!
+🧵 See thread for more info.
+```
+
+##### Reply to ^^
 ```
 🙋‍♀️ How to claim a spot
 1. Make sure you are available [DATE]
