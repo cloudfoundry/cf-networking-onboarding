@@ -38,3 +38,10 @@ When it does matter it is called out in the stories.
 After you've finished all the above modules, try your hand at answering some
 real interrupt questions.
 * [Interrupts](../interrupts/intro)
+
+## Working on Gorouter Code?
+
+If you're interested in writing gorouter code, take a look at this module for
+a deep dive on its codebase!
+
+* [Gorouter the Code](../gorouter/intro)
