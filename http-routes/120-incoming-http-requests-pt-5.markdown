@@ -62,7 +62,7 @@ apps are returning 502s? Let's look at the access logs to find out!
 1. Read about the [X-CF-RouterError here](https://docs.cloudfoundry.org/adminguide/troubleshooting-router-error-responses.html#gorouter-specific-response-headers) and learn how it can be used for debugging. 
 
 🤔 **Look at the app logs for APP_A**.
-1. Use `cf logs` to look at the app logs for `APP_A`.
+1. Use `cf logs --recent` to look at the app logs for `APP_A`.
  * ❓Can you find a log line that looks like the access log line?
  * ❓What additional information does the app log contain?
 
