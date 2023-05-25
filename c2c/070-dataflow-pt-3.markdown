@@ -115,7 +115,7 @@ paste it here.
 The source IP is the overlay IP for your app. The comment is the app guid for
 appA. And the mark is...well... where *does* the mark come from?
 
-When a c2c policy is created, the policy server determines if the app has a
+When a c2c policy is created, the policy server determines if the app has aCancel changes
 mark already or not. If the app doesn't have a mark yet, it creates one. Let's
 look at all these marks.  The marks are an internal implementation of how c2c
 policies work, so they are not exposed on the external API (the API the CLI
@@ -129,7 +129,7 @@ use.
    Cell at `/var/vcap/jobs/vxlan-policy-agent/config/certs`
 1. Follow the
    [docs](https://github.com/cloudfoundry/cf-networking-release/blob/develop/docs/policy-server-internal-api.md)
-   for how to list all of the c2c policies (the actual policy server url may vary from the docs. Check `policy_server_url` in `/var/vcap/jobs/vxlan-policy-agent/config/vxlan-policy-agent.json to get the right one).  You should see something like the
+   for how to list all of the c2c policies (the actual policy server url may vary from the docs. Check `policy_server_url` in `/var/vcap/jobs/vxlan-policy-agent/config/vxlan-policy-agent.json` to get the right one).  You should see something like the
    following. The tag for appA should match the mark you saw in the iptables
    rule.
 ```
