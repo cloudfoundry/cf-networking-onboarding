@@ -129,7 +129,7 @@ use.
    Cell at `/var/vcap/jobs/vxlan-policy-agent/config/certs`
 1. Follow the
    [docs](https://github.com/cloudfoundry/cf-networking-release/blob/develop/docs/policy-server-internal-api.md)
-   for how to list all of the c2c policies.  You should see something like the
+   for how to list all of the c2c policies (the actual policy server url may vary from the docs. Check policy_server_url in /var/vcap/jobs/vxlan-policy-agent/config/vxlan-policy-agent.json to get the right one).  You should see something like the
    following. The tag for appA should match the mark you saw in the iptables
    rule.
 ```
