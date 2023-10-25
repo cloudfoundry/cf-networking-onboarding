@@ -115,7 +115,7 @@ paste it here.
 The source IP is the overlay IP for your app. The comment is the app guid for
 appA. And the mark is...well... where *does* the mark come from?
 
-When a c2c policy is created, the policy server determines if the app has aCancel changes
+When a c2c policy is created, the policy server determines if the app has a
 mark already or not. If the app doesn't have a mark yet, it creates one. Let's
 look at all these marks.  The marks are an internal implementation of how c2c
 policies work, so they are not exposed on the external API (the API the CLI
