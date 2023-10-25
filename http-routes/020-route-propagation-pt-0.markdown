@@ -45,7 +45,7 @@ You can talk about route propagation at a high level.
 ## Logistics
 In the next few stories, you are going to need to remember values from one
 story to another, there will be a space provided at the bottom of each story
-for your to record these values so you can store them.  It can be annoying to
+for you to record these values so you can store them.  It can be annoying to
 scroll up and down in the story as you use the values, so it could be helpful
 to store these values in a doc outside of tracker.
 
