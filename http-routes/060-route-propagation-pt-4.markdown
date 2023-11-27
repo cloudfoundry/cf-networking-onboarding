@@ -43,7 +43,7 @@ Let's take a look at that route table.
    ```
 1. Get the routes table
    ```bash
-   curl -s -S "http://USERNAME:PASSWORD@localhost:8080/routes" | jq .
+   /var/vcap/jobs/gorouter/bin/retrieve-local-routes | jq .
    ```
 1. Scroll through and look at the routes.
   ❓How does this differ from the route information you saw in Cloud Controller?
