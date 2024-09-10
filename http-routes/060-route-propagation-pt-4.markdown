@@ -36,7 +36,7 @@ Let's take a look at that route table.
 ## How
 
 📝 **look at route table**
-1. Bosh ssh onto the router vm and become root.
+1. Bosh ssh onto the router vm.
 1. Get the username and password for the routing api
    ```bash
    head /var/vcap/jobs/gorouter/config/gorouter.yml
