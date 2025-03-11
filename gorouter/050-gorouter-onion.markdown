@@ -1,6 +1,6 @@
 ---
 layout: single
-title: Gorouter is an Oonion
+title: Gorouter is an Onion
 permalink: /gorouter/gorouters-have-layers-onions-have-layers
 sidebar:
   title: "Gorouter the Code"
