@@ -51,7 +51,6 @@ to store these values in a doc outside of tracker.
 
 ## Resources for the entire route propagation track
 **Cloud Controller**
-* [Cloud Controller V2 API docs](https://v2-apidocs.cloudfoundry.org)
 * [Cloud Controller V3 API docs](http://v3-apidocs.cloudfoundry.org)
 
 **Diego**
