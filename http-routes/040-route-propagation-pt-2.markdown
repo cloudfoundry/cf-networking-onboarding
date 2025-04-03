@@ -53,7 +53,7 @@ to.
 1. Ssh onto the Diego Cell vm where appA is running and become root. You can
    find where appA is running by running the following command:
    ```bash
-   cf curl /v2/apps/<app-guid>/stats
+   cf curl /v3/apps/<app-guid>/processes/web/stats
    ```
 1. Use the [cfdot CLI](https://github.com/cloudfoundry/cfdot) to query BBS for
    actualLRPs. Cfdot is a helpful CLI for using the BBS API.  It's a great tool
@@ -73,21 +73,21 @@ to.
      "ports": [
        {
          "container_port": 8080,
-         "host_port": 61005,
+         "host_port": 0,
          "container_tls_proxy_port": 61001,
-         "host_tls_proxy_port": 61007
+         "host_tls_proxy_port": 61002
        },
        {
          "container_port": 8080,
-         "host_port": 61005,
+         "host_port": 0,
          "container_tls_proxy_port": 61443,
-         "host_tls_proxy_port": 61008
+         "host_tls_proxy_port": 0
        },
        {
          "container_port": 2222,
-         "host_port": 61006,
+         "host_port": 0,
          "container_tls_proxy_port": 61002,
-         "host_tls_proxy_port": 61009
+         "host_tls_proxy_port": 61003
        }
      ],
      "instance_address": "10.255.213.150",
@@ -115,15 +115,21 @@ to.
        "ports": [
          {
            "container_port": 8080,            <------ CONTAINER_APP_PORT
-           "host_port": 61012,                <------ DIEGO_CELL_APP_PORT
+           "host_port": 0,                    <------ DIEGO_CELL_APP_PORT
            "container_tls_proxy_port": 61001, <------ CONTAINER_ENVOY_PORT
-           "host_tls_proxy_port": 61014,      <------ DIEGO_CELL_ENVOY_PORT
+           "host_tls_proxy_port": 61002       <------ DIEGO_CELL_ENVOY_PORT
+         },
+         {
+           "container_port": 8080,            <------- FOR_C2C
+           "host_port": 0,                    <------- FOR_C2C
+           "container_tls_proxy_port": 61443, <------- FOR_C2C
+           "host_tls_proxy_port": 0           <------- FOR_C2C
          },
          {
            "container_port": 2222,            <------ CONTAINER_SSH_PORT
-           "host_port": 61013,                <------ DIEGO_CELL_SSH_PORT
+           "host_port": 0,                    <------ DIEGO_CELL_SSH_PORT
            "container_tls_proxy_port": 61002, <------ CONTAINER_ENVOY_SSH_PORT
-           "host_tls_proxy_port": 61015       <------ DIEGO_CELL_ENVOY_SSH_PORT
+           "host_tls_proxy_port": 61003       <------ DIEGO_CELL_ENVOY_SSH_PORT
          }
        ],
      "instance_address": "10.255.116.6",      <------ The overlay IP address of this app instance, let's call this the OVERLAY_IP
@@ -132,18 +138,19 @@ to.
    }
    ```
 1. Let's define all of these values.
-  * 👇 These are important for this module 👇
+    * 👇 These are important for this module 👇
         * **DIEGO_CELL_IP** - The cell's IP address where this app instance is running, also sometimes called the host IP.
         * **CONTAINER_APP_PORT** - The port the app is listening on inside of its container. 8080 is the default value.
-        * **DIEGO_CELL_APP_PORT** -  The port on the Diego Cell where traffic to your app is sent to before it is forwarded to the overlay address and the container_port.
+        * **DIEGO_CELL_APP_PORT** -  The port on the Diego Cell where traffic to your app is sent to before it is forwarded to the overlay address and the container_port. By default this is 0 so that no port is exposed that sends traffic to the non-encrypted container port.
         * **CONTAINER_ENVOY_PORT** - The port inside of the app container that envoy is listening on for HTTPS traffic. This is the default value (currently unchangeable).
         * **DIEGO_CELL_ENVOY_PORT** - The port on the Diego Cell where traffic to your app's envoy sidecar is sent to before it is forwarded to the overlay address and the container_tls_proxy_port. 
     * 👇 These are NOT important for this module 👇 
       * **CONTAINER_SSH_PORT** - The port exposed on the app container for sshing onto the app container
-      * **DIEGO_CELL_SSH_PORT** - The port on the Diego Cell where ssh traffic to your app container is sent to before it is forwarded to the overlay address and the ssh container_port.
+      * **DIEGO_CELL_SSH_PORT** - The port on the Diego Cell where ssh traffic to your app container is sent to before it is forwarded to the overlay address and the ssh container_port. By default this is 0 so that no port is exposed that sends traffic to the non-encrypted container port.
       * **CONTAINER_ENVOY_SSH_PORT** - The ssh port inside of the app container that envoy is listening on for ssh traffic. This is the default value (currently unchangeable).
       * **DIEGO_CELL_ENVOY_SSH_PORT** - The port on the Diego Cell where ssh traffic to your app's envoy sidecar is sent to before it is forwarded to the overlay address and the ssh container_tls_proxy_port.
       * **OVERLAY_IP** - The overlay IP address of this app instance.
+      * **FOR_C2C** - This entry is used for Container to Container networking. See [this doc](https://docs.cloudfoundry.org/concepts/understand-cf-networking.html#securing-container-to-container-traffic) for more information.
 
 1. Use the cfdot CLI to query BBS for desiredLRPs.
 

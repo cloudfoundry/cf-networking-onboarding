@@ -26,7 +26,7 @@ Here is simplified diagram of the data flow of an http route:
 ```
 
 When to do this:
-* when you are having problems connecting to an app and you want to start picking off items on by one that are _not_ the problem.
+* when you are having problems connecting to an app and you want to start picking off items one by one that are _not_ the problem.
 * when one particular gorouter is having problems and you want to send traffic to just that gorouter.
 * when you are debugging and want to point your traffic at a particular gorouter so you can find the logs easier.
 
