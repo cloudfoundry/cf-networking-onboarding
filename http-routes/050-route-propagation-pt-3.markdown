@@ -60,6 +60,16 @@ technique.
 1. Use the nats cli to connect to nats:
    ```bash
    nats sub "*.*" -s nats://NATS_USERNAME:NATS_PASSWORD@NATS_ADDRESS/ --tlscert <cert file from json> --tlskey <key file from json> --tlsca <ca file from json>
+   # use below script to generate the nats command
+   eval $(jq -r '
+   "USERNAME=" + .nats_username + "\n" +
+   "PASSWORD=" + .nats_password + "\n" +
+   "ADDRESS=" + .nats_addresses + "\n" +
+   "NATS_CLIENT_CERT_FILE=" + .nats_client_cert_file + "\n" +
+   "NATS_CLIENT_KEY_FILE=" + .nats_client_key_file + "\n" +
+   "NATS_CA_CERT_FILE=" + .nats_ca_cert_file + "\n"
+   ' /var/vcap/jobs/route_emitter/config/route_emitter.json)
+   echo "nats sub \"*.*\" -s nats://${USERNAME}:${PASSWORD}@${ADDRESS}" --tlscert ${NATS_CLIENT_CERT_FILE} --tlskey ${NATS_CLIENT_KEY_FILE} --tlsca ${NATS_CA_CERT_FILE}
    ```
    The `"*.*"` means that you are subscribing to all NATs messages.
    The Route Emitter registers routes every 20 seconds (by default) so that the GoRouter (which subscribes to these messages) has the most up-to-date information about which IPs map to which apps and routes.
