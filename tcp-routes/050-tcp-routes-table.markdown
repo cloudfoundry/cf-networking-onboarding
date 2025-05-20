@@ -61,6 +61,10 @@ out the name and password for this user from the bosh manifest.
   the key uaa_clients_routing_api_client_secret.
 
 1. Use the credhub CLI to get the password.
+   ```bash
+    credhub get -n /<cf-deployment-flavor/cf/uaa_clients_routing_api_client_secret
+   ```
+Example: credhub get -n /bosh-lite/cf/uaa_clients_routing_api_client_secret
 
 📝 **Use uaac to get the oath token**
 
@@ -68,6 +72,8 @@ out the name and password for this user from the bosh manifest.
 
 1. If you don't have it installed, install it.
    ```bash
+   sudo apt update
+   sudo apt install ruby-dev build-essential
    gem install cf-uaac
    ```
 
